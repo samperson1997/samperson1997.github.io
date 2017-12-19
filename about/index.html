@@ -3,7 +3,7 @@
   <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="Samperson&#39;s blog">
+  <meta name="description" content="Blog of Samperson">
   <meta name="keyword" content="">
   
     <link rel="shortcut icon" href="/css/images/logo.png">
@@ -113,103 +113,130 @@
 
     <div id="about-banner" style="background-image: url(https://static.pexels.com/photos/273222/pexels-photo-273222.jpeg)"></div>
 <div class="author">
-  <div class="head">
-    <img src="https://avatars3.githubusercontent.com/u/19167280?s=400&u=8fa961108845f2d5e0f61e427ad817f3d880ad99&v=4" />
-  </div>
-  <h3>Samperson Sun</h3>
-  <p class="discription">没能不能 只有肯不肯</p>
-  <section class="share-icons">
-    
-      <a class="icon-weibo" href="http://weibo.com/2750922897" target="_blank">
-        <span class="fa-stack fa-lg">
+    <div class="head">
+        <img src="https://avatars3.githubusercontent.com/u/19167280?s=400&u=8fa961108845f2d5e0f61e427ad817f3d880ad99&v=4" />
+    </div>
+    <h3>
+        Samperson Sun
+    </h3>
+    <p class="discription">
+        没能不能 只有肯不肯
+    </p>
+    <p style="margin-top: 2%">
+        南京大学本科生, 1997年生, 摩羯座典型男孩
+    </p>
+    <p>
+        Email: samperson_sun@foxmail.com
+    </p>
+    <section class="share-icons">
+        
+            <a class="icon-weibo" href="http://weibo.com/2750922897" target="_blank">
+                <span class="fa-stack fa-lg">
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
         </span>
-      </a>
-    
-    
-    
-      <a class="icon-github" href="https://github.com/samperson1997" target="_blank">
-        <span class="fa-stack fa-lg">
+            </a>
+            
+                
+                        
+                            <a class="icon-github" href="https://github.com/samperson1997" target="_blank">
+                                <span class="fa-stack fa-lg">
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-github fa-stack-1x fa-inverse"></i>
         </span>
-      </a>
-    
-    
-    
-        <a class="icon-douban" href="https://www.douban.com/people/78188714" target="_blank">
-            <span class="fa-stack fa-lg">
+                            </a>
+                            
+                                
+                                        
+                                            <a class="icon-douban" href="https://www.douban.com/people/78188714" target="_blank">
+                                                <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa fa-stack-1x fa-inverse">豆</i>
             </span>
-        </a>
-    
-  </section>
+                                            </a>
+                                            
+    </section>
+    <p style="margin-top: 2%">Friends' links</p>
+    <p>
+        <a href='https://sunnnnnnnnny.github.io' target="_blank">ST</a>,&nbsp;&nbsp;
+        <a href='https://atlas-zqh.github.io' target="_blank">Keenan Zhou</a>,&nbsp;&nbsp;
+        <a href='https://songkuixi.github.io' target="_blank">KrayC</a>,&nbsp;&nbsp;
+        <a href='http://blog.csdn.net/qq_33230935' target="_blank">WaterWan</a>
+    </p>
 </div>
 
 <script>
-  (function () {
-    $('.header').removeClass('fixed-header')
-    var windowH = $(window).height();
-    var author = $('.author')
-    var bodyH = author.offset().top + author[0].offsetHeight + 71;
-    if (bodyH < windowH) {
-      author.css({
-        'margin-bottom': windowH - bodyH
-      })
-    }
-  })();
+    (function() {
+        $('.header').removeClass('fixed-header')
+        var windowH = $(window).height();
+        var author = $('.author')
+        var bodyH = author.offset().top + author[0].offsetHeight + 71;
+        if (bodyH < windowH) {
+            author.css({
+                'margin-bottom': windowH - bodyH
+            })
+        }
+    })();
+
 </script>
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2017 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
+    <p class="copyright">
+        &copy;
+        2017 | Content by <a href="https://samperson1997.github.io/about/">Samperson Sun</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+            <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    </p>
 </footer>
 
 <script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
+    function async(u, c) {
+        var d = document,
+            t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function(e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+
 </script>
 <script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
+        FastClick.attach(document.body);
+    })
+
 </script>
 
 <script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
+    var hasLine = 'true';
+    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
+        $('figure pre').each(function(i, block) {
+            var figure = $(this).parents('figure');
+            if (hasLine === 'false') {
+                figure.find('.gutter').hide();
+            }
+            var lang = figure.attr('class').split(' ')[1] || 'code';
+            var codeHtml = $(this).html();
+            var codeTag = document.createElement('code');
+            codeTag.className = lang;
+            codeTag.innerHTML = codeHtml;
+            $(this).attr('class', '').empty().html(codeTag);
+            figure.attr('data-lang', lang.toUpperCase());
+            hljs.highlightBlock(block);
+        });
+    })
+
 </script>
 <!-- Baidu Tongji -->
 
-<script src="/js/script.js"></script>
+        <script src="/js/script.js"></script>
+
   </body>
 </html>
