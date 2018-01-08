@@ -128,7 +128,7 @@
 <h1 id="项目构成"><a href="#项目构成" class="headerlink" title="项目构成"></a>项目构成</h1><h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>[1] 首先到<a href="http://www.wildfly.org/downloads/" title="WildFly官网" target="_blank" rel="noopener">WildFly官网</a>上下载最新版本。</p>
 <p>[2] 我完成作业用IDE的是intellij idea，因此这篇博客不适用于eclipse等其他IDE。<br>[3] 因为之后的作业还要基于第4次作业进行修改，所以这次我新建了两个项目，分别是client和server。其中client是Web Application，应用Tomcat；server是EJB，应用Wildfly。<br>创建项目时，client和之前的项目类似；server则在创建时左侧栏选择 Java Enterprise, 右侧找到 EJB: Enterprise Java Beans, 同时设置好 JDK 版本，应用服务器 WildFly 注意下方勾选 Create ejb-jar.xml 并且 Libraries 选择 Download ，这样 IDEA 会自动下载所需的 javax.ejb-api.jar 并且设置好 classpath。</p>
 <blockquote>
-<p>osx系统升级到10.13之后，idea新建EJB项目下面没有Download选项，这样不能按照接下来的步骤进行。按照其他网上攻略的办法，周围的同学屡经尝试均无果，欢迎其他同学踊跃尝试。<br>如果多勾选了Web Application，可能会导致在configuration中提示：Error: Artifact has incalid extension。</p>
+<p>osx系统升级到10.13之后，idea新建EJB项目下面没有Download选项，这样不能按照接下来的步骤进行。按照其他网上攻略的办法，周围的同学屡经尝试均无果，欢迎其他同学踊跃尝试。<br>如果多勾选了Web Application，可能会导致在configuration中提示：Error: Artifact has invalid extension。</p>
 </blockquote>
 <h2 id="“转移”代码"><a href="#“转移”代码" class="headerlink" title="“转移”代码"></a>“转移”代码</h2><p>[1] client中包含之前作业中的servlets, tag, service, model, listener, filter等包；server中包含之前作业中的service, serviceImpl, dao, daoImpl, model和factory。</p>
 <blockquote>
