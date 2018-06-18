@@ -112,16 +112,21 @@
 </header>
 
     <div id="article-banner">
-  <h2>J2EE第5次作业的坑，我帮你踩过了</h2>
-  <p class="post-date">2018-01-05</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
+    <h2>
+        J2EE第5次作业的坑，我帮你踩过了
+    </h2>
+    <p class="post-date">
+        2018-01-05
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
 </div>
 <main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><p>在写J2EE第5次作业时，遇到了很多坑，无论是老师上课的PPT、给的示例代码还是网上的教程都有很多不完善的地方。因此想在这篇博客里对我遇到的这些坑做一个总结，供同学们参考，也欢迎大家在评论区批评指正，或者提出一些新的问题。<br><strong>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢，因为他花费一个半小时陪我一起解决了这些问题。</strong></p>
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <p>在写J2EE第5次作业时，遇到了很多坑，无论是老师上课的PPT、给的示例代码还是网上的教程都有很多不完善的地方。因此想在这篇博客里对我遇到的这些坑做一个总结，供同学们参考，也欢迎大家在评论区批评指正，或者提出一些新的问题。<br><strong>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢，因为他花费一个半小时陪我一起解决了这些问题。</strong></p>
 <p>👉可以继续参考：<a href="https://samperson1997.github.io/2018/01/08/J2EE6/" title="J2EE第6次作业的坑 (JPA技术)" target="_blank" rel="noopener">J2EE第6次作业的坑 (JPA技术)</a></p>
 <h1 id="项目要求"><a href="#项目要求" class="headerlink" title="项目要求"></a>项目要求</h1><h2 id="整体要求"><a href="#整体要求" class="headerlink" title="整体要求"></a>整体要求</h2><p>[1] 客户登录, 跟据客户的ID／PW, 查询订单情况, 并根据具体情况, 返回不同结果：有缺货的订单项，警示页面；正常结果: 标准页面, 每一项订单包括多项属性(时间、名称、数量、价格), 分页显示；未知的客户ID: 错误页面<br>[2] 使用过滤器解决表单中的中文请求后的乱码问题<br>[3] 统计在线人数：总人数、已登录人数、游客人数<br>[4] 用户通过URL直接访问XXXServlet或XXX.JSP时，已登录用户可访问，未登录用户转向登录页面</p>
 <h2 id="第4次作业要求"><a href="#第4次作业要求" class="headerlink" title="第4次作业要求"></a>第4次作业要求</h2><p>基于MVC、DAO、Service等设计<br>[1] Model: JavaBean(ServiceFactory, XXXService; DAOFactory，XXXDAO)<br>[2] View: JSP<br>[3] Controller: Servlet</p>
@@ -162,52 +167,53 @@
 <p>[5] 注意修改server连接数据库部分的代码，其余不变：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    InitialContext jndiContext = <span class="keyword">new</span> InitialContext();</span><br><span class="line">    datasource = (DataSource) jndiContext.lookup(<span class="string">"java:jboss/datasources/mysqlDS"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (NamingException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="其他注意点"><a href="#其他注意点" class="headerlink" title="其他注意点"></a>其他注意点</h2><p>[1] 昨晚成功之后，今早打开项目发现又一次失败，运行client报错找不到EJB。这种情况的解决方案有两种：一是关闭IDE重新打开(……)，二是新建一个项目，把之前的配置和代码复制过来，亲测有效。<br>[2] 运行的时候要先开server，然后开client，否则会找不到destination。<br>[3] 👉可以继续参考：<a href="https://samperson1997.github.io/2018/01/08/J2EE6/" title="J2EE第6次作业的坑 (JPA技术)" target="_blank" rel="noopener">J2EE第6次作业的坑 (JPA技术)</a></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://youthlin.com/20161265.html" target="_blank" rel="noopener">https://youthlin.com/20161265.html</a><br>[2] <a href="http://blog.csdn.net/kylinsoong/article/details/17042245" target="_blank" rel="noopener">http://blog.csdn.net/kylinsoong/article/details/17042245</a><br>[3] <a href="https://stackoverflow.com/questions/45053857/name-ejb-is-not-bound-in-this-context-unable-to-find-ejb-with-root-c" target="_blank" rel="noopener">https://stackoverflow.com/questions/45053857/name-ejb-is-not-bound-in-this-context-unable-to-find-ejb-with-root-c</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
+
+        </section>
+        <!-- Tags START -->
         
+            <div class="tags">
+                <span>Tags:</span>
+                
   <a href="/tags#J2EE与中间件" >
     <span class="tag-code">J2EE与中间件</span>
   </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
+            </div>
+            
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
             </span>
-            <span class="wechat-code">
+                            <span class="wechat-code">
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-          </span>
-        </div>
-        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
     
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
+        <aside class="catalog-container">
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
@@ -215,91 +221,92 @@
     
   </div>
 </aside>
-  
-  <!-- Catalog END -->
+            
+                <!-- Catalog END -->
 </main>
 
 <script>
-  (function () {
-    var url = 'http://yoursite.com/2018/01/05/J2EE5/';
-    var banner = 'https://static.pexels.com/photos/273222/pexels-photo-273222.jpeg'
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "samperson1997";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "J2EE第5次作业的坑，我帮你踩过了",
-        owner: "samperson1997",
-        repo: "samperson1997.github.io",
-        oauth: {
-          client_id: "fa0bf61cc2d9eb136c1a",
-          client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
+    (function() {
+        var url = 'http://yoursite.com/2018/01/05/J2EE5/';
+        var banner = 'https://images.pexels.com/photos/1102257/pexels-photo-1102257.jpeg'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
         }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "J2EE第5次作业的坑，我帮你踩过了",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
 </script>
 
     <div class="scroll-top">

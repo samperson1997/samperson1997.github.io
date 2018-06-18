@@ -112,16 +112,21 @@
 </header>
 
     <div id="article-banner">
-  <h2>软件工程与计算II重点整理(第16-19章)</h2>
-  <p class="post-date">2017-12-21</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
+    <h2>
+        软件工程与计算II重点整理(第16-19章)
+    </h2>
+    <p class="post-date">
+        2017-12-21
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
 </div>
 <main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h1 id="第16章-设计模式"><a href="#第16章-设计模式" class="headerlink" title="第16章 设计模式"></a>第16章 设计模式</h1><h2 id="1-如何实现可修改性、可扩展性、灵活性"><a href="#1-如何实现可修改性、可扩展性、灵活性" class="headerlink" title="1.如何实现可修改性、可扩展性、灵活性"></a>1.如何实现可修改性、可扩展性、灵活性</h2><p>教材263页<br>需要进行接口和实现的分离：通过接口和实现该接口的类；通过子类继承父类<br>注意：继承关系（A＋B）可能使得灵活性下降，因为父类接口的变化会影响子类，这时可以通过组合关系来解决。</p>
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <h1 id="第16章-设计模式"><a href="#第16章-设计模式" class="headerlink" title="第16章 设计模式"></a>第16章 设计模式</h1><h2 id="1-如何实现可修改性、可扩展性、灵活性"><a href="#1-如何实现可修改性、可扩展性、灵活性" class="headerlink" title="1.如何实现可修改性、可扩展性、灵活性"></a>1.如何实现可修改性、可扩展性、灵活性</h2><p>教材263页<br>需要进行接口和实现的分离：通过接口和实现该接口的类；通过子类继承父类<br>注意：继承关系（A＋B）可能使得灵活性下降，因为父类接口的变化会影响子类，这时可以通过组合关系来解决。</p>
 <p>利用抽象类机制实现可修改性和可扩展性：只要方法的接口保持不变，方法的实现代码是比较容易修改的，不会产生连锁反应。通过简单修改创建新类的代码，就可以相当容易地做到扩展新的需求（不用修改大量与类方法调用相关的代码。<br>利用委托机制实现灵活性：继承的缺陷：一旦一个对象被创建完成，它的类型就无法改变，这使得单纯利用继承机制无法实现灵活性（类型的动态改变）。利用组合（委托）机制可以解决这个问题</p>
 <h2 id="2-策略模式"><a href="#2-策略模式" class="headerlink" title="2.策略模式"></a>2.策略模式</h2><p>设计分析：<br>1）首先，可以把上下文和策略分割为不同的类实现不同的职责。上下文Context类负责通过执行策略实现自己职责；而策略类Strategy只负责复杂策略的实现。<br>2）其次，上下文类和策略类之间的关系是用组合代替继承。<br>3）最后，各种策略则在具体策略类(ConcreteStrategy)中提供，而向上下文类提供统一的策略接口。（客户通常会创建一个ConcreteStrategy对象，然后传递给Context来灵活配置Strategy接口的具体实现）<br>应用场景：<br>需要定义同一个行为的多种变体（可以是一个类的行为，也可是多个类的行为）<br>一个类定义了很多行为，而且通过switch语句进行选择。<br>相关原则：SRP，OCP+LSP+DIP，使用组合<br>缺点：代码难以理解（违反显式原则）；需要考虑concreteStrategy由谁来创建的问题</p>
 <p>可修改性、可扩展性<br>符合DIP原则的抽象类（继承）机制：通过定义抽象类与继承（实现）它的子类强制性地做到：接口与实现的分离，进而实现上述质量；强制性地使用抽象类起到接口的作用，强制性地使用子类起到实现的作用<br>灵活性：组合（委托）机制，动态调整所委托的类，实现灵活性</p>
@@ -149,52 +154,53 @@
 <p>【题型】给出一个场景，判断应该使用哪种测试方法，如何去写（JUnit基本使用方法）<br>给出功能需求——写功能测试用例<br>给出设计图——写集成测试用例，Stub和Driver<br>给出方法描述——写单元测试用例，MockObject</p>
 </blockquote>
 <h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>👉<a href="https://samperson1997.github.io/2017/12/20/SECII-1/" title="软件工程与计算II重点整理(第1-5章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第1-5章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-2/" title="软件工程与计算II重点整理(第6-7章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第6-7章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-3/" title="软件工程与计算II重点整理(第8-11章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第8-11章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-4/" title="软件工程与计算II重点整理(第12-15章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第12-15章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-6/" title="软件工程与计算II重点整理(第20-23章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第20-23章)</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
+
+        </section>
+        <!-- Tags START -->
         
+            <div class="tags">
+                <span>Tags:</span>
+                
   <a href="/tags#软件工程与计算II" >
     <span class="tag-code">软件工程与计算II</span>
   </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
+            </div>
+            
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
             </span>
-            <span class="wechat-code">
+                            <span class="wechat-code">
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-          </span>
-        </div>
-        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
     
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
+        <aside class="catalog-container">
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
@@ -202,91 +208,92 @@
     
   </div>
 </aside>
-  
-  <!-- Catalog END -->
+            
+                <!-- Catalog END -->
 </main>
 
 <script>
-  (function () {
-    var url = 'http://yoursite.com/2017/12/21/SECII-5/';
-    var banner = 'https://static.pexels.com/photos/273222/pexels-photo-273222.jpeg'
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "samperson1997";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "软件工程与计算II重点整理(第16-19章)",
-        owner: "samperson1997",
-        repo: "samperson1997.github.io",
-        oauth: {
-          client_id: "fa0bf61cc2d9eb136c1a",
-          client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
+    (function() {
+        var url = 'http://yoursite.com/2017/12/21/SECII-5/';
+        var banner = 'https://images.pexels.com/photos/1102257/pexels-photo-1102257.jpeg'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
         }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "软件工程与计算II重点整理(第16-19章)",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
 </script>
 
     <div class="scroll-top">

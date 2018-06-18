@@ -112,16 +112,21 @@
 </header>
 
     <div id="article-banner">
-  <h2>字符串相似度比较：JavaWuzzy文档</h2>
-  <p class="post-date">2018-05-09</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
+    <h2>
+        字符串相似度比较：JavaWuzzy文档
+    </h2>
+    <p class="post-date">
+        2018-05-09
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
 </div>
 <main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><p>JavaWuzzy是Java版的FuzzyWuzzy，用于计算字符串之间的匹配度。<br>github地址：<br>[1] JavaWuzzy: <a href="https://github.com/xdrop/fuzzywuzzy" target="_blank" rel="noopener">https://github.com/xdrop/fuzzywuzzy</a><br>[2] FuzzyWuzzy: <a href="https://github.com/seatgeek/fuzzywuzzy" target="_blank" rel="noopener">https://github.com/seatgeek/fuzzywuzzy</a></p>
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <p>JavaWuzzy是Java版的FuzzyWuzzy，用于计算字符串之间的匹配度。<br>github地址：<br>[1] JavaWuzzy: <a href="https://github.com/xdrop/fuzzywuzzy" target="_blank" rel="noopener">https://github.com/xdrop/fuzzywuzzy</a><br>[2] FuzzyWuzzy: <a href="https://github.com/seatgeek/fuzzywuzzy" target="_blank" rel="noopener">https://github.com/seatgeek/fuzzywuzzy</a></p>
 <h1 id="Maven项目引入"><a href="#Maven项目引入" class="headerlink" title="Maven项目引入"></a>Maven项目引入</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;me.xdrop&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;fuzzywuzzy&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.1.10&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p>[1] <code>FuzzySearch.ratio(String s1, String s2)</code><br>全匹配，对顺序敏感<br><br><br>[2] <code>FuzzySearch.partialRatio(String s1, String s2)</code><br>搜索匹配(部分匹配)，对顺序敏感<br><br><br>[3] <code>FuzzySearch.tokenSortRatio(String s1, String s2)</code><br>首先做排序，然后全匹配，对顺序不敏感(也就是更换单词位置之后，相似度依然会很高)<br><br><br>[4] <code>FuzzySearch.tokenSortPartialRatio(String s1, String s2)</code><br>首先做排序，然后搜索匹配(部分匹配)，对顺序不敏感<br><br><br>[5] <code>FuzzySearch.tokenSetRatio(String s1, String s2)</code><br>首先取集合(去掉重复词)，然后全匹配，对顺序不敏感，第二个字符串包含第一个字符串就100<br><br><br>[6] <code>FuzzySearch.tokenSetPartialRatio(String s1, String s2)</code><br>首先取集合，然后搜索匹配(部分匹配)，对顺序不敏感<br><br><br>[7] <code>FuzzySearch.weightedRatio(String s1, String s2)</code><br>对顺序敏感，算法不同</p>
 <h1 id="高级使用"><a href="#高级使用" class="headerlink" title="高级使用"></a>高级使用</h1><p>[1] <code>FuzzySearch.extractOne(String s, String[] list)</code><br>提出一个匹配度最高的</p>
@@ -149,43 +154,44 @@
 <p>例子：FuzzySearch.extractSorted(“goolge”, [“google”, “bing”, “facebook”, “linkedin”, “twitter”, “googleplus”, “bingnews”, “plexoogl”], 3);<br>[(string: google, score: 83, index: 0), (string: googleplus, score: 63, index: 5), (string: plexoogl, score: 43, index: 7)]</p>
 </blockquote>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/sunyao_123/article/details/76942809" target="_blank" rel="noopener">https://blog.csdn.net/sunyao_123/article/details/76942809</a></p>
-</section>
-    <!-- Tags START -->
-    
-    <!-- Tags END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
+
+        </section>
+        <!-- Tags START -->
+        
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
             </span>
-            <span class="wechat-code">
+                            <span class="wechat-code">
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-          </span>
-        </div>
-        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
     
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
+        <aside class="catalog-container">
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
@@ -193,91 +199,92 @@
     
   </div>
 </aside>
-  
-  <!-- Catalog END -->
+            
+                <!-- Catalog END -->
 </main>
 
 <script>
-  (function () {
-    var url = 'http://yoursite.com/2018/05/09/fuzzywuzzy/';
-    var banner = 'https://static.pexels.com/photos/273222/pexels-photo-273222.jpeg'
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "samperson1997";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "字符串相似度比较：JavaWuzzy文档",
-        owner: "samperson1997",
-        repo: "samperson1997.github.io",
-        oauth: {
-          client_id: "fa0bf61cc2d9eb136c1a",
-          client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
+    (function() {
+        var url = 'http://yoursite.com/2018/05/09/fuzzywuzzy/';
+        var banner = 'https://images.pexels.com/photos/1102257/pexels-photo-1102257.jpeg'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
         }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "字符串相似度比较：JavaWuzzy文档",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
 </script>
 
     <div class="scroll-top">

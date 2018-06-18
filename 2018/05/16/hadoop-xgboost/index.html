@@ -112,16 +112,21 @@
 </header>
 
     <div id="article-banner">
-  <h2>零起点Centos+Hadoop+xgboost部署 (伪分布式)</h2>
-  <p class="post-date">2018-05-16</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
+    <h2>
+        零起点Centos+Hadoop+xgboost部署 (伪分布式)
+    </h2>
+    <p class="post-date">
+        2018-05-16
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
 </div>
 <main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><p>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢。</p>
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <p>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢。</p>
 <h2 id="安装Hadoop"><a href="#安装Hadoop" class="headerlink" title="安装Hadoop"></a>安装Hadoop</h2><p>[1] 下载地址：<a href="https://archive.apache.org/dist/hadoop/common/hadoop-2.6.0/" target="_blank" rel="noopener">https://archive.apache.org/dist/hadoop/common/hadoop-2.6.0/</a><br>下载hadoop-2.6.0.tar.gz<br>[2] 解压到/usr/local/hadoop，并重命名为hadoop(方便后续)</p>
 <h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>所有配置文件都在/hadoop/etc/hadoop下。<br>[1] core-site.xml：该配置文件用于指明namenode的主机名和端口，hadoop临时目录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;!-- 指定HDFS老大（namenode）的通信地址 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://0.0.0.0:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- 指定hadoop运行时产生文件的存储路径 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/Library/hadoop-2.7.3/temp&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
 <p>[2] hadfs-site.xml：默认副本数3，修改为1，dfs.namenode.name.dir指明fsimage存放目录，多个目录用逗号隔开。dfs.datanode.data.dir指定块文件存放目录，多个目录逗号隔开。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">　　 &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/Library/hadoop-2.6.0/tmp/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/Library/hadoop-2.6.0/tmp/hdfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.http.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;0.0.0.0:50070&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
@@ -145,52 +150,53 @@
 <p>[2] 创建data文件夹：<code>hadoop dfs -mkdir -p /xgboost/data</code><br>[3] 上传文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $(HOME)/xgboost-package</span><br><span class="line">hadoop -put ./xgboost/demo/data/agaricus.txt.test /xgboost/data</span><br><span class="line">hadoop -put ./xgboost/demo/data/agaricus.txt.train /xgboost/data</span><br></pre></td></tr></table></figure></p>
 <p>[4] 进入测试目录：<code>cd xgboost/dmlc-core/tracker</code><br>[5] 提交<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dmlc-submit —cluster=yarn —num-workers=2 —worker-cores=2\</span><br><span class="line">&gt;     ../../xgboost mushroom.aws.conf nthread=2\</span><br><span class="line">&gt;     data=///xgboost/data/agaricus.txt.train\</span><br><span class="line">&gt;     eval[test]=hdfs://0.0.0.0:9000/xgboost/data/agaricus.txt.test\</span><br><span class="line">&gt;     model_dir=hdfs://0.0.0.0:9000/xgboost/model_new</span><br></pre></td></tr></table></figure></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] 手把手教你安装mac版hadoop2.7.3教程 <a href="https://www.cnblogs.com/landed/p/6831758.html" target="_blank" rel="noopener">https://www.cnblogs.com/landed/p/6831758.html</a><br>[2] xgboost分布式部署教程 <a href="https://blog.csdn.net/u010306433/article/details/51403894" target="_blank" rel="noopener">https://blog.csdn.net/u010306433/article/details/51403894</a><br>[3] Distributed XGBoost YARN on AWS <a href="http://xgboost.readthedocs.io/en/latest/tutorials/aws_yarn.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/tutorials/aws_yarn.html</a></p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
+
+        </section>
+        <!-- Tags START -->
         
+            <div class="tags">
+                <span>Tags:</span>
+                
   <a href="/tags#分布式" >
     <span class="tag-code">分布式</span>
   </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
+            </div>
+            
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
             </span>
-            <span class="wechat-code">
+                            <span class="wechat-code">
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-          </span>
-        </div>
-        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
     
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
+        <aside class="catalog-container">
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
@@ -198,91 +204,92 @@
     
   </div>
 </aside>
-  
-  <!-- Catalog END -->
+            
+                <!-- Catalog END -->
 </main>
 
 <script>
-  (function () {
-    var url = 'http://yoursite.com/2018/05/16/hadoop-xgboost/';
-    var banner = 'https://static.pexels.com/photos/273222/pexels-photo-273222.jpeg'
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "samperson1997";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "零起点Centos+Hadoop+xgboost部署 (伪分布式)",
-        owner: "samperson1997",
-        repo: "samperson1997.github.io",
-        oauth: {
-          client_id: "fa0bf61cc2d9eb136c1a",
-          client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
+    (function() {
+        var url = 'http://yoursite.com/2018/05/16/hadoop-xgboost/';
+        var banner = 'https://images.pexels.com/photos/1102257/pexels-photo-1102257.jpeg'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
         }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "零起点Centos+Hadoop+xgboost部署 (伪分布式)",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
 </script>
 
     <div class="scroll-top">

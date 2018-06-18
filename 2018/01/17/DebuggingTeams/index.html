@@ -112,16 +112,21 @@
 </header>
 
     <div id="article-banner">
-  <h2>《进化》读书笔记</h2>
-  <p class="post-date">2018-01-17</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
+    <h2>
+        《进化》读书笔记
+    </h2>
+    <p class="post-date">
+        2018-01-17
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
 </div>
 <main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h1 id="第3章-群龙不可无首"><a href="#第3章-群龙不可无首" class="headerlink" title="第3章 群龙不可无首"></a>第3章 群龙不可无首</h1><p>1.传统的经历关心如何做事，而领导者关心做什么事并相信团队指导如何将其实现<br>2.技术主管TL负责产品的整体或部分技术方向<br>技术主管经理TLM负责产品的整体或部分技术方向和团队成员的职业发展及心理健康<br>3.服务性领导：营造HRT氛围<br>4.反模式：</p>
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <h1 id="第3章-群龙不可无首"><a href="#第3章-群龙不可无首" class="headerlink" title="第3章 群龙不可无首"></a>第3章 群龙不可无首</h1><p>1.传统的经历关心如何做事，而领导者关心做什么事并相信团队指导如何将其实现<br>2.技术主管TL负责产品的整体或部分技术方向<br>技术主管经理TLM负责产品的整体或部分技术方向和团队成员的职业发展及心理健康<br>3.服务性领导：营造HRT氛围<br>4.反模式：</p>
 <ul>
 <li>雇佣软弱者</li>
 <li>忽视表现不佳者</li>
@@ -181,52 +186,53 @@
 <li>备用计划：撤退</li>
 </ul>
 <h1 id="第6章-用户也是人"><a href="#第6章-用户也是人" class="headerlink" title="第6章 用户也是人"></a>第6章 用户也是人</h1><p>1.用户参与的三个阶段：唤起用户对产品的注意——开始使用后的体验——与忠实用户高效互动<br>2.HRT原则：谦虚、尊重、信任</p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
+
+        </section>
+        <!-- Tags START -->
         
+            <div class="tags">
+                <span>Tags:</span>
+                
   <a href="/tags#读书笔记" >
     <span class="tag-code">读书笔记</span>
   </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
+            </div>
+            
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
             </span>
-            <span class="wechat-code">
+                            <span class="wechat-code">
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-          </span>
-        </div>
-        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
     
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
-  </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
+        <aside class="catalog-container">
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
@@ -234,91 +240,92 @@
     
   </div>
 </aside>
-  
-  <!-- Catalog END -->
+            
+                <!-- Catalog END -->
 </main>
 
 <script>
-  (function () {
-    var url = 'http://yoursite.com/2018/01/17/DebuggingTeams/';
-    var banner = 'https://static.pexels.com/photos/273222/pexels-photo-273222.jpeg'
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
-
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
-        
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "samperson1997";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "《进化》读书笔记",
-        owner: "samperson1997",
-        repo: "samperson1997.github.io",
-        oauth: {
-          client_id: "fa0bf61cc2d9eb136c1a",
-          client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
+    (function() {
+        var url = 'http://yoursite.com/2018/01/17/DebuggingTeams/';
+        var banner = 'https://images.pexels.com/photos/1102257/pexels-photo-1102257.jpeg'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
         }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "《进化》读书笔记",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
 </script>
 
     <div class="scroll-top">
