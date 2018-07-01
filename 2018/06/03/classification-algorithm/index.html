@@ -184,7 +184,7 @@
 <td style="text-align:left">基于分类边界的方法：将低维空间的点映射到高维空间，使它们成为线性可分，再使用线性划分的原理来判断分类边界。内存消耗大，难以解释，运行和调参麻烦。<br>能够处理非线性特征的相互作用；无需依赖整个数据；可以提高泛化能力。<br>当观测样本很多时，效率并不是很高；对非线性问题没有通用解决方案，有时候很难找到一个合适的核函数；对缺失数据敏感。</td>
 </tr>
 <tr>
-<td>7 神经网络</td>
+<td>7 <a href="https://samperson1997.github.io/2018/07/01/cnn/" title="神经网络" target="_blank" rel="noopener">神经网络</a></td>
 <td style="text-align:left">训练数据集</td>
 <td style="text-align:left">识别结果</td>
 <td style="text-align:left"></td>
@@ -200,7 +200,7 @@
 </tbody>
 </table>
 <h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>[1] 首选<strong>逻辑回归</strong>，如果它的效果不怎么样，那么可以将它的结果作为基准来参考，在基础上与其他算法进行比较；<br>[2] 然后试试<strong>决策树</strong>（随机森林）看看是否可以大幅度提升你的模型性能。即便最后你并没有把它当做为最终模型，你也可以使用随机森林来移除噪声变量，做特征选择；<br>[3] 如果特征的数量和观测样本特别多，那么当<strong>资源和时间充足</strong>时，使用<strong>SVM</strong>不失为一种选择。</p>
-<h2 id="交叉参见"><a href="#交叉参见" class="headerlink" title="交叉参见"></a>交叉参见</h2><p><a href="https://samperson1997.github.io/2018/06/18/decision-tree/" title="决策树" target="_blank" rel="noopener">决策树</a>，<a href="https://samperson1997.github.io/2018/06/24/svm/" title="SVM" target="_blank" rel="noopener">SVM</a></p>
+<h2 id="交叉参见"><a href="#交叉参见" class="headerlink" title="交叉参见"></a>交叉参见</h2><p><a href="https://samperson1997.github.io/2018/06/18/decision-tree/" title="决策树" target="_blank" rel="noopener">决策树</a>，<a href="https://samperson1997.github.io/2018/06/24/svm/" title="SVM" target="_blank" rel="noopener">SVM</a>，<a href="https://samperson1997.github.io/2018/07/01/cnn/" title="卷积神经网络" target="_blank" rel="noopener">卷积神经网络</a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="https://blog.csdn.net/u014365862/article/details/52937983" target="_blank" rel="noopener">https://blog.csdn.net/u014365862/article/details/52937983</a><br>[2] <a href="https://blog.csdn.net/china1000/article/details/48597469" target="_blank" rel="noopener">https://blog.csdn.net/china1000/article/details/48597469</a><br>[3] <a href="https://wenku.baidu.com/view/9aac9dce80eb6294dd886cd9.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/9aac9dce80eb6294dd886cd9.html</a><br>[4] <a href="https://blog.csdn.net/legend_hua/article/details/79715976" target="_blank" rel="noopener">https://blog.csdn.net/legend_hua/article/details/79715976</a><br>[5] <a href="https://www.cnblogs.com/Belter/p/6128644.html" target="_blank" rel="noopener">https://www.cnblogs.com/Belter/p/6128644.html</a><br>[6] <a href="https://blog.csdn.net/u014006007/article/details/51882714" target="_blank" rel="noopener">https://blog.csdn.net/u014006007/article/details/51882714</a><br>[7] <a href="https://blog.csdn.net/HerosOfEarth/article/details/52347820" target="_blank" rel="noopener">https://blog.csdn.net/HerosOfEarth/article/details/52347820</a><br>[8] <a href="https://www.cnblogs.com/YiXiaoZhou/p/5875077.html" target="_blank" rel="noopener">https://www.cnblogs.com/YiXiaoZhou/p/5875077.html</a><br>[9] <a href="https://www.cnblogs.com/wangduo/p/5337466.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangduo/p/5337466.html</a><br>[10] <a href="http://blog.sina.com.cn/s/blog_62186b46010145ne.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_62186b46010145ne.html</a></p>
 
         </section>
@@ -263,7 +263,7 @@
 <script>
     (function() {
         var url = 'http://yoursite.com/2018/06/03/classification-algorithm/';
-        var banner = 'https://images.pexels.com/photos/1102257/pexels-photo-1102257.jpeg'
+        var banner = 'https://images.pexels.com/photos/1128240/pexels-photo-1128240.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
         if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
             $('#article-banner').css({
                 'background-image': 'url(' + banner + ')'
