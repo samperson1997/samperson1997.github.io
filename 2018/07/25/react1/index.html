@@ -135,6 +135,7 @@
 <p>这对于其他类型的表单组件（如select）也适用。<br><br></p>
 <h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p><strong>[1] 当div子元素均为width: auto时，display: inline-block会失效</strong><br>解决方案：如果不想给这个div设置固定的width，可以将这个div设置为<code>width: max-content</code>。<br>为了不影响其他(如<code>text-align: right</code>)等样式，可以添加<code>min-width: 100%</code>。<br><br><br><strong>[2] 将下载的代码部署到本地服务器上 </strong><br>解决方案：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i lite-server -g</span><br><span class="line">lite-server</span><br></pre></td></tr></table></figure></p>
 <p><br></p>
+<p><strong>[3] chrome检查中断点失效 </strong><br>可能是因为断点打在了错误的chunk。<br>解决方案：可以通过在本地文件中加<code>debugger;</code>语句，来判断正确的chunk。<br><br></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="https://stackoverflow.com/questions/15393821/npm-err-cb-never-called" target="_blank" rel="noopener">https://stackoverflow.com/questions/15393821/npm-err-cb-never-called</a><br>[2] <a href="https://github.com/Microsoft/TypeScript/issues/10453" target="_blank" rel="noopener">https://github.com/Microsoft/TypeScript/issues/10453</a></p>
 
         </section>
