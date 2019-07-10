@@ -143,14 +143,14 @@
 <p>[3] 最后, 可以使用命令<code>:quit</code>退出Spark Shell。</p>
 <p><br></p>
 <h2 id="安装及配置IoTDB"><a href="#安装及配置IoTDB" class="headerlink" title="安装及配置IoTDB"></a>安装及配置IoTDB</h2><p>[1] git clone源码: <code>git clone https://github.com/apache/incubator-iotdb.git</code><br>[2] 删除文件:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd &#123;incubator-iotdb路径&#125;</span><br><span class="line">rm -rf /iotdb/iotdb/data/</span><br><span class="line">rm -rf /iotdb/iotdb/lib/</span><br></pre></td></tr></table></figure></p>
-<p>[3] 使用Maven编译: <code>mvn clean package -pl iotdb, spark -am -Dmaven.test.skip=true</code></p>
+<p>[3] 使用Maven编译: <code>mvn clean package -pl iotdb,spark -am -Dmaven.test.skip=true</code></p>
 <p><br></p>
 <h2 id="使用TsFile-Spark-Connector"><a href="#使用TsFile-Spark-Connector" class="headerlink" title="使用TsFile-Spark-Connector"></a>使用TsFile-Spark-Connector</h2><p>[1] 命令: <code>./&lt;spark-shell-path&gt;  --jars  tsfile-spark-connector.jar,tsfile-0.8.0-SNAPSHOT-jar-with-dependencies.jar</code>, 远程后面添加<code>--master spark://ip:7077</code>。两个jar分别在IoTDB build后的target文件夹中。</p>
 <p><br></p>
 <p>[2] 在HDFS中创建一个新文件夹, 用于保存tsfile文件: <code>./hdfs dfs -mkdir -p /input</code><br>创建空文件的命令: <code>./hdfs dfs -touchz /input/test1.tsfile</code></p>
 <p><br></p>
 <p>[3] 将本地文件存入HDFS: <code>./hdfs dfs -put test1.tsfile hdfs://localhost:9000/input</code><br>将文件取出: <code>./hdfs  dfs -get hdfs://localhost:9000/input/test1.tsfile</code></p>
-<h3 id="Scala-API"><a href="#Scala-API" class="headerlink" title="Scala API"></a>Scala API</h3><p>[1] 环境要求<br><strong>Spark Version</strong>: 2.0.1, <strong>Scala Version</strong>: 2.11.8, <strong>Java Version</strong>: 1.8, <strong>TsFile</strong>: 0.8.0-SNAPSHOT</p>
+<h3 id="Scala-API"><a href="#Scala-API" class="headerlink" title="Scala API"></a>Scala API</h3><p>[1] 环境要求<br><strong>Spark Version</strong>: 2.4.3, <strong>Scala Version</strong>: 2.11.8, <strong>Java Version</strong>: 1.8, <strong>TsFile</strong>: 0.8.0-SNAPSHOT</p>
 <p><br></p>
 <p>[2] 从本地文件读<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.iotdb.tsfile._</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> df1 = spark.read.tsfile(<span class="string">"test.tsfile"</span>) </span><br><span class="line">df1.show</span><br></pre></td></tr></table></figure></p>
 <p>[3] 从HDFS文件读<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> df2 = spark.read.tsfile(<span class="string">"hdfs://localhost:9000/input/test1.tsfile"</span>) </span><br><span class="line">df2.show</span><br></pre></td></tr></table></figure></p>
