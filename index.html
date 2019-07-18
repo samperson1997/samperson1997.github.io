@@ -115,7 +115,7 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2019/07/12/db-index/">数据库KV索引</a>
+        <a href="/2019/07/12/db-index/">数据库索引</a>
       </h2>
       <p class="article-date">July 12, 2019</p>
       
@@ -127,10 +127,12 @@
       
       <div class="article-summary">
         
-          KV存储引擎的索引根据key是否有序，分为两种：[1] 如果key无序，则可以采用hash的方法[2] 如果key有序，则可以采用B+树的方法，或者类B+树的方法。
+          
+索引（Index）是帮助数据库高效获取数据的数据结构。
 
+MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。
 
-散列索引 (hash)Hash 索引只能够用于使用 = 运算符的相等比较 (但是速度更快)。Hash 索引不能够用于诸如  ...
+KV存储引擎的索引根据key是否有序，分为两种：[1] 如果key无序，则可以采用hash的方法[2] 如果key有序，则可以采用B+树的方法，或者类B ...
         
       </div>
       <a class="more" href="/2019/07/12/db-index/">Read more</a>
