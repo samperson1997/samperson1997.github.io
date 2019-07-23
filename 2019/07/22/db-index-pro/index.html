@@ -10,7 +10,7 @@
   
   <title>
     
-      db-index-pro | Blog of Samperson
+      数据库时间序列索引 | Blog of Samperson
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -113,7 +113,7 @@
 
     <div id="article-banner">
     <h2>
-        db-index-pro
+        数据库时间序列索引
     </h2>
     <p class="post-date">
         2019-07-22
@@ -126,10 +126,39 @@
     <!-- Article START -->
     <article class="post-article">
         <section class="markdown-content">
-            
+            <h2 id="论文-Exact-indexing-of-dynamic-time-warping"><a href="#论文-Exact-indexing-of-dynamic-time-warping" class="headerlink" title="论文 | Exact indexing of dynamic time warping"></a>论文 | Exact indexing of dynamic time warping</h2><p>以下是论文<a href="https://link.springer.com/article/10.1007/s10115-004-0154-9" target="_blank" rel="noopener">Exact indexing of dynamic time warping</a>的笔记。</p>
+<p><br></p>
+<p>[1] <strong>Dynamic time warping (DTW)</strong> 是对时间序列更可靠的距离度量方法，允许相似序列匹配，但不适用于精确索引(exact indexing)，在大型数据库中有性能瓶颈。</p>
+<p><br></p>
+<p>[2] <strong>下界技术 (lower bounding measure)</strong> 使用快速下界函数修剪不可能成为最佳匹配的序列。伪码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">best_so_far = infinity;</span><br><span class="line">for all sequences in database</span><br><span class="line">LB_dist = lower_bound_distance(Ci , Q);</span><br><span class="line">    if LB_dist &lt; best_so_far</span><br><span class="line">        true_dist = DTW(Ci , Q);</span><br><span class="line">        if true_dist &lt; best_so_far</span><br><span class="line">            best_so_far = true_dist;</span><br><span class="line">            index_of_best_match = i;</span><br></pre></td></tr></table></figure></p>
+<p>[3] <strong>Piecewise Constant Approximation</strong>，分段常数近似：将时间序列从n维减少到N维，其中数据库的每一条序列长度都是n，我们想要构建索引的空间维度为N。</p>
+<p><br></p>
+<p>[4] 定义<strong>MINDIST(Q, R)</strong>方法，返回<strong>查询Q</strong>和<strong>最小边界矩形R</strong>的距离的下界度量。</p>
+<blockquote>
+<p>假设索引结构包含<strong>叶结点U</strong>；<br><strong>最小边界矩形(Minimum Bounding Rectangle)</strong>是空间上包含PAA在U中所有的点C的最小的矩形；<br>R = (L, H)，L为R的主对角线上端点，H为R的主对角线下端点。</p>
+</blockquote>
+<hr>
+
+<h2 id="论文-KV-Match-A-Subsequence-Matching-Approach-Supporting-Normalization-and-Time-Warping"><a href="#论文-KV-Match-A-Subsequence-Matching-Approach-Supporting-Normalization-and-Time-Warping" class="headerlink" title="论文 | KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping"></a>论文 | KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping</h2><p>以下是论文<a href="https://ieeexplore.ieee.org/abstract/document/8731498/" target="_blank" rel="noopener">KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping</a>的笔记。</p>
+<p><br></p>
+<hr>
+
+<h2 id="论文-iSAX-disk-aware-mining-and-indexing-of-massive-time-series-datasets"><a href="#论文-iSAX-disk-aware-mining-and-indexing-of-massive-time-series-datasets" class="headerlink" title="论文 | iSAX: disk-aware mining and indexing of massive time series datasets"></a>论文 | iSAX: disk-aware mining and indexing of massive time series datasets</h2><p>以下是论文<a href="https://link.springer.com/article/10.1007/s10618-009-0125-6" target="_blank" rel="noopener">iSAX: disk-aware mining and indexing of massive time series datasets</a>的笔记。</p>
+<p><br></p>
+<p>[1] multi-resolution symbolic representation - indexable Symbolic Aggregate approXimation (iSAX)</p>
+
         </section>
         <!-- Tags START -->
         
+            <div class="tags">
+                <span>Tags:</span>
+                
+  <a href="/tags#数据库" >
+    <span class="tag-code">数据库</span>
+  </a>
+
+            </div>
+            
                 <!-- Tags END -->
                 <!-- 打赏 START -->
                 
@@ -167,10 +196,8 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-                    <ol class="nav">
-                        none
-                    </ol>
-                    
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#论文-Exact-indexing-of-dynamic-time-warping"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x8BBA;&#x6587;-Exact-indexing-of-dynamic-time-warping" class="headerlink" title="&#x8BBA;&#x6587; | Exact indexing of dynamic time warping"></a>&#x8BBA;&#x6587; | Exact indexing of dynamic time warping</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#论文-KV-Match-A-Subsequence-Matching-Approach-Supporting-Normalization-and-Time-Warping"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x8BBA;&#x6587;-KV-Match-A-Subsequence-Matching-Approach-Supporting-Normalization-and-Time-Warping" class="headerlink" title="&#x8BBA;&#x6587; | KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping"></a>&#x8BBA;&#x6587; | KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#论文-iSAX-disk-aware-mining-and-indexing-of-massive-time-series-datasets"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x8BBA;&#x6587;-iSAX-disk-aware-mining-and-indexing-of-massive-time-series-datasets" class="headerlink" title="&#x8BBA;&#x6587; | iSAX: disk-aware mining and indexing of massive time series datasets"></a>&#x8BBA;&#x6587; | iSAX: disk-aware mining and indexing of massive time series datasets</span></a></li></ol>
+                
     </div>
 </aside>
 
@@ -236,7 +263,7 @@
         var gitmentConfig = "samperson1997";
         if (gitmentConfig !== 'undefined') {
             var gitment = new Gitment({
-                id: "db-index-pro",
+                id: "数据库时间序列索引",
                 owner: "samperson1997",
                 repo: "samperson1997.github.io",
                 oauth: {
