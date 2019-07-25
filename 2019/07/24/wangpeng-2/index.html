@@ -189,8 +189,69 @@
 </li>
 <li>四种类型的查询只有主过程的第一步不同，对于每一个窗口，不同的类型有着不同的行范围。</li>
 </ul>
-<h3 id="生成窗口区间"><a href="#生成窗口区间" class="headerlink" title="生成窗口区间"></a>生成窗口区间</h3><p><br></p>
-<h2 id="KV-matchDP"><a href="#KV-matchDP" class="headerlink" title="KV-matchDP"></a>KV-matchDP</h2><p><br></p>
+<h3 id="生成窗口区间"><a href="#生成窗口区间" class="headerlink" title="生成窗口区间"></a>生成窗口区间</h3><ul>
+<li>对于每一个窗口Qi，首先根据查询类型计算μi的范围[LRi, URi]</li>
+<li><p>使用单个扫描操作访问KV-index，获得连续行的列表<strong>RListi</strong> = {⟨Ksi , Vsi⟩ , ⟨Ksi+1, Vsi+1⟩ , … , ⟨Kei , Vei⟩}，满足LRi ∈ [lowsi , upsi) and URi ∈ [lowei , upei)。</p>
+<blockquote>
+<p>注意：第si行或者第ei行可能包含范围之外的平均值，但是只会带来阴性候选结果，不会漏掉任何阳性候选结果。</p>
+</blockquote>
+</li>
+<li><p>ISi = {WI |WI ∈ Vk,k ∈ [si,ei]}，把区间升序排序，即ISi[k].r &lt; ISi[k + 1].l，其中ISi[k]是ISi中第k个窗口区间。</p>
+</li>
+</ul>
+<h3 id="匹配算法-相交-intersection-操作"><a href="#匹配算法-相交-intersection-操作" class="headerlink" title="匹配算法 - 相交(intersection)操作"></a>匹配算法 - 相交(intersection)操作</h3><ul>
+<li>对于窗口Q1，IS1的所有的窗口位置j都map到候选子序列X(j,|Q|)，这样Q1的候选集合CS1就由IS1中的所有位置组成。CS1和IS1一样，由一系列一排序的无相交的窗口区间组成。</li>
+<li>对于窗口Q2，IS2的所有窗口位置也有相应的CS，但是IS2中的位置j对应的CS中的X(j − w, |Q|)，因为X(j, w)是其第二个窗口。所以Q2点候选集合CS2可以通过把IS2的每一个窗口位置向左移动w获得。</li>
+<li>类似地，CS3可以通过把IS3的每一个窗口位置向左移动2 * w获得。<br>对于窗口Qi，候选集合CSi = {j−(i−1)·w|j ∈ ISi}，所有候选集合都由一系列一排序的无相交的窗口区间组成。<br>nI (CSi ) = nI (ISi )， nP (CSi) = nP (ISi)。<ul>
+<li>如果X(j,|Q|)不包含在CSi中，那么X(j,|Q|)和Q不匹配；</li>
+<li>如果X(j,|Q|)和Q匹配，位置j ∈ CSi。</li>
+</ul>
+</li>
+</ul>
+<p><img style="width:100%; max-width:600px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61863028-6bcdfa80-af01-11e9-8f2e-35acf1c5b94e.png"></p>
+<blockquote>
+<p>RList1包含WI1、WI2、WI3，RList2包含WI4、WI5、WI6。<br>IS1包含RList1覆盖的所有区间，IS2包含RList2覆盖的所有区间。<br>CS1就是IS1，CS2是IS2向左移动w。<br>将CS1和CS2相交，得到是CS3，包含WI7和WI8。</p>
+</blockquote>
+<ul>
+<li>对于CS中每一个WI，取子序列X(WI.l, WI.r − WI.l + |Q|)，这个子序列包含|WI|个子序列。对于每一个长度为|Q|的子序列，计算它与Q的距离，选择合适的子序列返回。<br>如果是cNSM查询，每一个子序列都需要在计算ED或者DTW之前归一化。</li>
+</ul>
+<h2 id="KV-matchDP"><a href="#KV-matchDP" class="headerlink" title="KV-matchDP"></a>KV-matchDP</h2><p>[1] 基本KV-match使用固定窗口长度w处理查询，不考虑查询的长度。<br>两个限制：</p>
+<ul>
+<li>支持的查询长度有限</li>
+<li>很少有机会利用查询和时间序列数据的特性来加快处理速度</li>
+</ul>
+<p>[2] KV-matchDP：基于可变窗口长度的多个索引<br>wu：最小窗口长度，L：索引个数，窗口长度集合：{wu ∗ 2 ^ (i − 1)|1 ≤ i ≤ L}</p>
+<blockquote>
+<p>如果wu = 25，L = 5，建立索引长度分别为：25, 50, 100, 200, 400</p>
+</blockquote>
+<h3 id="动态查询分割"><a href="#动态查询分割" class="headerlink" title="动态查询分割"></a>动态查询分割</h3><p>[1] 同时处理多个索引，将Q分割成不同长度的不相交窗口序列{Q1 , Q2 , … , Qp }，用KV-index|Qi|处理每一个Qi。这样可以更加灵活的使用数据特性。</p>
+<p><br></p>
+<p>[2] 分割方法：SG = {r1, r2, … , rp}, 意味着Q1 = Q(1, r1), Q2 = Q(r1 + 1, r2 − r1 )…</p>
+<p><br></p>
+<p>[3] Q被分割后，剩余步骤和KV-match相同。</p>
+<p><br></p>
+<h3 id="质量度量客观方法"><a href="#质量度量客观方法" class="headerlink" title="质量度量客观方法"></a>质量度量客观方法</h3><p>[1] 最大影响因素：获取数据</p>
+<p><br></p>
+<p>[2] 估计nI(CS)的方法的值的方法：把诶一个窗口区间作为X中的一个点，这些位置都是均匀分布的。<br>CS1中包含区间的概率近似表示为nI(IS1) / n，其中n为X的长度<br>CS1 ∩ CS2中包含区间的概率表示为nI(IS1) /n * nI(IS2) / n<br>以此类推，使用几何平均数得到F。F越小，质量越好。</p>
+<p><img style="width:100%; max-width:300px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61873942-b0659000-af19-11e9-9e34-7ed21b93f435.png"></p>
+<h3 id="二维动态规划方法"><a href="#二维动态规划方法" class="headerlink" title="二维动态规划方法"></a>二维动态规划方法</h3><p>[1] 对于序列Q = (q1, q2, · · · , qm)，<br>定义搜索空间search space Z = (1,2,··· ,m′)，m′ = ⌊ m / wu ⌋<br>Z中的值不会影响SG的生成，只会约束SG的搜索空间。<br>通过寻找Z的SG，然后通过乘wu映射到Q的SG。</p>
+<blockquote>
+<p>如果|Q| = 200, wu = 25, L = 3，即有三个索引KV-index25, KV-index50 和 KV-index100。<br>SGZ ={2,6,7,8}，SG = {50,150,175,200}，Q 被划分为4个窗口：Q(1,50), Q(51,100), Q(151,25) 和 Q(176, 25)。</p>
+</blockquote>
+<p>[2] 在Z从左到右顺序使用二维动态规划获得优化的SZ。<br>第一个维度：表示分割的界限<br>第二个维度：表示一个分割中的窗口数目</p>
+<p><br></p>
+<p>[3] 使用vi,j表示计算过程的子状态，与最佳分割Z的前序状态Z(1, i)相关，有j个窗口。<br>对于任何j(1 &lt;= j &lt;= m’)，最佳分割就是有最小的vm′,j。</p>
+<p><img style="width:100%; max-width:500px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61876147-cb86ce80-af1e-11e9-8772-651fe2c33741.png"></p>
+<p>φ代表SGZ中在i结束的窗口可能长度，最多有L种可能性。</p>
+<p><br></p>
+<p>[4] KV-index中特定行会有很大的nI，导致获取RList有较大的I/O消耗，和每一轮合并CSi的计算消耗。<br>KV-indexDP可以在某种程度上减轻这种现象，因为客观方法F会选出ji jian xiao具有更小的nI的查询窗口。</p>
+<p><br></p>
+<p>[5] 更多改进：</p>
+<ul>
+<li>为了减少访问重读的索引，可以将已经获取的行存在cache中。对每一个RList，如果它的一部分已经在cache中，只需要从KV-index中拿到它的剩下一部分。</li>
+<li>可以根据RListi的长度重新排序要处理的Qi。RListi的长度可以从meta data中获得。也就是首先处理有较小的RListi的Qi，这样就可以既减小I/O消耗，又减小合并计算消耗。</li>
+<li>因为每一个CSi都是正确结果的超集，所以可以仅仅处理每一个查询窗口的一部分而不是全部，从而获得最终的CS，且不失去正确率。<br>结合第二点和第三点，就可以通过把一些有很大nI的行排序在最下面，从而跳过它们。</li>
+</ul>
 
         </section>
         <!-- Tags START -->
@@ -241,7 +302,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;" class="headerlink" title="KV&#x7D22;&#x5F15;"></a>KV&#x7D22;&#x5F15;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KV索引结构"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;" class="headerlink" title="KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;"></a>KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KV索引建立算法"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;" class="headerlink" title="KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;"></a>KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV-match"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#KV-match" class="headerlink" title="KV-match"></a>KV-match</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#生成窗口区间"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;" class="headerlink" title="&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;"></a>&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV-matchDP"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#KV-matchDP" class="headerlink" title="KV-matchDP"></a>KV-matchDP</span></a></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;" class="headerlink" title="KV&#x7D22;&#x5F15;"></a>KV&#x7D22;&#x5F15;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KV索引结构"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;" class="headerlink" title="KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;"></a>KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KV索引建立算法"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;" class="headerlink" title="KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;"></a>KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV-match"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#KV-match" class="headerlink" title="KV-match"></a>KV-match</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#生成窗口区间"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;" class="headerlink" title="&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;"></a>&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#匹配算法-相交-intersection-操作"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x5339;&#x914D;&#x7B97;&#x6CD5;-&#x76F8;&#x4EA4;-intersection-&#x64CD;&#x4F5C;" class="headerlink" title="&#x5339;&#x914D;&#x7B97;&#x6CD5; - &#x76F8;&#x4EA4;(intersection)&#x64CD;&#x4F5C;"></a>&#x5339;&#x914D;&#x7B97;&#x6CD5; - &#x76F8;&#x4EA4;(intersection)&#x64CD;&#x4F5C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV-matchDP"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#KV-matchDP" class="headerlink" title="KV-matchDP"></a>KV-matchDP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态查询分割"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x52A8;&#x6001;&#x67E5;&#x8BE2;&#x5206;&#x5272;" class="headerlink" title="&#x52A8;&#x6001;&#x67E5;&#x8BE2;&#x5206;&#x5272;"></a>&#x52A8;&#x6001;&#x67E5;&#x8BE2;&#x5206;&#x5272;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#质量度量客观方法"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#&#x8D28;&#x91CF;&#x5EA6;&#x91CF;&#x5BA2;&#x89C2;&#x65B9;&#x6CD5;" class="headerlink" title="&#x8D28;&#x91CF;&#x5EA6;&#x91CF;&#x5BA2;&#x89C2;&#x65B9;&#x6CD5;"></a>&#x8D28;&#x91CF;&#x5EA6;&#x91CF;&#x5BA2;&#x89C2;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二维动态规划方法"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text"><a href="#&#x4E8C;&#x7EF4;&#x52A8;&#x6001;&#x89C4;&#x5212;&#x65B9;&#x6CD5;" class="headerlink" title="&#x4E8C;&#x7EF4;&#x52A8;&#x6001;&#x89C4;&#x5212;&#x65B9;&#x6CD5;"></a>&#x4E8C;&#x7EF4;&#x52A8;&#x6001;&#x89C4;&#x5212;&#x65B9;&#x6CD5;</span></a></li></ol></li></ol>
                 
     </div>
 </aside>
