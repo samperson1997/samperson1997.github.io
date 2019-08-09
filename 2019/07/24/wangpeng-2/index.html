@@ -232,7 +232,7 @@
 <p><br></p>
 <h3 id="质量度量客观方法"><a href="#质量度量客观方法" class="headerlink" title="质量度量客观方法"></a>质量度量客观方法</h3><p>[1] 最大影响因素：获取数据</p>
 <p><br></p>
-<p>[2] 估计nI(CS)的方法的值的方法：把诶一个窗口区间作为X中的一个点，这些位置都是均匀分布的。<br>CS1中包含区间的概率近似表示为nI(IS1) / n，其中n为X的长度<br>CS1 ∩ CS2中包含区间的概率表示为nI(IS1) /n * nI(IS2) / n<br>以此类推，使用几何平均数得到F。F越小，质量越好。</p>
+<p>[2] 估计nI(CS)的方法的值的方法：把每一个窗口区间作为X中的一个点，这些位置都是均匀分布的。<br>CS1中包含区间的概率近似表示为nI(IS1) / n，其中n为X的长度<br>CS1 ∩ CS2中包含区间的概率表示为nI(IS1) /n * nI(IS2) / n<br>以此类推，使用几何平均数得到F。F越小，质量越好。</p>
 <p><img style="width:100%; max-width:300px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61873942-b0659000-af19-11e9-9e34-7ed21b93f435.png"></p>
 <h3 id="二维动态规划方法"><a href="#二维动态规划方法" class="headerlink" title="二维动态规划方法"></a>二维动态规划方法</h3><p>[1] 对于序列Q = (q1, q2, · · · , qm)，<br>定义搜索空间search space Z = (1,2,··· ,m′)，m′ = ⌊ m / wu ⌋<br>Z中的值不会影响SG的生成，只会约束SG的搜索空间。<br>通过寻找Z的SG，然后通过乘wu映射到Q的SG。</p>
 <blockquote>
@@ -244,11 +244,11 @@
 <p><img style="width:100%; max-width:500px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61876147-cb86ce80-af1e-11e9-8772-651fe2c33741.png"></p>
 <p>φ代表SGZ中在i结束的窗口可能长度，最多有L种可能性。</p>
 <p><br></p>
-<p>[4] KV-index中特定行会有很大的nI，导致获取RList有较大的I/O消耗，和每一轮合并CSi的计算消耗。<br>KV-indexDP可以在某种程度上减轻这种现象，因为客观方法F会选出ji jian xiao具有更小的nI的查询窗口。</p>
+<p>[4] KV-index中特定行会有很大的nI，导致获取RList有较大的I/O消耗，和每一轮合并CSi的计算消耗。<br>KV-indexDP可以在某种程度上减轻这种现象，因为客观方法F会选出具有更小的nI的查询窗口。</p>
 <p><br></p>
 <p>[5] 更多改进：</p>
 <ul>
-<li>为了减少访问重读的索引，可以将已经获取的行存在cache中。对每一个RList，如果它的一部分已经在cache中，只需要从KV-index中拿到它的剩下一部分。</li>
+<li>为了减少访问重复的索引，可以将已经获取的行存在cache中。对每一个RList，如果它的一部分已经在cache中，只需要从KV-index中拿到它的剩下一部分。</li>
 <li>可以根据RListi的长度重新排序要处理的Qi。RListi的长度可以从meta data中获得。也就是首先处理有较小的RListi的Qi，这样就可以既减小I/O消耗，又减小合并计算消耗。</li>
 <li>因为每一个CSi都是正确结果的超集，所以可以仅仅处理每一个查询窗口的一部分而不是全部，从而获得最终的CS，且不失去正确率。<br>结合第二点和第三点，就可以通过把一些有很大nI的行排序在最下面，从而跳过它们。</li>
 </ul>
