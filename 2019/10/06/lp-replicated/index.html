@@ -136,12 +136,54 @@
 <li>第一步：数据集被水平和/或垂直划分为不相交的数据片段</li>
 <li>第二步：将各个片段分配给一个或多个数据库节点</li>
 </ul>
-<p>优化片段分配的计算为NP-hard问题。</p>
+<p>优化片段分配的计算为NP-hard / NP-complete问题。</p>
 <blockquote>
 <p>NP-hard指所有NP问题都能在多项式时间复杂度内归约到的问题。<br>NP是指非确定性多项式non-deterministic polynomial，所谓的非确定性是指可用一定数量的运算去解决<strong>多项式时间内</strong>可解决的问题。</p>
+<p><hr><br>NP-Complete（NP完全或NP完备，缩写为 NP-C 或 NPC)，是NP中最难的决定性问题。因此NP完备问题应该是最不可能被化简为P多项式时间可决定)的决定性问题的集合。一个决定性问题C若是为NPC，则代表它对NP是完备的，这表示：它是一个NP问题，且其他属于NP的问题都可归约成它。</p>
 </blockquote>
-<h2 id="可扩展的分解启发式算法"><a href="#可扩展的分解启发式算法" class="headerlink" title="可扩展的分解启发式算法"></a>可扩展的分解启发式算法</h2><p>scalable decomposition heuristic<br>目的：计算更大问题的解决方案</p>
-<h2 id="利用TPC-H基准进行可重复性分析评估"><a href="#利用TPC-H基准进行可重复性分析评估" class="headerlink" title="利用TPC-H基准进行可重复性分析评估"></a>利用TPC-H基准进行可重复性分析评估</h2><p>(未完待续)</p>
+<h3 id="已有方法及改进"><a href="#已有方法及改进" class="headerlink" title="已有方法及改进"></a>已有方法及改进</h3><p>[1] Ozsu et al: 启发式方法与系统的特定假设相关，因此仅适用于特定分配问题</p>
+<p><br></p>
+<p>[2] Rabl et al: (部分复制) 最优分配的LP模型，贪婪的启发式算法仅适用于小规模问题<br>原因：如果数据被晚分配，会导致最高的数据复制<br>启发式缺点：</p>
+<ul>
+<li>在选择下一个要分配的查询时，不考虑访问的查询片段（只考虑大小）</li>
+<li>不考虑关于剩余查询的信息，这些查询必须在以后分配</li>
+</ul>
+<p>[3] 与基于规则的启发式方法相比，分解方法保留了问题的结构，因此能够找到耦合数据放置和负载分配问题的近似最优解</p>
+<p><br></p>
+<h3 id="最优解"><a href="#最优解" class="headerlink" title="最优解"></a>最优解</h3><p>[1] 符号：<br><strong>xi,k</strong> 取值0/1，表示片段i是够分配给节点k<br><strong>yj,k</strong> 取值0/1，表示查询j是否可以在节点k进行<br><strong>zj,k</strong> 取值0..1，表示在节点k处执行的查询j的工作负载共享。对于所有查询，份额总和规范化为1<br>不考虑查询频率和成本，z可以为离散值<br><br></p>
+<p>[2] 选择x、y和z，以使目标最小化并满足以下约束：<br><img style="width:100%; max-width:350px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66285055-7e02e680-e8fd-11e9-947b-70e93908b576.png"></p>
+<p><strong>约束(2)</strong>保证在所有相关片段都可用的情况下，查询j仅可以在节点k执行。|qj|表示查询j中使用到的片段数量)；<br><strong>约束(3)</strong>保证如果查询j可以在节点k上执行，j只能有正的工作负载份额 (yj,k = 0，zj,k = 0；yj,k = 1，zj,k不限制)，以<strong>线性方式</strong>结合了二进制变量y和连续变量z；<br><strong>约束(4)</strong>保证所有节点k不超过特定工作负载<strong>L</strong>，0 &lt;= L &lt;= 1。使用C表示的总工作负载成本(fj * cj的和)规范每个节点的工作负荷；<br><strong>约束(5)</strong>保证查询的工作负载份额总和为1：</p>
+<p><img style="width:100%; max-width:450px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66285102-af7bb200-e8fd-11e9-80f2-f32265d78398.png"></p>
+<p>[3] 目标和约束的相关变量均为线性，分别根据片段数N、查询数Q、节点数K增加<br>变量的总数：N * K + Q * K 离散，Q * K连续<br>约束的总数：2 * Q * K + K + Q<br>因此可以使用已有方案（如NEOS solver）解决</p>
+<p><br></p>
+<h2 id="启发式分解算法"><a href="#启发式分解算法" class="headerlink" title="启发式分解算法"></a>启发式分解算法</h2><h3 id="分解算法解决方法"><a href="#分解算法解决方法" class="headerlink" title="分解算法解决方法"></a>分解算法解决方法</h3><p>[1] 目的：可扩展(scalable)，计算更大问题的解决方案</p>
+<p><br></p>
+<p>[2] 通过使用带有K个叶子的树结构迭代地将工作负载分成不同的份额(shares)/块(chunks)来解决较小的子问题<br>一个节点的工作负载份额分割给B个子节点，每个字节点b包含nb个最终节点 b = 1…B<br>因此每个子节点b有wb = nb / K的工作份额</p>
+<p><br></p>
+<p>[3] 示例：K = 2 * 2 = 4节点，Q = 5个查询，N = 10个片段的工作负载，两个级别上B = 2子节点<br>透明片段表示节省内存<br>对于一个给定的特定工作负载(查询和片段)，有一个额外的分解级别（左上角）：<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66287125-12257b80-e907-11e9-85ca-553474e712f8.png"></p>
+<h3 id="分解算法模型"><a href="#分解算法模型" class="headerlink" title="分解算法模型"></a>分解算法模型</h3><p>[1] 约束(10)中，L可作为固定参数L或作为在目标(7)中加上罚项α * L的连续变量<br>如果α选择足够大(α &gt;&gt; V)，根据V的计算，会达到目标工作负载限制<br>下一级上每个子节点B的剩余工作负载x<em>, y</em>, z*<br><img style="width:100%; max-width:450px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66288551-359ef500-e90c-11e9-9266-40b96dcf4048.png"></p>
+<p>[2] 从一个层次到另一个层次，相关片段和查询的数量都会减少，变量和约束的数量会减少；<br>在每个层次上，对于每个节点，可以任意选择子节点的数B及其工作负载权重wb；<br>一个最优的解决方案也保证了工作负载的均匀分布L = 1 / K。</p>
+<p><br></p>
+<p>[3] 子节点B的数量可以用来控制问题的复杂性：<br>B越小，每一层的计算越快，但是启发式的总体数据复制可能会多于最优分配；<br>为了获得最小的计算时间，从最高层次以B = 2开始。</p>
+<p><br></p>
+<p>[4] 如果片段和查询的数量很大，即使块的数量很小，LP方法也会花费长时间<br>解决方案：相应简化子问题</p>
+<ul>
+<li>对相似的查询进行聚类</li>
+<li>只考虑较大的片段</li>
+<li>只考虑具有较大工作负载份额的最昂贵的查询</li>
+</ul>
+<p><br></p>
+<h2 id="利用TPC-H基准分析评估"><a href="#利用TPC-H基准分析评估" class="headerlink" title="利用TPC-H基准分析评估"></a>利用TPC-H基准分析评估</h2><h3 id="最优解-1"><a href="#最优解-1" class="headerlink" title="最优解"></a>最优解</h3><p>[1] 条件：垂直分割，关系模型，Q = 22，N = 61<br>查询成本：<br><img style="width:100%; max-width:600px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66285964-c8866200-e901-11e9-8c33-4aa1a956a0d3.png"><br>假设：</p>
+<ul>
+<li>LINEITEM表包含6M个tuple</li>
+<li>date、identifier和integer需要4个字节</li>
+<li>decimal需要8个字节</li>
+<li>变量和固定文本需要最大长度字节。</li>
+</ul>
+<p>[2] 复制因子(replication factor) = W / V<br>W为使用数据总量，V为最小使用数据量：<br><img style="width:100%; max-width:300px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66286425-06848580-e904-11e9-92b1-d46d8867f88d.png"></p>
+<p>[3] 对于不同数量节点K，结果如下：<br><img style="width:100%; max-width:500px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66285988-dcca5f00-e901-11e9-82ce-0cce703b6572.png"><br>最佳分配实现了完美的工作负载分布L* = 1 / K；复制因子W* / V &lt; K (完全复制的复制因子)。<br>k &gt;= 9的最优分配不能在合理的时间内计算</p>
+<p><br></p>
+<h3 id="分解算法"><a href="#分解算法" class="headerlink" title="分解算法"></a>分解算法</h3><p>在惩罚公式中使用（标准化）因子α = 1000 * V。 W / V仅比W* / V大1%～5%，且实现完美的工作负载分布L = 1 / K<br><img style="width:100%; max-width:650px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66290586-3e92c500-e912-11e9-815c-89cbe17ef68b.png"></p>
 
         </section>
         <!-- Tags START -->
@@ -192,7 +234,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LP模型-Linear-Programming"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#LP&#x6A21;&#x578B;-Linear-Programming" class="headerlink" title="LP&#x6A21;&#x578B; (Linear Programming)"></a>LP&#x6A21;&#x578B; (Linear Programming)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#可扩展的分解启发式算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x53EF;&#x6269;&#x5C55;&#x7684;&#x5206;&#x89E3;&#x542F;&#x53D1;&#x5F0F;&#x7B97;&#x6CD5;" class="headerlink" title="&#x53EF;&#x6269;&#x5C55;&#x7684;&#x5206;&#x89E3;&#x542F;&#x53D1;&#x5F0F;&#x7B97;&#x6CD5;"></a>&#x53EF;&#x6269;&#x5C55;&#x7684;&#x5206;&#x89E3;&#x542F;&#x53D1;&#x5F0F;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#利用TPC-H基准进行可重复性分析评估"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x8FDB;&#x884C;&#x53EF;&#x91CD;&#x590D;&#x6027;&#x5206;&#x6790;&#x8BC4;&#x4F30;" class="headerlink" title="&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x8FDB;&#x884C;&#x53EF;&#x91CD;&#x590D;&#x6027;&#x5206;&#x6790;&#x8BC4;&#x4F30;"></a>&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x8FDB;&#x884C;&#x53EF;&#x91CD;&#x590D;&#x6027;&#x5206;&#x6790;&#x8BC4;&#x4F30;</span></a></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LP模型-Linear-Programming"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#LP&#x6A21;&#x578B;-Linear-Programming" class="headerlink" title="LP&#x6A21;&#x578B; (Linear Programming)"></a>LP&#x6A21;&#x578B; (Linear Programming)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最优解"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x4F18;&#x89E3;" class="headerlink" title="&#x6700;&#x4F18;&#x89E3;"></a>&#x6700;&#x4F18;&#x89E3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#启发式分解算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法解决方法"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法模型"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#利用TPC-H基准分析评估"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;" class="headerlink" title="&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;"></a>&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最优解-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x4F18;&#x89E3;-1" class="headerlink" title="&#x6700;&#x4F18;&#x89E3;"></a>&#x6700;&#x4F18;&#x89E3;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a></li></ol></li></ol>
                 
     </div>
 </aside>
