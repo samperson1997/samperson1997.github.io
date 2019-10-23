@@ -127,6 +127,27 @@
     <article class="post-article">
         <section class="markdown-content">
             <p>以下是论文<a href="https://www.sciencedirect.com/science/article/pii/S0306437918305489" target="_blank" rel="noopener">Dual-PISA: An index for aggregation operations on time series data</a>的笔记。</p>
+<blockquote>
+<p><strong>用什么方法解决什么问题?</strong></p>
+<ul>
+<li>使用方法：使用<strong>线段树结构</strong>，但是对于树中的内部节点，不存储节点所覆盖的时间范围的最早或最晚时间戳，而是定义<strong>代码号(code number)</strong>和<strong>序列号(serial number)</strong>，存储在每个内部节点和叶节点</li>
+<li>解决问题：对于聚合查询来说，插入速度快、延迟低</li>
+</ul>
+<p><strong>为什么有效?</strong></p>
+<ul>
+<li>在任意时间范围内获取聚集值 —— 使用类似于段树的基于树的结构</li>
+<li>按顺序插入新的数据点 —— 森林结构和插入算法</li>
+<li>避免从磁盘读取不必要的数据 —— 定义代码号和序列号</li>
+</ul>
+<p><strong>隐藏问题</strong></p>
+<ul>
+<li>定长Chunk设计</li>
+</ul>
+<ul>
+<li>第6章最后关于seq和unseq数据的同时间窗口内聚合结果如何merge只用一句话带过：“Finally, we merge all the aggregations and return the final result.”能否直接merge？</li>
+<li>IoTDB也维护了局部数据的聚合结果 (ChunkMetadata和PageHeader中都有保存一个Chunk / Page内的聚合结果max, min, first, sum, last；chunk和page的关系：一个chunk内有1个或多个pages)，不同在于IoTDB的局部数据不是以固定时间的窗口来划分的，每个chunk / page其实还有统计startTime / minTime &amp; endTime / maxTime。我好奇的问题是：DPISA方法用到IoTDB中会比原来IoTDB中实现时间范围内聚合查询的方法更有优势吗？DPISA方法能避免从磁盘读取不必要的窗口结点，只从磁盘读那些一定与查询时间范围相交的窗口结点。IoTDB应该是要从磁盘读出所有的ChunkMetadata / PageHeader，读出来之后才能判断是不是与查询的时间范围段有重叠，进而丢弃或者取用其中的聚合统计信息。但问题是后者应该算比较合理的设计了，所以在已经比较合理的设计上再有提升应该是难度更高。</li>
+</ul>
+</blockquote>
 <h2 id="已有方法及改进"><a href="#已有方法及改进" class="headerlink" title="已有方法及改进"></a>已有方法及改进</h2><p>[1] Summary tables(synopsis table)摘要表 / 概要表，或者基于MapReduce的方法：速度慢</p>
 <p>[2] segment tree线段树：静态结构</p>
 <ul>
@@ -138,28 +159,70 @@
 <li>关注计数中的最新数据和基于时间的窗口</li>
 <li>需要在内存中的一个窗口中缓存所有数据点</li>
 </ul>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>[1] 对于聚合查询来说，插入速度快、延迟低</p>
+<h3 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h3><p>[1] 数据结构</p>
 <ul>
-<li>数据结构：森林，在适当的时间将两棵树结合起来的<strong>插入算法(insertion algorithm)</strong></li>
-<li>分段聚合的持久索引Persistent Index for Segmented Aggregations</li>
+<li>森林，在适当的时间将两棵树结合起来的<strong>插入算法(insertion algorithm)</strong></li>
+<li>放弃对树的遍历和对内部节点的逐级读取，通过在节点中使用标记，<strong>避免读取不必要的节点</strong>，并且只访问作为结果一部分的节点</li>
+<li>PISA存储在<strong>磁盘</strong>而非内存</li>
 </ul>
-<p>[2] 对于树中的内部节点，不存储节点所覆盖的时间范围的最早或最晚时间戳，而是定义<strong>代码号(code number)</strong>和<strong>序列号(serial number)</strong>，存储在每个内部节点和叶节点</p>
+<p>[2] 当数据库接收到数据点的时间窗口(如2018.4.1的8:00至8:15)时，PISA预先计算其聚合值，然后相应地更新索引</p>
 <ul>
-<li>放弃对树的遍历和对内部节点的逐级读取，通过在节点中使用标记，避免读取不必要的节点，并且只访问作为结果一部分的节点</li>
-</ul>
-<h3 id="构造和查询"><a href="#构造和查询" class="headerlink" title="构造和查询"></a>构造和查询</h3><ul>
-<li>当数据库接收到数据点的时间窗口(如2018.4.1的8:00至8:15)时，PISA预先计算其聚合值，然后相应地更新索引</li>
 <li>构建内部节点或叶时，PISA在节点中存储代码号和序列号</li>
 <li>在给定的时间范围内，PISA将时间范围划分为子范围，然后根据索引中的标记找到相关的树节点</li>
 </ul>
-<h3 id="双PISA-Dual-PISA"><a href="#双PISA-Dual-PISA" class="headerlink" title="双PISA (Dual-PISA)"></a>双PISA (Dual-PISA)</h3><p>[1] 可容忍一系列无序数据，节约内存</p>
-<p>[2] 两个PISA indice：标准PISA和影子PISA</p>
-<ul>
-<li>影子PISA只负责记录无序数据的汇总信息</li>
-<li>在给定时间范围聚合查询的情况下，双PISA将时间范围拆分为子范围，然后根据两个索引中的标记查找相关的树节点</li>
-</ul>
+<h2 id="PISA"><a href="#PISA" class="headerlink" title="PISA"></a>PISA</h2><p>[1] <strong>窗口(Window) W</strong>：用来划分时间序列为计算聚合值的基本单元<br>所有的窗口需要有相同的<strong>窗口长度(时间间隔)</strong>r，开始时间s，结束时间s+r<br>时间序列需要互不相交</p>
 <p><br></p>
-<h2 id="建立PISA"><a href="#建立PISA" class="headerlink" title="建立PISA"></a>建立PISA</h2>
+<p>[2] <strong>窗口摘要(window summary) S</strong> = A(W)<br>存储窗口的聚合结果，作为PISA中的持久化值，存储在<strong>磁盘</strong><br>好处：减少索引中叶子节点的数量（可以不在每个叶子节点只存放一个数据）<br>叶子节点的数量只与窗口长度和时间序列覆盖的时间有关</p>
+<h3 id="持久线段树PST"><a href="#持久线段树PST" class="headerlink" title="持久线段树PST"></a>持久线段树PST</h3><p>[1] 结构：完全二叉树<br>[2] <strong>序列号SN</strong>：从1开始，每一个<strong>叶子节点</strong>包括一个独一无二的序列号，最大序列号为窗口摘要的个数。内部节点没有序列号。<br>[3] <strong>代码号CN</strong>：从1开始，索引每新增一个新的叶子节点或内部节点就会增加1.节点根据后续遍历获得其代码号。</p>
+<p><br></p>
+<p>[4] 叶子节点包括：长度为r的窗口摘要Sti，窗口摘要的开始时间，序列号SN=j，表示为<strong>LF(ti)</strong><br>内部节点包括：长度为2^nr的窗口摘要，代码号CN=i，表示为<strong>INi</strong><br>树根据跟节点的代码号CN命名和表示<br>[5] 例子：3PST，PISA = {Tree7, Tree10, Tree11}<br><img style="width:100%; max-width:400px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/67257253-9e19d480-f4bd-11e9-9701-3ebb0cc1d6d8.png"></p>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>[1] 内存中仅保存根节点<br>长度为n*r的时间序列，最大根节点数量为log(n/k)+1<br>PISA的总节点数不超过2m-1，m为叶子节点数量</p>
+<p><br></p>
+<p>[2] 存储引擎需要支持：</p>
+<ul>
+<li>在磁盘上序列化叶子节点和内部节点：IO.write(LF), IO.write(IN)</li>
+<li>通过叶子节点的开始时间或者内部节点的代码号CN可以快速获得节点：LF(ti) = IO.get(ti), INi = IO.get(i), IO.batch_get({i, j, …})</li>
+<li>获得开始时间多于或少于给定时间戳的叶子节点：IO.gt(ti), IO.ls(ti)</li>
+</ul>
+<p>[3] 将所有叶子节点存储在一起，并根据开始时间戳进行排序。</p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>[1] 合并的条件<br><img style="width:100%; max-width:250px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/67259751-18505600-f4ca-11e9-89ab-81e23e55f937.png"><br>[2] SN和CN的计算</p>
+<blockquote>
+<p>汉明重量(Hamming Weight)是一串符号中非零符号的个数。因此它等同于同样长度的全零符号串的汉明距离。在最为常见的数据位符号串中，它是1的个数。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(; n != <span class="number">0</span>; n = n &amp; (n-<span class="number">1</span>)) &#123;</span><br><span class="line">    res++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://blog.sina.com.cn/s/blog_72ef7bea0102wgcw.html" target="_blank" rel="noopener">JDK实现(Integer类)</a>：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bitCount</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// HD, Figure 5-2</span></span><br><span class="line">  i = i - ((i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>);</span><br><span class="line">  i = (i &amp; <span class="number">0x33333333</span>) + ((i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>);</span><br><span class="line">  i = (i + (i &gt;&gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x0f0f0f0f</span>;</span><br><span class="line">  i = i + (i &gt;&gt;&gt; <span class="number">8</span>);</span><br><span class="line">  i = i + (i &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">  <span class="keyword">return</span> i &amp; <span class="number">0x3f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>ones(i)表示i的汉明重量，最佳实现算法复杂度为O(1)。<br><strong>cn(i)</strong> = 2i - ones(i) [if i % 2 == 1], = 2(i-1) - ones(i-1) + 1 [if i %  2 == 0]<br><strong>root(i)</strong> = 2i - ones(i)<br><strong>CNs(i)</strong> = {root(i) - k|k = 0, 1, …, root(i) - cn(i)}</p>
+<p><br></p>
+<p>[3] 插入算法：只读内存中的PISA根节点，不需要读磁盘<br>使用<strong>栈</strong>root_stack维护根节点，当两个根节点符合合并的条件，就pop后生成新节点，再压栈。<br>如果节点为空，则不需要持久化，该窗口没有点。<br>PISA会保存最大序列号max_serial和所有的根节点root_stack，不需要持久化空的叶子节点。</p>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>[1] 查询范围划分方法：<br><img style="width:100%; max-width:400px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/67350668-f0222f00-f57d-11e9-9843-f01464e3641e.png"><br>前继窗口◁(pt)，后继窗口▷(pt)<br>例子：t1s &lt; tqs &lt; t1e 且 t11s &lt; tqe &lt; t11e<br>D(tqe ,tqs)划分为三段：D(tqs ,t2s) , D(t2s ,t10e) 和 D(t10e ,tqe)<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/67350837-8ce4cc80-f57e-11e9-80ec-438ee673986a.png"></p>
+<p>[2] 一个内部节点可以<strong>覆盖</strong>的叶节点集，根节点可以覆盖树中所有叶节点。<br><strong>最左叶节点</strong>LLF(IN)是可以覆盖的最左边的叶节点。<br>如果cn(LF) ≤ cn(LLF(IN))，那么叶节点LF可以<strong>覆盖</strong>内部节点IN。</p>
+<p><br></p>
+<p>[3] 公式</p>
+<ul>
+<li>给定序列号i为偶数的叶节点LFcn(i)，得到叶节点带来的所有内部节点的代码号CNs(i)和这些节点的深度depth(j) = j − cn(i)</li>
+<li>给定一个内部节点，得到内部节点可以覆盖的最左边的叶节点。<br>⊣(INj) = LF[j+2−2^(depth(j)+1)]</li>
+<li>假设叶节点LF存储S[k(s)]，那么叶节点的前继和后继为：<br>◁(LF)=LF’, s.t.LF.SN=LF.SN−1<br>▷(LF)=LF’, s.t.LF.SN=LF.SN+1</li>
+</ul>
+<p>[4] 查询算法</p>
+<ul>
+<li>扫描[tqs,t2s) 和 [t10e,tqe)，计算聚合值，回答查询QAleft 和 QAright</li>
+<li>计算PISA中需要被读的点的代码号，代码号集合CS （在内存中进行）<br>只需要两个端点叶节点（LF1和LF19）的序列号，记录开始时间和窗口长度，从而得到其序列号<br>最后从磁盘中读到CS的摘要从而得到QAindex。</li>
+<li>合并QAleft，QAright 和 QAindex得到最终结果。</li>
+</ul>
+<p>复杂度：O(log(n/r))</p>
+<h2 id="Dual-PISA"><a href="#Dual-PISA" class="headerlink" title="Dual-PISA"></a>Dual-PISA</h2><p>[1] 乱序数据：97%的无序数据在4小时内具有过时的时间间隔，需要和有序数据一起管理；长尾数据（即剩余的3%数据）可能会被丢弃，因为它太陈旧以至于数据的业务价值丢失。<br><strong>陈旧性约束E</strong>：需要容忍的数据的陈旧性。给定时间戳为tl的最新数据点，所有时间戳大于等于tl - E的数据点都需要索引。</p>
+<p><br></p>
+<p>[2] 两个PISA indice：标准PISA和影子PISA，可容忍一系列无序数据，节约内存</p>
+<ul>
+<li><strong>标准PISA</strong>正常负责顺序数据</li>
+<li><strong>影子PISA</strong>（SPISA）只负责记录无序数据的汇总信息</li>
+<li>在给定时间范围聚合查询的情况下，DPISA将时间范围拆分为子范围，然后根据两个索引中的标记查找相关的树节点</li>
+</ul>
+<p>[3] SPISA在内存中维护连续的<strong>⌈E/r⌉个活动窗口</strong>来确保陈旧性约束E可以全部被覆盖。<br>[4] <strong>滑动操作</strong>：计算最旧窗口的窗口摘要并将其插入SPISA的树林结构中，然后在内存中生成一个新的活动窗口。</p>
+<p><br></p>
+<p>[5] <strong>建立</strong>：SPISA的最新活动窗口总是在PISA的活动窗口之后，且相连，示例：<br><img style="width:100%; max-width:600px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/67358544-5f564e00-f593-11e9-928d-9a1903aa48c9.png"><br>新的数据点进入(tc + r)，将摘要插入PISA的活动窗口并创建新的活动窗口，同时进行SPISA的滑动操作，将最不活跃的窗口插入森林结构。<br>如果所有的数据点都按照顺序到达，SPISA中无数据，不会被持久化到磁盘，DPISA结构即成为PISA结构。</p>
+<p><br></p>
+<p>[6] <strong>查询</strong>：如果PISA与DPISA有相同的代码号，就说明他们们都代表了同一个时间区间的一部分摘要信息，计算时考虑两种PISA的相关点后进行合并，获得最终结果。</p>
+
         </section>
         <!-- Tags START -->
         
@@ -168,6 +231,10 @@
                 
   <a href="/tags#时间序列数据库" >
     <span class="tag-code">时间序列数据库</span>
+  </a>
+
+  <a href="/tags#索引" >
+    <span class="tag-code">索引</span>
   </a>
 
             </div>
@@ -209,7 +276,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#优点"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x4F18;&#x70B9;" class="headerlink" title="&#x4F18;&#x70B9;"></a>&#x4F18;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#构造和查询"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x6784;&#x9020;&#x548C;&#x67E5;&#x8BE2;" class="headerlink" title="&#x6784;&#x9020;&#x548C;&#x67E5;&#x8BE2;"></a>&#x6784;&#x9020;&#x548C;&#x67E5;&#x8BE2;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#双PISA-Dual-PISA"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x53CC;PISA-Dual-PISA" class="headerlink" title="&#x53CC;PISA (Dual-PISA)"></a>&#x53CC;PISA (Dual-PISA)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#建立PISA"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x5EFA;&#x7ACB;PISA" class="headerlink" title="&#x5EFA;&#x7ACB;PISA"></a>&#x5EFA;&#x7ACB;PISA</span></a></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#改进"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x6539;&#x8FDB;" class="headerlink" title="&#x6539;&#x8FDB;"></a>&#x6539;&#x8FDB;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#PISA"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#PISA" class="headerlink" title="PISA"></a>PISA</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#持久线段树PST"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x6301;&#x4E45;&#x7EBF;&#x6BB5;&#x6811;PST" class="headerlink" title="&#x6301;&#x4E45;&#x7EBF;&#x6BB5;&#x6811;PST"></a>&#x6301;&#x4E45;&#x7EBF;&#x6BB5;&#x6811;PST</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5B58;&#x50A8;" class="headerlink" title="&#x5B58;&#x50A8;"></a>&#x5B58;&#x50A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#插入"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#&#x63D2;&#x5165;" class="headerlink" title="&#x63D2;&#x5165;"></a>&#x63D2;&#x5165;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#查询"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dual-PISA"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#Dual-PISA" class="headerlink" title="Dual-PISA"></a>Dual-PISA</span></a></li></ol>
                 
     </div>
 </aside>
