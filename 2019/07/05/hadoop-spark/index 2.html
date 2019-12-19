@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Ubuntu+Hadoop+Spark+IoTDB部署 | Blog of Samperson
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+    <h2>
+        Ubuntu+Hadoop+Spark+IoTDB部署
+    </h2>
+    <p class="post-date">
+        2019-07-05
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
+</div>
+<main class="app-body flex-box">
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <h2 id="安装及配置Hadoop"><a href="#安装及配置Hadoop" class="headerlink" title="安装及配置Hadoop"></a>安装及配置Hadoop</h2><p>[1] 安装apt: <code>sudo apt-get update</code><br>[2] 安装vim: <code>sudo apt-get install vim</code><br>[3] 安装Java8: <code>sudo apt-get install openjdk-8-jre openjdk-8-jdk</code><br>找到安装路径, 用于配置JAVA_HOME环境变量: <code>dpkg -L openjdk-8-jdk</code><br>打开配置文件: <code>vim ~/.bashrc</code><br>添加安装路径: <code>export JAVA_HOME={JDK安装路径}</code><br>使变量生效: <code>source ~/.bashrc</code><br>验证: <code>$JAVA_HOME/bin/java -version</code>结果与<code>java -version</code>结果相同。<br><br><br>[4] <strong>安装和配置Hadoop</strong><br>交叉参见: <a href="https://samperson1997.github.io/2018/05/16/hadoop-xgboost/" title="零起点Centos+Hadoop+xgboost部署 (伪分布式)" target="_blank" rel="noopener">零起点Centos+Hadoop+xgboost部署 (伪分布式)</a></p>
+<p>将Hadoop安装至<code>/usr/local/</code>中:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxf ~/Downloads/hadoop-2.6.0.tar.gz -C /usr/local</span><br><span class="line">cd /usr/local/</span><br><span class="line">sudo mv ./hadoop-2.6.0/ ./hadoop</span><br><span class="line">sudo chown -R hadoop ./hadoop</span><br></pre></td></tr></table></figure></p>
+<p>检验Hadoop版本:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/hadoop</span><br><span class="line">./bin/hadoop version</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装及配置Spark"><a href="#安装及配置Spark" class="headerlink" title="安装及配置Spark"></a>安装及配置Spark</h2><p>[1] 下载地址: <a href="http://spark.apache.org/downloads.html" target="_blank" rel="noopener">http://spark.apache.org/downloads.html</a></p>
+<blockquote>
+<p>由于已经安装Hadoop，所以“Choose a package type”后选择“Pre-build with user-provided Hadoop”。</p>
+</blockquote>
+<p>[2] 将Spark安装至<code>/usr/local/</code>中:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxf ~/Downloads/spark-2.3.0-bin-without-hadoop.tgz -C /usr/local</span><br><span class="line">cd /usr/local/</span><br><span class="line">sudo mv ./spark-2.3.0-bin-without-hadoop.tgz/ ./spark</span><br><span class="line">sudo chown -R hadoop:hadoop ./spark</span><br></pre></td></tr></table></figure></p>
+<p>[3] 修改Spark的配置文件<code>spark-env.sh</code>:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark</span><br><span class="line">cp ./conf/spark-env.sh.template ./conf/spark-env.sh</span><br><span class="line">vim ./conf/spark-env.sh</span><br></pre></td></tr></table></figure></p>
+<p>[4] 添加: <code>export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)</code>, 用来把数据存储到Hadoop分布式文件系统HDFS中, 也可以从HDFS中读取数据。如果没有配置上面信息, Spark只能读写本地数据, 无法读写HDFS数据。</p>
+<h3 id="spark-shell命令"><a href="#spark-shell命令" class="headerlink" title="spark-shell命令"></a>spark-shell命令</h3><p>[1] 配置完成后可直接使用，不需要像Hadoop运行启动命令。可以通过运行Spark自带的示例验证Spark是否安装成功: <code>bin/run-example SparkPi 2&gt;&amp;1 | grep &quot;Pi is&quot;</code>, 得到π的5位小数近似值。</p>
+<p><br></p>
+<p>[2] spark-shell命令及其常用的参数如下: <code>./bin/spark-shell --master &lt;master-url&gt;</code>。启动spark-shell后, 会进入<code>scala&gt;</code>命令提示符状态, 可以在里面输入scala代码进行调试。</p>
+<p><br></p>
+<p>[3] 最后, 可以使用命令<code>:quit</code>退出Spark Shell。</p>
+<p><br></p>
+<h2 id="安装及配置IoTDB"><a href="#安装及配置IoTDB" class="headerlink" title="安装及配置IoTDB"></a>安装及配置IoTDB</h2><p>[1] git clone源码: <code>git clone https://github.com/apache/incubator-iotdb.git</code><br>[2] 删除文件:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd &#123;incubator-iotdb路径&#125;</span><br><span class="line">rm -rf /iotdb/iotdb/data/</span><br><span class="line">rm -rf /iotdb/iotdb/lib/</span><br></pre></td></tr></table></figure></p>
+<p>[3] 使用Maven编译: <code>mvn clean package -pl iotdb,spark -am -Dmaven.test.skip=true</code></p>
+<p><br></p>
+<h2 id="使用TsFile-Spark-Connector"><a href="#使用TsFile-Spark-Connector" class="headerlink" title="使用TsFile-Spark-Connector"></a>使用TsFile-Spark-Connector</h2><p>[1] 命令: <code>./&lt;spark-shell-path&gt;  --jars  tsfile-spark-connector.jar,tsfile-0.8.0-SNAPSHOT-jar-with-dependencies.jar</code>, 远程后面添加<code>--master spark://ip:7077</code>。两个jar分别在IoTDB build后的target文件夹中。</p>
+<p><br></p>
+<p>[2] 在HDFS中创建一个新文件夹, 用于保存tsfile文件: <code>./hdfs dfs -mkdir -p /input</code><br>创建空文件的命令: <code>./hdfs dfs -touchz /input/test1.tsfile</code></p>
+<p><br></p>
+<p>[3] 将本地文件存入HDFS: <code>./hdfs dfs -put test1.tsfile hdfs://localhost:9000/input</code><br>将文件取出: <code>./hdfs  dfs -get hdfs://localhost:9000/input/test1.tsfile</code></p>
+<h3 id="Scala-API"><a href="#Scala-API" class="headerlink" title="Scala API"></a>Scala API</h3><p>[1] 环境要求<br><strong>Spark Version</strong>: 2.4.3, <strong>Scala Version</strong>: 2.11.8, <strong>Java Version</strong>: 1.8, <strong>TsFile</strong>: 0.8.0-SNAPSHOT</p>
+<p><br></p>
+<p>[2] 从本地文件读<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.iotdb.tsfile._</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> df1 = spark.read.tsfile(<span class="string">"test.tsfile"</span>) </span><br><span class="line">df1.show</span><br></pre></td></tr></table></figure></p>
+<p>[3] 从HDFS文件读<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> df2 = spark.read.tsfile(<span class="string">"hdfs://localhost:9000/input/test1.tsfile"</span>) </span><br><span class="line">df2.show</span><br></pre></td></tr></table></figure></p>
+<p>[4] 从HDFS文件夹读<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> df3 = spark.read.tsfile(<span class="string">"hdfs://localhost:9000/input"</span>) </span><br><span class="line">df3.show</span><br></pre></td></tr></table></figure></p>
+<p>[5] query操作<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">df3.createOrReplaceTempView(<span class="string">"tsfile_table"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> df4 = spark.sql(<span class="string">"select * from tsfile_table where `root.d1.s1`&gt;500 and `root.d1.s2` &lt; 500"</span>)</span><br><span class="line">df4.show</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> df5 = spark.sql(<span class="string">"select count(*) from tsfile_table"</span>)</span><br><span class="line">df5.show</span><br></pre></td></tr></table></figure></p>
+<p>[6] 写操作<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df3.write.tsfile(<span class="string">"hdfs://localhost:9000/input/test2.tsfile"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><br></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] Hadoop安装教程_单机/伪分布式配置_Hadoop2.6.0/Ubuntu14.04 <a href="http://dblab.xmu.edu.cn/blog/install-hadoop/" target="_blank" rel="noopener">http://dblab.xmu.edu.cn/blog/install-hadoop/</a><br>[2] Spark2.1.0入门：Spark的安装和使用 <a href="http://dblab.xmu.edu.cn/blog/1307-2/" target="_blank" rel="noopener">http://dblab.xmu.edu.cn/blog/1307-2/</a><br>[3] <a href="https://iotdb.apache.org/#/Documents/Quick%20Start" target="_blank" rel="noopener">https://iotdb.apache.org/#/Documents/Quick%20Start</a><br>[4] Hadoop系列（一）hdfs文件系统的基本操作 <a href="https://www.cnblogs.com/qizhelongdeyang/p/8960668.html" target="_blank" rel="noopener">https://www.cnblogs.com/qizhelongdeyang/p/8960668.html</a></p>
+
+        </section>
+        <!-- Tags START -->
+        
+            <div class="tags">
+                <span>Tags:</span>
+                
+  <a href="/tags#分布式" >
+    <span class="tag-code">分布式</span>
+  </a>
+
+            </div>
+            
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+                            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
+    
+        <aside class="catalog-container">
+    <div class="toc-main">
+        <strong class="toc-title">Catalog</strong>
+        
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装及配置Hadoop"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;Hadoop" class="headerlink" title="&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;Hadoop"></a>&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装及配置Spark"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;Spark" class="headerlink" title="&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;Spark"></a>&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;Spark</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#spark-shell命令"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#spark-shell&#x547D;&#x4EE4;" class="headerlink" title="spark-shell&#x547D;&#x4EE4;"></a>spark-shell&#x547D;&#x4EE4;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装及配置IoTDB"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;IoTDB" class="headerlink" title="&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;IoTDB"></a>&#x5B89;&#x88C5;&#x53CA;&#x914D;&#x7F6E;IoTDB</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用TsFile-Spark-Connector"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x4F7F;&#x7528;TsFile-Spark-Connector" class="headerlink" title="&#x4F7F;&#x7528;TsFile-Spark-Connector"></a>&#x4F7F;&#x7528;TsFile-Spark-Connector</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Scala-API"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#Scala-API" class="headerlink" title="Scala API"></a>Scala API</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+                
+    </div>
+</aside>
+
+            
+                <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2019/07/05/hadoop-spark/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "Ubuntu+Hadoop+Spark+IoTDB部署",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+    <p class="copyright">
+        &copy;
+        2019 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+            <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    </p>
+</footer>
+
+<script>
+    function async(u, c) {
+        var d = document,
+            t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function(e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+
+</script>
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
+        FastClick.attach(document.body);
+    })
+
+</script>
+
+<script>
+    var hasLine = 'true';
+    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
+        $('figure pre').each(function(i, block) {
+            var figure = $(this).parents('figure');
+            if (hasLine === 'false') {
+                figure.find('.gutter').hide();
+            }
+            var lang = figure.attr('class').split(' ')[1] || 'code';
+            var codeHtml = $(this).html();
+            var codeTag = document.createElement('code');
+            codeTag.className = lang;
+            codeTag.innerHTML = codeHtml;
+            $(this).attr('class', '').empty().html(codeTag);
+            figure.attr('data-lang', lang.toUpperCase());
+            hljs.highlightBlock(block);
+        });
+    })
+
+</script>
+<!-- Baidu Tongji -->
+
+        <script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      适于二分类的机器学习算法 | Blog of Samperson
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+    <h2>
+        适于二分类的机器学习算法
+    </h2>
+    <p class="post-date">
+        2018-06-03
+    </p>
+    <div class="arrow-down">
+        <a href="javascript:;"></a>
+    </div>
+</div>
+<main class="app-body flex-box">
+    <!-- Article START -->
+    <article class="post-article">
+        <section class="markdown-content">
+            <h2 id="偏差和方差"><a href="#偏差和方差" class="headerlink" title="偏差和方差"></a>偏差和方差</h2><p>[1] 偏差：描述的是预测值（估计值）的期望E’与真实值Y之间的差距。偏差越大，越偏离真实数据。<br>[2] 方差：描述的是预测值P的变化范围，离散程度，是预测值的方差，也就是离其期望值E的距离。方差越大，数据的分布越分散。<br>[3] 模型的真实误差是两者之和。</p>
+<blockquote>
+<p>如果是<strong>小训练集</strong>，<strong>高偏差/低方差的分类器</strong>（例如，朴素贝叶斯NB）要比低偏差/高方差大分类（例如，KNN）的优势大，因为后者会过拟合。<br>随着<strong>训练集的增长</strong>，模型对于原数据的预测能力就越好，偏差就会降低，此时<strong>低偏差/高方差分类器</strong>就会渐渐的表现其优势（因为它们有较低的渐近误差），此时高偏差分类器此时已经不足以提供准确的模型了。</p>
+</blockquote>
+<h2 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h2><table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:left">输入</th>
+<th style="text-align:left">输出</th>
+<th style="text-align:left">适用的数据集</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 朴素贝叶斯</td>
+<td style="text-align:left">特征属性+训练样本生成分类器；分类器+待分类项对待分类项进行分类</td>
+<td style="text-align:left">通过贝叶斯公式求得样本类别的后验概率，将后验概率最大的样本所属的类作为分类器的输出</td>
+<td style="text-align:left">对小规模的数据表现很好，能处理多分类任务，适合增量式训练；对缺失数据不太敏感，常用于文本分类</td>
+<td style="text-align:left">生成式模型：低方差高偏差<br>假设对于给定的类别，所有的特征相互独立；需要计算先验概率；分类决策存在错误率；对输入数据的表达形式很敏感。所需估计的参数少。</td>
+</tr>
+<tr>
+<td>2 逻辑回归(LR)</td>
+<td style="text-align:left">训练数据集</td>
+<td style="text-align:left">回归表达式参数</td>
+<td style="text-align:left">可解决多重共线性问题；目标变量是分类变量</td>
+<td style="text-align:left">判别式模型：需要一个概率架构（比如，简单地调节分类阈值，指明不确定性，或者是要获得置信区间），或者以后将更多的训练数据快速整合到模型中去。<br>实现简单，广泛应用于工业问题上；分类时计算量非常小，速度很快，存储资源低；便利的观测样本概率分数。<br>当特征空间很大时，逻辑回归的性能不是很好；容易欠拟合，一般准确度不太高；不能很好地处理大量多类特征或变量；特征处理复杂。需要归一化和较多的特征工程。</td>
+</tr>
+<tr>
+<td>3 KNN(K近邻算法)</td>
+<td style="text-align:left">训练数据集</td>
+<td style="text-align:left">实例x所属的类y</td>
+<td style="text-align:left">具有较强的一致性结果；样本容量比较大的类域自动分类。在分类时较大的K值能够减小噪声的影响，但会使类别之间的界限变得模糊。</td>
+<td style="text-align:left">理论成熟，思想简单，既可以用来做分类也可以用来做回归；可用于非线性分类；训练时间复杂度为O(n)；对数据没有假设，准确度高，对outlier不敏感。<br>计算量大；需要大量的内存；当样本不平衡时，如一个类的样本容量很大，而其他类样本容量很小时，有可能导致当输入一个新样本时，该样本的K个邻居中大容量类的样本占多数。</td>
+</tr>
+<tr>
+<td>4 <a href="https://samperson1997.github.io/2018/06/18/decision-tree/" title="决策树" target="_blank" rel="noopener">决策树</a></td>
+<td style="text-align:left">决策树+用于构造树的所有类标签向量执行分类</td>
+<td style="text-align:left">决策结果</td>
+<td style="text-align:left">适合处理有缺失属性的高维数据样本；对于各类别样本数量不一致的数据，信息增益的结果偏向于那些具有更多数值的特征。</td>
+<td style="text-align:left">不支持在线学习，在新样本到来后，决策树需要全部重建；容易出现过拟合。<br>计算简单，易于理解，可解释性强；能够处理不相关的特征；在相对短的时间内能够对大型数据源做出可行且效果良好的结果；忽略了数据之间的相关性。</td>
+</tr>
+<tr>
+<td>5 Adaboosting</td>
+<td style="text-align:left">训练数据集</td>
+<td style="text-align:left">最终的强分类器</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">加和模型：每个模型都是基于上一次模型的错误率来建立的，过分关注分错的样本，而对正确分类的样本减少关注度，逐次迭代之后，可以得到一个相对较好的模型<br>有很高精度；可以使用各种方法构建子分类器；当使用简单分类器时，计算出的结果是可以理解的，并且弱分类器的构造极其简单，不用做特征筛选，不容易发生过拟合</td>
+</tr>
+<tr>
+<td>6 <a href="https://samperson1997.github.io/2018/06/24/svm/" title="SVM(支持向量机)" target="_blank" rel="noopener">SVM(支持向量机)</a></td>
+<td style="text-align:left">训练数据集</td>
+<td style="text-align:left">识别结果</td>
+<td style="text-align:left">小样本、非线性及高维、超高维模式识别问题中有优势；就算数据在原特征空间线性不可分，只要给个合适的核函数，它就能运行得很好</td>
+<td style="text-align:left">基于分类边界的方法：将低维空间的点映射到高维空间，使它们成为线性可分，再使用线性划分的原理来判断分类边界。内存消耗大，难以解释，运行和调参麻烦。<br>能够处理非线性特征的相互作用；无需依赖整个数据；可以提高泛化能力。<br>当观测样本很多时，效率并不是很高；对非线性问题没有通用解决方案，有时候很难找到一个合适的核函数；对缺失数据敏感。</td>
+</tr>
+<tr>
+<td>7 <a href="https://samperson1997.github.io/2018/07/01/cnn/" title="神经网络" target="_blank" rel="noopener">神经网络</a></td>
+<td style="text-align:left">训练数据集</td>
+<td style="text-align:left">识别结果</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">分类的准确度高；并行分布处理能力强，分布存储及学习能力强；鲁棒性较强，不易受噪声影响；具备联想记忆的功能。<br>神经网络需要大量的参数，如网络拓扑结构、权值和阈值的初始值；不能观察之间的学习过程，输出结果难以解释，会影响到结果的可信度和可接受程度；学习时间过长，甚至可能达不到学习的目的。”</td>
+</tr>
+<tr>
+<td>8 K-Means聚类</td>
+<td style="text-align:left">训练数据集</td>
+<td style="text-align:left">无监督学习，无标签</td>
+<td style="text-align:left">当簇是密集的、球状或团状的，且簇与簇之间区别明显时，聚类效果较好；对数据类型要求较高，适合数值型数据；不适合于发现非凸面形状的簇，或者大小差别很大的簇。</td>
+<td style="text-align:left">尝试找出使平方误差函数值最小的k个划分，算法简单，容易实现。可能收敛到局部最小值；K值比较难以选取；对初值的簇心值敏感，对于不同的初始值，可能会导致不同的聚类结果；对于“噪声”和孤立点数据敏感，少量的该类数据能够对平均值产生极大影响。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>[1] 首选<strong>逻辑回归</strong>，如果它的效果不怎么样，那么可以将它的结果作为基准来参考，在基础上与其他算法进行比较；<br>[2] 然后试试<strong>决策树</strong>（随机森林）看看是否可以大幅度提升你的模型性能。即便最后你并没有把它当做为最终模型，你也可以使用随机森林来移除噪声变量，做特征选择；<br>[3] 如果特征的数量和观测样本特别多，那么当<strong>资源和时间充足</strong>时，使用<strong>SVM</strong>不失为一种选择。</p>
+<h2 id="交叉参见"><a href="#交叉参见" class="headerlink" title="交叉参见"></a>交叉参见</h2><p><a href="https://samperson1997.github.io/2018/06/18/decision-tree/" title="决策树" target="_blank" rel="noopener">决策树</a>，<a href="https://samperson1997.github.io/2018/06/24/svm/" title="SVM" target="_blank" rel="noopener">SVM</a>，<a href="https://samperson1997.github.io/2018/07/01/cnn/" title="卷积神经网络" target="_blank" rel="noopener">卷积神经网络</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="https://blog.csdn.net/u014365862/article/details/52937983" target="_blank" rel="noopener">https://blog.csdn.net/u014365862/article/details/52937983</a><br>[2] <a href="https://blog.csdn.net/china1000/article/details/48597469" target="_blank" rel="noopener">https://blog.csdn.net/china1000/article/details/48597469</a><br>[3] <a href="https://wenku.baidu.com/view/9aac9dce80eb6294dd886cd9.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/9aac9dce80eb6294dd886cd9.html</a><br>[4] <a href="https://blog.csdn.net/legend_hua/article/details/79715976" target="_blank" rel="noopener">https://blog.csdn.net/legend_hua/article/details/79715976</a><br>[5] <a href="https://www.cnblogs.com/Belter/p/6128644.html" target="_blank" rel="noopener">https://www.cnblogs.com/Belter/p/6128644.html</a><br>[6] <a href="https://blog.csdn.net/u014006007/article/details/51882714" target="_blank" rel="noopener">https://blog.csdn.net/u014006007/article/details/51882714</a><br>[7] <a href="https://blog.csdn.net/HerosOfEarth/article/details/52347820" target="_blank" rel="noopener">https://blog.csdn.net/HerosOfEarth/article/details/52347820</a><br>[8] <a href="https://www.cnblogs.com/YiXiaoZhou/p/5875077.html" target="_blank" rel="noopener">https://www.cnblogs.com/YiXiaoZhou/p/5875077.html</a><br>[9] <a href="https://www.cnblogs.com/wangduo/p/5337466.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangduo/p/5337466.html</a><br>[10] <a href="http://blog.sina.com.cn/s/blog_62186b46010145ne.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_62186b46010145ne.html</a></p>
+
+        </section>
+        <!-- Tags START -->
+        
+            <div class="tags">
+                <span>Tags:</span>
+                
+  <a href="/tags#机器学习" >
+    <span class="tag-code">机器学习</span>
+  </a>
+
+            </div>
+            
+                <!-- Tags END -->
+                <!-- 打赏 START -->
+                
+                    <div class="money-like">
+                        <div class="reward-btn">
+                            赏
+                            <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+                            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+                            </span>
+                        </div>
+                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
+                    </div>
+                    
+                        <!-- 打赏 END -->
+                        <!-- 二维码 START -->
+                        
+                                <!-- 二维码 END -->
+                                
+                                    <!-- Gitment START -->
+                                    <div id="comments"></div>
+                                    <!-- Gitment END -->
+                                    
+    </article>
+    <!-- Article END -->
+    <!-- Catalog START -->
+    
+        <aside class="catalog-container">
+    <div class="toc-main">
+        <strong class="toc-title">Catalog</strong>
+        
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#偏差和方差"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x504F;&#x5DEE;&#x548C;&#x65B9;&#x5DEE;" class="headerlink" title="&#x504F;&#x5DEE;&#x548C;&#x65B9;&#x5DEE;"></a>&#x504F;&#x5DEE;&#x548C;&#x65B9;&#x5DEE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分类算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x7C7B;&#x7B97;&#x6CD5;" class="headerlink" title="&#x5206;&#x7C7B;&#x7B97;&#x6CD5;"></a>&#x5206;&#x7C7B;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选择"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x9009;&#x62E9;" class="headerlink" title="&#x9009;&#x62E9;"></a>&#x9009;&#x62E9;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉参见"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x4EA4;&#x53C9;&#x53C2;&#x89C1;" class="headerlink" title="&#x4EA4;&#x53C9;&#x53C2;&#x89C1;"></a>&#x4EA4;&#x53C9;&#x53C2;&#x89C1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+                
+    </div>
+</aside>
+
+            
+                <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2018/06/03/classification-algorithm/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+        // zoom image
+        $(".markdown-content img").on('click', function() {
+            var src = $(this).attr('src')
+            if (src !== 'http://file.muyutech.com/error-img.png') {
+                var imageW = $(this).width()
+                var imageH = $(this).height()
+
+                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+                zoom = zoom < 1 ? 1 : zoom
+                zoom = zoom > 2 ? 2 : zoom
+                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+                $('.image-view-wrap').addClass('wrap-active')
+                $('.image-view-wrap img').css({
+                    'width': `${imageW}`,
+                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+                })
+                $('html').css('overflow', 'hidden')
+
+                $('.image-view-wrap').on('click', function() {
+                    $(this).remove()
+                    $('html').attr('style', '')
+                })
+            }
+        })
+
+        // qrcode
+        var qr = new QRious({
+            element: document.getElementById('share-qrcode'),
+            value: document.location.href
+        });
+
+        // gitment
+        var gitmentConfig = "samperson1997";
+        if (gitmentConfig !== 'undefined') {
+            var gitment = new Gitment({
+                id: "适于二分类的机器学习算法",
+                owner: "samperson1997",
+                repo: "samperson1997.github.io",
+                oauth: {
+                    client_id: "fa0bf61cc2d9eb136c1a",
+                    client_secret: "81df51391c08edc497b6bb434029521c92ea19fd"
+                },
+                theme: {
+                    render(state, instance) {
+                        const container = document.createElement('div')
+                        container.lang = "en-US"
+                        container.className = 'gitment-container gitment-root-container'
+                        container.appendChild(instance.renderHeader(state, instance))
+                        container.appendChild(instance.renderEditor(state, instance))
+                        container.appendChild(instance.renderComments(state, instance))
+                        container.appendChild(instance.renderFooter(state, instance))
+                        return container;
+                    }
+                }
+            })
+            gitment.render(document.getElementById('comments'))
+        }
+    })();
+
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+    <p class="copyright">
+        &copy;
+        2019 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+            <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    </p>
+</footer>
+
+<script>
+    function async(u, c) {
+        var d = document,
+            t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function(e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+
+</script>
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
+        FastClick.attach(document.body);
+    })
+
+</script>
+
+<script>
+    var hasLine = 'true';
+    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
+        $('figure pre').each(function(i, block) {
+            var figure = $(this).parents('figure');
+            if (hasLine === 'false') {
+                figure.find('.gutter').hide();
+            }
+            var lang = figure.attr('class').split(' ')[1] || 'code';
+            var codeHtml = $(this).html();
+            var codeTag = document.createElement('code');
+            codeTag.className = lang;
+            codeTag.innerHTML = codeHtml;
+            $(this).attr('class', '').empty().html(codeTag);
+            figure.attr('data-lang', lang.toUpperCase());
+            hljs.highlightBlock(block);
+        });
+    })
+
+</script>
+<!-- Baidu Tongji -->
+
+        <script src="/js/script.js"></script>
+
+  </body>
+</html>
