@@ -115,7 +115,41 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2020/01/27/dbsc11/">⛵️帆船书#11 | 索引与散列</a>
+        <a href="/2020/01/28/dbsc11-2/">⛵️帆船书#11-2 | 散列索引</a>
+      </h2>
+      <p class="article-date">January 28, 2020</p>
+      
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          基本概念[1] 索引（Index）是帮助数据库高效获取数据的数据结构[2] 索引分为顺序索引和散列索引, 顺序索引基于值的顺序排序
+聚集索引和辅助索引
+
+
+聚集索引
+辅助索引 (非聚集索引)
+
+
+
+
+以主键创建的索引 (也叫做主索引)
+以非主键创建的索引 (也叫做二级索引)
+
+
+搜索码的排序 ...
+        
+      </div>
+      <a class="more" href="/2020/01/28/dbsc11-2/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/01/27/dbsc11/">⛵️帆船书#11-1 | 顺序索引</a>
       </h2>
       <p class="article-date">January 27, 2020</p>
       
@@ -127,8 +161,10 @@
       
       <div class="article-summary">
         
-          基本概念[1] 索引（Index）是帮助数据库高效获取数据的数据结构[2] 索引分为顺序索引和散列索引, 顺序索引基于值的顺序排序
-聚集索引和非聚集索引[3] 聚集索引(也叫做主索引)是以主键创建的索引非聚集索引(也叫做二级索引/辅助索引)是以非主键创建的索引聚集索引在叶子节点存放的表中的数 ...
+          索引的更新插入[1] 稠密索引:用出现在待插入记录中的搜索码进行查找, 如果不在索引中就在合适的位置插入索引项; 否则:
+
+如果索引项存储的是指向具有相同搜索码所有记录的指针, 就在索引项中增加一个指向新记录的指针;
+否则索引项存储的是指向具有相同搜索码的第一条记录的指针, 把待插入的记录放 ...
         
       </div>
       <a class="more" href="/2020/01/27/dbsc11/">Read more</a>
@@ -323,21 +359,6 @@ DTWDynamic time warping (DTW)是对时间序列更可靠的距离度量方法，
         
       </div>
       <a class="more" href="/2019/07/05/hadoop-spark/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/08/react1/">实习问题小汇总</a>
-      </h2>
-      <p class="article-date">February 8, 2019</p>
-      
-      <div class="article-summary">
-        
-          在实习过程中遇到的一些问题。
-npm相关问题[1] npm命令无反应解决方案：删除 C:\Users\ [账号] \ .npmrc 文件[2] npm install 过程中出现 cb() never called或unexpected end of line解决方案：输入以下命令123np ...
-        
-      </div>
-      <a class="more" href="/2019/02/08/react1/">Read more</a>
     </article>
   
 
