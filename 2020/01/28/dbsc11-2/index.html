@@ -159,7 +159,7 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">优点: 支持的数据量大，压缩效果好，可以更多的索引放在内存中，以保证每次查询小于等于1的读盘次数</td>
+<td style="text-align:left">优点: 支持的数据量大压缩效果好可以更多的索引放在内存中以保证每次查询小于等于1的读盘次数</td>
 <td style="text-align:left">查找(hit), 写入的时间复杂度非常低, 性能非常高, 要比采用B+树的方法快得多</td>
 </tr>
 <tr>
@@ -195,10 +195,10 @@
 <li>处理空值补码位图也必须和空值的补码位图and</li>
 </ul>
 <p>[5] 计算位图中1的数目: 维护一个256大小数组, 第i项存储<strong>i的二进制表示</strong>中值为1的个数<br>开始总计数值为0, 位图中每一<strong>字节</strong>作为数组下标, 将其中存储的值加到总计数值上</p>
-<p>[6] 对于一些属性经常出现, 另一些属性出现频率很小的关系, 结合B+树和位图索引<br>B+树索引叶节点保留这个值为索引属性值的所有记录列表, 列表的每个元素可以是记录标识符; 对于在许多记录中出现的值(多于1/64), 存储一个位图而不是记录的列表</p>
+<p>[6] 对于一些属性经常出现, 另一些属性出现频率很小的关系, 结合B+树和位图索引<br>B+树索引叶结点保留这个值为索引属性值的所有记录列表, 列表的每个元素可以是记录标识符; 对于在许多记录中出现的值(多于1/64), 存储一个位图而不是记录的列表</p>
 <h2 id="不同存储引擎对索引的实现方式"><a href="#不同存储引擎对索引的实现方式" class="headerlink" title="不同存储引擎对索引的实现方式"></a>不同存储引擎对索引的实现方式</h2><p>索引本身很大, 不可能全部存储在<strong>内存</strong>中, 往往以索引文件的形式存储的<strong>磁盘</strong>上, 查找过程中就要产生磁盘I/O消耗, 相对于内存存取, I/O存取的消耗要高几个数量级。<br>评价数据结构作为索引的优劣最重要的指标：在查找过程中磁盘I/O操作次数的复杂度。</p>
-<h3 id="MyISAM索引：非聚集"><a href="#MyISAM索引：非聚集" class="headerlink" title="MyISAM索引：非聚集"></a>MyISAM索引：非聚集</h3><p>[1] 使用B+Tree作为索引结构, 叶节点的data域存放的是数据记录的地址（索引文件和数据文件分离, 索引文件仅保存数据记录的地址）。<br>[2] 算法：首先按照B+Tree搜索算法搜索索引, 如果指定的Key存在, 则取出其data域的值, 然后以data域的值为地址, 读取相应数据记录。</p>
-<h3 id="InnoDB索引：聚集"><a href="#InnoDB索引：聚集" class="headerlink" title="InnoDB索引：聚集"></a>InnoDB索引：聚集</h3><p>[1] 数据文件本身就是索引文件, 表数据文件本身就是按B+Tree组织的一个索引结构, 这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键, 因此<strong>InnoDB表数据文件本身就是主索引</strong>。<br>[2] InnoDB要求表必须有主键（MyISAM可以没有）；如果没有显式指定, MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键；如果不存在这种列, MySQL自动为InnoDB表生成一个隐含字段作为主键, 这个字段长度为6个字节, 类型为长整形。<br>[3] InnoDB的辅助索引data域存储相应记录主键的值而不是地址, 即<strong>InnoDB的所有辅助索引都引用主键作为data域</strong>。主键的搜索十分高效, 但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键, 然后用主键到主索引中检索获得记录。</p>
+<h3 id="MyISAM索引：非聚集"><a href="#MyISAM索引：非聚集" class="headerlink" title="MyISAM索引：非聚集"></a>MyISAM索引：非聚集</h3><p>[1] 使用B+Tree作为索引结构, 叶结点的data域存放的是数据记录的地址（索引文件和数据文件分离, 索引文件仅保存数据记录的地址）。<br>[2] 算法：首先按照B+Tree搜索算法搜索索引, 如果指定的Key存在, 则取出其data域的值, 然后以data域的值为地址, 读取相应数据记录。</p>
+<h3 id="InnoDB索引：聚集"><a href="#InnoDB索引：聚集" class="headerlink" title="InnoDB索引：聚集"></a>InnoDB索引：聚集</h3><p>[1] 数据文件本身就是索引文件, 表数据文件本身就是按B+Tree组织的一个索引结构, 这棵树的叶结点data域保存了完整的数据记录。这个索引的key是数据表的主键, 因此<strong>InnoDB表数据文件本身就是主索引</strong>。<br>[2] InnoDB要求表必须有主键（MyISAM可以没有）；如果没有显式指定, MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键；如果不存在这种列, MySQL自动为InnoDB表生成一个隐含字段作为主键, 这个字段长度为6个字节, 类型为长整形。<br>[3] InnoDB的辅助索引data域存储相应记录主键的值而不是地址, 即<strong>InnoDB的所有辅助索引都引用主键作为data域</strong>。主键的搜索十分高效, 但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键, 然后用主键到主索引中检索获得记录。</p>
 <p><br></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="https://www.cnblogs.com/lanqi/p/10282279.html" target="_blank" rel="noopener">https://www.cnblogs.com/lanqi/p/10282279.html</a><br>[2] <a href="https://blog.csdn.net/a_helloword/article/details/81592317" target="_blank" rel="noopener">https://blog.csdn.net/a_helloword/article/details/81592317</a><br>[3] <a href="https://blog.csdn.net/SkySuperWL/article/details/52583579" target="_blank" rel="noopener">https://blog.csdn.net/SkySuperWL/article/details/52583579</a><br>[4] <a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">http://blog.codinglabs.org/articles/theory-of-mysql-index.html</a></p>
 

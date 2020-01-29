@@ -127,7 +127,140 @@
     <article class="post-article">
         <section class="markdown-content">
             <h2 id="查询代价的度量"><a href="#查询代价的度量" class="headerlink" title="查询代价的度量"></a>查询代价的度量</h2><p>[1] 基本步骤: 语法分析与翻译 (物理层上使用的表达式) ——优化——执行<br>[2] 查询代价的度量: <strong>磁盘存取</strong>、执行查询的CPU时间、并行/分布式系统的通信代价<br>查询计算计划: 传送磁盘块数、搜索磁盘次数<br>写磁盘的代价通常是读磁盘的两倍 (写后重新读验证写操作成功)<br>[3] 优化器通常努力尽可能降低查询计划总的<strong>资源消耗</strong>, 而不是缩低响应时间</p>
-<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h2 id="表达式计算-流水线"><a href="#表达式计算-流水线" class="headerlink" title="表达式计算 (流水线)"></a>表达式计算 (流水线)</h2>
+<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>[1] <strong>文件扫描</strong>是存取数据最低级的操作<br>[2] B+树的根通常放在内存的缓冲区, 甚至全部非叶级别都在内存中<br>[3] 码属性等值比较得到唯一一条记录, 非码属性等值比较得到多条记录</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">算法</th>
+<th style="text-align:left">开销</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>A1</strong></td>
+<td style="text-align:left">线性搜索</td>
+<td style="text-align:left">初始搜索+b个块的传输</td>
+<td style="text-align:left">b为文件中块的数量, 最多一条记录满足条件, 找到所需要的记录扫描终止, 平均只需要b/2</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>A2 A4</strong></td>
+<td style="text-align:left">B+树主索引, <strong>码属性</strong>等值比较<br>B+树辅助索引, 码属性等值比较</td>
+<td style="text-align:left">(h+1)*(搜索+传输)</td>
+<td style="text-align:left">h为索引高度, 索引查找穿越树的高度, 再加上一次I/O取记录, 每次I/O操作需要一次搜索和一次传输</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>A3 A5</strong></td>
+<td style="text-align:left">B+树主索引, <strong>非码属性</strong>等值比较<br>B+树主索引, 比较</td>
+<td style="text-align:left">h*(搜索+传输)+b*传输</td>
+<td style="text-align:left">b为包含<strong>具有指定搜索码记录</strong>的块数, 树的每层一次搜索, 第一个块一次搜索</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>A4 A6</strong></td>
+<td style="text-align:left">B+树辅助索引, <strong>非码属性</strong>等值比较<br>B+树辅助索引, 比较</td>
+<td style="text-align:left">(h+n)*(搜索+传输)+b*传输</td>
+<td style="text-align:left">n为所取记录数, 每条记录可能在不同块上, 每条记录都要一次搜索</td>
+</tr>
+</tbody>
+</table>
+<p>[4] <strong>A5</strong>主索引比较: A大于v, A大于等于v: 在索引中找到v检索出满足A=v的首条记录然后到文件末尾进行文件扫描<br>A小于v, A小于等于v: 没必要查找索引, 从文件头开始扫描直到遇到A=v的记录<br>[5] <strong>A6</strong>辅助索引比较: 使用有序辅助索引</p>
+<h3 id="复杂选择"><a href="#复杂选择" class="headerlink" title="复杂选择"></a>复杂选择</h3><blockquote>
+<p>选择中: and为<strong>合取</strong>, or为<strong>析取</strong> / 标识符中: and为<strong>交</strong>, or为<strong>并</strong></p>
+</blockquote>
+<p>[1] <strong>A7</strong>利用一个索引and<br>首先判断是够存在某个简单条件中的某个属性上的一条索引(<strong>存取路径</strong>), 存在则使用A2~A6<br>内存中测试记录是否满足其他简单条件<br>[2] <strong>A8</strong>利用组合索引and(多个属性上建立的一个索引)<br>[3] <strong>A9</strong>通过标识符的and实现and</p>
+<ul>
+<li><strong>前提</strong>: 各个条件所设计的字段有带<strong>记录指针</strong>的索引<br>使用记录指针或者记录标识符, 所有满足单个条件的记录指针的交集为满足and条件的指针的集合, 从而获得实际的记录<br>否则: 可以用剩余条件对所检索到的记录进行测试</li>
+<li><strong>代价</strong>: 扫描各个单独索引代价的和+获取检索到的指针列表的交集中的记录<br>对指针列表进行排序并按照拍寻顺序检索记录可以减少代价<ol>
+<li>把指向一个磁盘块中所有记录的指针归并到一起, 从而只需要进行一次I/O操作</li>
+<li>磁盘块的读取也要按照存储次序进行, 磁盘臂移动最少</li>
+</ol>
+</li>
+</ul>
+<p>[4] <strong>A10</strong>通过标识符的or实现or</p>
+<ul>
+<li><strong>前提</strong>: 各个条件所设计的字段有带<strong>记录指针</strong>的索引<br>使用记录指针或者记录标识符, 所有满足单个条件的记录指针的并集为满足or条件的指针的集合, 从而获得实际的记录</li>
+<li>否则: 线性扫描, 同时对每个元组进行or条件测试</li>
+</ul>
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p>[1] 逻辑排序: 在排序码上建索引然后使用索引按序读取关系——顺序读区元组可能导致每读取一个元组就要访问一次磁盘<br>[2] 物理排序:</p>
+<ul>
+<li>内存中能够完全容纳: 标准排序技术 (如快速排序)</li>
+<li>不能全部放在内存中的关系的排序: 外部排序</li>
+</ul>
+<p>[3] N路归并算法</p>
+<ol>
+<li>建立多个排序好的归并段, 假设内存缓冲区中可以用于排序的块数为M<br>读入关系的M快数据; 在内存中排序; 写到归并段文件R中</li>
+<li>对归并段归并, 假设有N个归并段<br>为每个归并段文件分配<strong>一个内存缓冲块</strong>+<strong>一个存放结果的数据块</strong><br>在所有缓冲块中按序挑选第一个元组, 把这个元组作为输出写出 并从缓冲块中删除;<br>如果任何一个归并段文件R的缓冲块为空并且没有达到R末尾, 读入R的下一块到相应缓冲块;<br>直到所有的缓冲块均空</li>
+<li>输出: 文件也在缓冲中 (<strong>减少写磁盘的次数</strong>)<br>第一阶段产生多于M个归并段, 或者不能为每个归并段分配一个块: 多趟进行, 每趟用M-1个归并段作为输入</li>
+</ol>
+<p>[4] 代价分析</p>
+<ul>
+<li>磁盘块传输<br>读入关系的数据块并写入: 2b次磁盘块传输<br>初始归并段数: b/M<br>共需要归并趟数: log(M-1)(n/M) , 因为每次归并会使归并段数减少为原来的1/(M-1); 每一趟归并读写各一次<br>共计: b*(2*log(M-1)(n/M)+1)</li>
+<li>磁盘搜索<br>产生归并段: 读取归并段数据; 写回数据<br>归并阶段: 每次读bb块数据(每个归并段分配bb个缓冲块), 每一趟归并需要b/bb次磁盘搜索<br>除了最后一趟, 其他写回磁盘也需要b/bb次磁盘搜索, 因为磁盘头在写回的连续块的间隔中可能已经移到别处<br>输出分配bb个块, 每一趟可以归并M/bb-1个归并段<br>共计: 2*b/M + b/bb*(2*log(M/bb-1)(b/M)-1)</li>
+</ul>
+<h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><blockquote>
+<p>是否有索引可用? 关系的物理存储形式?</p>
+<ul>
+<li>若连接的结果大小几乎与两个关系的笛卡尔积相当, 则采用<strong>块嵌套循环</strong></li>
+<li>若存在索引, 使用<strong>索引嵌套循环</strong></li>
+<li>若关系已排序, 使用<strong>归并连接</strong></li>
+<li><strong>散列连接</strong>将关系划分为多个部分, 每个部分都可以被内存容纳, 划分过程通过连接属性上的散列函数进行, 相应划分对可以独立的进行连接</li>
+</ul>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>[1] 去除重复</p>
+<ul>
+<li><strong>排序</strong>: 删除其他副本只保留一个<br>外排: 创建归并段文件时发现重复元组, 写回磁盘之前去除重复元组(减少块传输次数)</li>
+<li><strong>散列</strong>: 基于一个散列函数对整个关系划分, 每个划分读入内存, 建立<strong>内存散列索引</strong><br>创建散列索引时, 只插入不在索引中的元组, 否则元组被抛弃</li>
+</ul>
+<p>[2] 投影: 每个元组做投影, 然后取出重复记录<br>如果属性含有关系的码, 则结果中不会有重复元组</p>
+<p>[3] 集合运算</p>
+<ul>
+<li><strong>排序</strong>: 代价: br+bs次磁盘搜索 + br+bs次块传输</li>
+<li><strong>散列</strong>: 对于每种运算用相同的散列函数对两个关系进行划分</li>
+</ul>
+<p>[4] 外连接<br>例子: takes左外连接student: 包含takes于student的连接; 对于takes中每一个在student中没有匹配对元组, student的属性取空值<br>实现:</p>
+<ul>
+<li>计算连接, 然后将适当的元组加入连接结果(使用投影和集合差)</li>
+<li>对连接算法加以修改<br>嵌套循环连接算法: 把与内层关系的任何元组都不匹配的外层关系元组在填充空值后写入结果, 即可扩展为<strong>左外连接</strong><br>归并连接: 归并完成后将两个关系/某一个关系中与另一个关系任何元组都不匹配的元组填充空值后写入结果, 即可扩展为<strong>全外连接</strong>/左右外连接</li>
+</ul>
+<p>[5] 聚合函数</p>
+<ul>
+<li>使用排序或散列, 将元组聚集成组, 对每一组应用聚合运算获得结果<br>在组的构造过程中实现聚合运算, 而不是在所有元组聚集成组之后运算</li>
+<li>内存中将可容纳有序树结构或散列索引, 聚合在b次块传输+1次磁盘搜索中完成<br>其他方法: 3b次块传输+2b次磁盘搜索 (最坏情况)</li>
+</ul>
+<blockquote>
+<p>散列和排序是对偶的, 任何可以用散列实现的操作也可以用排序实现</p>
+</blockquote>
+<h2 id="表达式计算"><a href="#表达式计算" class="headerlink" title="表达式计算"></a>表达式计算</h2><h3 id="物化"><a href="#物化" class="headerlink" title="物化"></a>物化</h3><p>[1] 每个操作的结果物化到一个临时关系写到磁盘<br>代价: 运算代价+运算结果写到磁盘的代价<br>[2] 双缓冲: 一个用于连续执行算法, 一个用于写出结果——CPU和I/O可以并行<br>通过为输出缓冲非配额外的磁盘块, 以及每次同时写出多个块——减少磁盘搜索次数</p>
+<h3 id="流水线"><a href="#流水线" class="headerlink" title="流水线"></a>流水线</h3><p>[1] 例如: 先连接后投影可以当连接操作产生一个结果元组时, 该元组马上传递给投影操作处理<br>[2] 好处: 消除读写临时关系的代价, 减少查询计算代价<br>如果一个查询计算计划的根操作符合并到流水线, 可以迅速产生查询结果<br>[3] 实现</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>需求</strong>驱动的流水线</th>
+<th style="text-align:left"><strong>生产者</strong>驱动的流水线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">消极, 常用, 易实现</td>
+<td style="text-align:left">积极, 用于并行系统</td>
+</tr>
+<tr>
+<td style="text-align:left">系统不停向位于流水线顶端的操作发出需要元组的请求</td>
+<td style="text-align:left">不等待元组请求而是积极的产生元组, 不同操作的线程或进程的并发执行</td>
+</tr>
+<tr>
+<td style="text-align:left">每当一个操作收到需要元组的请求, 就计算下一个或若干个元组并返回</td>
+<td style="text-align:left">生产者驱动的流水线中每一个操作作为系统中单独的进程或者线程建模, 以处理流水线输入的元组流, 并产生相应的输出元组流</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>迭代算子</strong>维护两次调用之间的状态, 使得下一个next请求可以获取下面的结果元组</td>
+<td style="text-align:left">每一对相邻的操作创建一个缓冲区保存从一个操作传递到下一个的元组, 输出元组放入输出缓冲区直到满, 等待父操作将缓冲区中元组移除(作为自己输入)</td>
+</tr>
+</tbody>
+</table>
+<p>[4] 排序本质上是<strong>阻塞操作</strong>: 直到所有输入元组被检查, 才能输出结果<br>连接本身不是阻塞操作, 但是散列连接算法是一个阻塞操作: 输出任何元组之前, 要求两个输入被完全取回并被划分</p>
+
         </section>
         <!-- Tags START -->
         
@@ -177,7 +310,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询代价的度量"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;"></a>&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选择"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9009;&#x62E9;" class="headerlink" title="&#x9009;&#x62E9;"></a>&#x9009;&#x62E9;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#排序"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6392;&#x5E8F;" class="headerlink" title="&#x6392;&#x5E8F;"></a>&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x8FDE;&#x63A5;" class="headerlink" title="&#x8FDE;&#x63A5;"></a>&#x8FDE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5176;&#x4ED6;" class="headerlink" title="&#x5176;&#x4ED6;"></a>&#x5176;&#x4ED6;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达式计算-流水线"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;-&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97; (&#x6D41;&#x6C34;&#x7EBF;)"></a>&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97; (&#x6D41;&#x6C34;&#x7EBF;)</span></a></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询代价的度量"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;"></a>&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选择"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9009;&#x62E9;" class="headerlink" title="&#x9009;&#x62E9;"></a>&#x9009;&#x62E9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#复杂选择"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x590D;&#x6742;&#x9009;&#x62E9;" class="headerlink" title="&#x590D;&#x6742;&#x9009;&#x62E9;"></a>&#x590D;&#x6742;&#x9009;&#x62E9;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#排序"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6392;&#x5E8F;" class="headerlink" title="&#x6392;&#x5E8F;"></a>&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x8FDE;&#x63A5;" class="headerlink" title="&#x8FDE;&#x63A5;"></a>&#x8FDE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5176;&#x4ED6;" class="headerlink" title="&#x5176;&#x4ED6;"></a>&#x5176;&#x4ED6;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达式计算"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;" class="headerlink" title="&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;"></a>&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#物化"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text"><a href="#&#x7269;&#x5316;" class="headerlink" title="&#x7269;&#x5316;"></a>&#x7269;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#流水线"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text"><a href="#&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x6D41;&#x6C34;&#x7EBF;"></a>&#x6D41;&#x6C34;&#x7EBF;</span></a></li></ol></li></ol>
                 
     </div>
 </aside>
