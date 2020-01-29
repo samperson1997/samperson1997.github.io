@@ -126,7 +126,51 @@
     <!-- Article START -->
     <article class="post-article">
         <section class="markdown-content">
-            <h2 id="索引的更新"><a href="#索引的更新" class="headerlink" title="索引的更新"></a>索引的更新</h2><h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>[1] 稠密索引:<br>用出现在待插入记录中的搜索码进行查找, 如果不在索引中就在合适的位置插入索引项; 否则:</p>
+            <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>[1] 索引（Index）是帮助数据库高效获取数据的<strong>数据结构</strong><br>[2] 索引分为顺序索引和散列索引, <strong>顺序索引</strong>基于值的顺序排序</p>
+<h3 id="聚集索引和辅助索引"><a href="#聚集索引和辅助索引" class="headerlink" title="聚集索引和辅助索引"></a>聚集索引和辅助索引</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">聚集索引</th>
+<th style="text-align:left">辅助索引 (非聚集索引)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">以主键创建的索引 (也叫做主索引)</td>
+<td style="text-align:left">以非主键创建的索引 (也叫做二级索引)</td>
+</tr>
+<tr>
+<td style="text-align:left">搜索码的排序序列和关系的排序序列相匹配</td>
+<td style="text-align:left">搜索码的排序序列和关系的排序序列<strong>不匹配</strong>——可以提高<strong>不以聚集索引的搜索码</strong>作为搜索码的查询的性能, 但是增加了修改数据库的开销</td>
+</tr>
+<tr>
+<td style="text-align:left">在叶子节点存放的表中的<strong>数据</strong></td>
+<td style="text-align:left">在叶子节点中存放的是<strong>主键和索引列</strong>; 查询数据时, 拿到叶子上的主键再去查找相应的数据 (回表)</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">非聚集索引在建立的时候也未必是单列的, 可以多个列来创建索引,  但创建多个单列(非聚集)索引的时候, 会生成多个索引树 (所以过多创建索引会占用磁盘空间)</td>
+</tr>
+<tr>
+<td style="text-align:left">如果搜索码不是候选码, 索引只要指向具有该特定搜索码的第一条记录</td>
+<td style="text-align:left">如果搜索码不是候选码, 索引必须包含指向<strong>每一条记录</strong>的指针 (因为记录是按照聚集索引的搜索码顺序存放的, 具有同一个搜索码的记录可能分布在文件的任何地方)</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">实现非候选码的搜索码上的辅助索引: <strong>间接指针层</strong>, 指针不直接指向文件, 而是指向一个包含文件指针的桶</td>
+</tr>
+</tbody>
+</table>
+<h3 id="稠密索引和稀疏索引"><a href="#稠密索引和稀疏索引" class="headerlink" title="稠密索引和稀疏索引"></a>稠密索引和稀疏索引</h3><p>[1] <strong>稠密索引</strong>为每个搜索码值建立索引, <strong>稀疏索引</strong>只对某些搜索码值包含索引项<br>[2] <strong>只有索引是聚集索引时才能使用稀疏索引</strong><br>[3] 为每个块建立一个索引是较好的存取时间和空间开销的折中</p>
+<h3 id="多码访问"><a href="#多码访问" class="headerlink" title="多码访问"></a>多码访问</h3><p>[1] 具有两级和两级以上的索引称为<strong>多级索引</strong><br>[2] 包含多个属性的搜索码称为复合搜索码, 搜索码值按照字典序排序<br>使用多个单码索引的缺点: 为了得到一个很小的结果集, 必须扫描大量指针<br>解决: 位图索引 / R树(地理数据类型)</p>
+<blockquote>
+<p><strong>最左匹配原则</strong><br>[1] 针对：联合索引<br>[2] 最左匹配原则遇上范围查询就会停止, 剩下的字段都无法使用索引。<br>例如<code>a = 1 and b = 2</code> a、b字段都可以使用索引, 因为在a值确定的情况下b是相对有序的；<br>而<code>a &gt; 1 and b = 2</code>, a字段可以匹配上索引, 但b值不可以, 因为a的值是一个范围。<br>[3] <code>b = 2</code> 如果建立(a, b)顺序的索引, 匹配不到(a, b)索引；<br>但是如果查询条件是<code>a = 1 and b = 2</code>或者<code>a = 1</code>(又或者是<code>b = 2 and a = 1</code>)就可以, 因为优化器会自动调整a, b的顺序。<br>再比如<code>a = 1 and b = 2 and c &gt; 3 and d = 4</code>如果建立(a,b,c,d)顺序的索引, d是用不到索引的, 因为c字段是一个范围查询, 它之后的字段会停止匹配。</p>
+</blockquote>
+<p>[3] <strong>覆盖索引</strong>: 在创建多列索引的时候, 要查询出的列和索引是对应的, 不做回表操作<br>存储一些不是搜索码属性的<strong>属性值</strong>以及<strong>指向记录的指针</strong><br>优点: 仅仅使用索引就可以回答一些查询, 减小搜索码的大小, 使非叶结点有更大的扇出, 从而降低索引高度</p>
+<h3 id="索引技术的评价"><a href="#索引技术的评价" class="headerlink" title="索引技术的评价"></a>索引技术的评价</h3><p>[1] 访问类型、访问时间、插入时间、删除时间、空间开销<br>[2] <strong>MySQL数据库</strong>支持多种索引类型, 如BTree索引, 哈希索引, 全文索引等等。</p>
+<p><br></p>
+<p>[3] <strong>KV存储引擎的索引</strong>根据key是否有序, 分为两种：<br>如果key无序, 则可以采用hash的方法<br>如果key有序, 则可以采用B+树的方法, 或者类B+树的方法。</p>
+<h2 id="索引的更新"><a href="#索引的更新" class="headerlink" title="索引的更新"></a>索引的更新</h2><h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>[1] 稠密索引:<br>用出现在待插入记录中的搜索码进行查找, 如果不在索引中就在合适的位置插入索引项; 否则:</p>
 <ul>
 <li>如果索引项存储的是指向具有相同搜索码所有记录的指针, 就在索引项中增加一个指向新记录的指针;</li>
 <li>否则索引项存储的是指向具有相同搜索码的第一条记录的指针, 把待插入的记录放到具有相同搜索码的其他记录之后</li>
@@ -231,10 +275,6 @@
 </tr>
 </tbody>
 </table>
-<p>[3] 优点: 支持的数据量大，压缩效果好，可以更多的索引放在内存中，以保证每次查询小于等于1的读盘次数<br>[4] 缺点: 索引查找(hit和miss相同)、索引创建的性能、数据库的写入性能慢</p>
-<blockquote>
-<p>B+Tree索引可以用于使用 =, &gt;, &gt;=, &lt;, &lt;= 或者 BETWEEN 运算符的列比较<br>如果 LIKE 的参数是一个<strong>没有以通配符起始的常量字符串</strong>的话也可以使用这种索引</p>
-</blockquote>
 <h3 id="字符串上的索引和闪存"><a href="#字符串上的索引和闪存" class="headerlink" title="字符串上的索引和闪存"></a>字符串上的索引和闪存</h3><p>[1] 字符串上的索引</p>
 <ul>
 <li>字符串变长: 结点的合并和重新分布取决于结点中空间使用的比例, 而不是结点所能容纳的最大项数</li>
@@ -295,7 +335,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引的更新"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x7684;&#x66F4;&#x65B0;" class="headerlink" title="&#x7D22;&#x5F15;&#x7684;&#x66F4;&#x65B0;"></a>&#x7D22;&#x5F15;&#x7684;&#x66F4;&#x65B0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#插入"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x63D2;&#x5165;" class="headerlink" title="&#x63D2;&#x5165;"></a>&#x63D2;&#x5165;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#删除"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x5220;&#x9664;" class="headerlink" title="&#x5220;&#x9664;"></a>&#x5220;&#x9664;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#B-树索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x7D22;&#x5F15;" class="headerlink" title="B+&#x6811;&#x7D22;&#x5F15;"></a>B+&#x6811;&#x7D22;&#x5F15;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#查询"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#更新"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x66F4;&#x65B0;" class="headerlink" title="&#x66F4;&#x65B0;"></a>&#x66F4;&#x65B0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#不唯一搜索码"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#&#x4E0D;&#x552F;&#x4E00;&#x641C;&#x7D22;&#x7801;" class="headerlink" title="&#x4E0D;&#x552F;&#x4E00;&#x641C;&#x7D22;&#x7801;"></a>&#x4E0D;&#x552F;&#x4E00;&#x641C;&#x7D22;&#x7801;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#B-树索引扩展"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x7D22;&#x5F15;&#x6269;&#x5C55;" class="headerlink" title="B+&#x6811;&#x7D22;&#x5F15;&#x6269;&#x5C55;"></a>B+&#x6811;&#x7D22;&#x5F15;&#x6269;&#x5C55;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#B-树文件组织"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;" class="headerlink" title="B+&#x6811;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;"></a>B+&#x6811;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#B-树索引的批量加载"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x7D22;&#x5F15;&#x7684;&#x6279;&#x91CF;&#x52A0;&#x8F7D;" class="headerlink" title="B+&#x6811;&#x7D22;&#x5F15;&#x7684;&#x6279;&#x91CF;&#x52A0;&#x8F7D;"></a>B+&#x6811;&#x7D22;&#x5F15;&#x7684;&#x6279;&#x91CF;&#x52A0;&#x8F7D;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#B树索引"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#B&#x6811;&#x7D22;&#x5F15;" class="headerlink" title="B&#x6811;&#x7D22;&#x5F15;"></a>B&#x6811;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#字符串上的索引和闪存"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#&#x5B57;&#x7B26;&#x4E32;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#x548C;&#x95EA;&#x5B58;" class="headerlink" title="&#x5B57;&#x7B26;&#x4E32;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#x548C;&#x95EA;&#x5B58;"></a>&#x5B57;&#x7B26;&#x4E32;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#x548C;&#x95EA;&#x5B58;</span></a></li></ol></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本概念"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x672C;&#x6982;&#x5FF5;" class="headerlink" title="&#x57FA;&#x672C;&#x6982;&#x5FF5;"></a>&#x57FA;&#x672C;&#x6982;&#x5FF5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#聚集索引和辅助索引"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x805A;&#x96C6;&#x7D22;&#x5F15;&#x548C;&#x8F85;&#x52A9;&#x7D22;&#x5F15;" class="headerlink" title="&#x805A;&#x96C6;&#x7D22;&#x5F15;&#x548C;&#x8F85;&#x52A9;&#x7D22;&#x5F15;"></a>&#x805A;&#x96C6;&#x7D22;&#x5F15;&#x548C;&#x8F85;&#x52A9;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#稠密索引和稀疏索引"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x7A20;&#x5BC6;&#x7D22;&#x5F15;&#x548C;&#x7A00;&#x758F;&#x7D22;&#x5F15;" class="headerlink" title="&#x7A20;&#x5BC6;&#x7D22;&#x5F15;&#x548C;&#x7A00;&#x758F;&#x7D22;&#x5F15;"></a>&#x7A20;&#x5BC6;&#x7D22;&#x5F15;&#x548C;&#x7A00;&#x758F;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多码访问"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7801;&#x8BBF;&#x95EE;" class="headerlink" title="&#x591A;&#x7801;&#x8BBF;&#x95EE;"></a>&#x591A;&#x7801;&#x8BBF;&#x95EE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#索引技术的评价"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x6280;&#x672F;&#x7684;&#x8BC4;&#x4EF7;" class="headerlink" title="&#x7D22;&#x5F15;&#x6280;&#x672F;&#x7684;&#x8BC4;&#x4EF7;"></a>&#x7D22;&#x5F15;&#x6280;&#x672F;&#x7684;&#x8BC4;&#x4EF7;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引的更新"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x7684;&#x66F4;&#x65B0;" class="headerlink" title="&#x7D22;&#x5F15;&#x7684;&#x66F4;&#x65B0;"></a>&#x7D22;&#x5F15;&#x7684;&#x66F4;&#x65B0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#插入"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x63D2;&#x5165;" class="headerlink" title="&#x63D2;&#x5165;"></a>&#x63D2;&#x5165;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#删除"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5220;&#x9664;" class="headerlink" title="&#x5220;&#x9664;"></a>&#x5220;&#x9664;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#B-树索引"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x7D22;&#x5F15;" class="headerlink" title="B+&#x6811;&#x7D22;&#x5F15;"></a>B+&#x6811;&#x7D22;&#x5F15;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#查询"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#更新"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x66F4;&#x65B0;" class="headerlink" title="&#x66F4;&#x65B0;"></a>&#x66F4;&#x65B0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#不唯一搜索码"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#&#x4E0D;&#x552F;&#x4E00;&#x641C;&#x7D22;&#x7801;" class="headerlink" title="&#x4E0D;&#x552F;&#x4E00;&#x641C;&#x7D22;&#x7801;"></a>&#x4E0D;&#x552F;&#x4E00;&#x641C;&#x7D22;&#x7801;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#B-树索引扩展"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x7D22;&#x5F15;&#x6269;&#x5C55;" class="headerlink" title="B+&#x6811;&#x7D22;&#x5F15;&#x6269;&#x5C55;"></a>B+&#x6811;&#x7D22;&#x5F15;&#x6269;&#x5C55;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#B-树文件组织"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;" class="headerlink" title="B+&#x6811;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;"></a>B+&#x6811;&#x6587;&#x4EF6;&#x7EC4;&#x7EC7;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#B-树索引的批量加载"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#B-&#x6811;&#x7D22;&#x5F15;&#x7684;&#x6279;&#x91CF;&#x52A0;&#x8F7D;" class="headerlink" title="B+&#x6811;&#x7D22;&#x5F15;&#x7684;&#x6279;&#x91CF;&#x52A0;&#x8F7D;"></a>B+&#x6811;&#x7D22;&#x5F15;&#x7684;&#x6279;&#x91CF;&#x52A0;&#x8F7D;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#B树索引"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text"><a href="#B&#x6811;&#x7D22;&#x5F15;" class="headerlink" title="B&#x6811;&#x7D22;&#x5F15;"></a>B&#x6811;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#字符串上的索引和闪存"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text"><a href="#&#x5B57;&#x7B26;&#x4E32;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#x548C;&#x95EA;&#x5B58;" class="headerlink" title="&#x5B57;&#x7B26;&#x4E32;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#x548C;&#x95EA;&#x5B58;"></a>&#x5B57;&#x7B26;&#x4E32;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#x548C;&#x95EA;&#x5B58;</span></a></li></ol></li></ol>
                 
     </div>
 </aside>

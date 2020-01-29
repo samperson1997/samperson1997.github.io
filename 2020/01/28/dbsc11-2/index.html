@@ -126,56 +126,76 @@
     <!-- Article START -->
     <article class="post-article">
         <section class="markdown-content">
-            <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>[1] 索引（Index）是帮助数据库高效获取数据的<strong>数据结构</strong><br>[2] 索引分为顺序索引和散列索引, <strong>顺序索引</strong>基于值的顺序排序</p>
-<h3 id="聚集索引和辅助索引"><a href="#聚集索引和辅助索引" class="headerlink" title="聚集索引和辅助索引"></a>聚集索引和辅助索引</h3><table>
+            <h2 id="散列索引"><a href="#散列索引" class="headerlink" title="散列索引"></a>散列索引</h2><h3 id="静态散列"><a href="#静态散列" class="headerlink" title="静态散列"></a>静态散列</h3><p>[1] 散列文件组织中通过计算所需记录搜索码值上的函数直接获得该记录的<strong>磁盘块地址</strong><br>散列索引组织中把<strong>搜索码</strong>以及它们相<strong>关联的指针</strong>组织成散列文件结构<br>[2] 散列字符串的散列函数: 最初把散列函数值设为0, 然后从字符串的第一个字符开始迭代, 把散列函数的值*31再加上下一个字符的值<br>每次乘法运算和除法运算自动模可能的最大整数值+1<br>[3] 桶溢出</p>
+<ul>
+<li>桶不足: 一般为n/f*(1+d), 避让因子d=0.2表示20%的桶是空的, n表示存储记录总数, f表示一个桶中存放记录数目</li>
+<li>偏斜: 多条记录具有相同搜索码; 散列函数造成搜索码分布不均</li>
+</ul>
+<p>[4] 闭地址: 溢出桶和溢出链, 适用于数据库<br>开地址: 删除操作麻烦, 适用于构造编译器和汇编器的符号表</p>
+<h3 id="动态散列"><a href="#动态散列" class="headerlink" title="动态散列"></a>动态散列</h3><p>[1] <strong>可扩充散列</strong>通过桶的分裂和合并适应数据库大小的变化, 仅作用于一个桶, 保持空间使用率, 带来性能开销低<br>[2] 记录插入文件时<strong>按需建桶</strong>: 开始时不使用散列值的全部b位, 任意时刻使用位数i小于等于b<br>i个位用作附加的桶地址表中的偏移量<br>[3] 给每一个桶附加一个整数值用来表明共同的散列前缀长度, 因为集合连续的表项可能指向同一个桶<br>[4] 优点: 性能不随文件的增长而降低, 空间开销最小, 桶动态分配<br>缺点: 查找设计附加的间接层(桶地址表) ——线性散列使用更多溢出桶避免了间接层</p>
+<h3 id="动态散列的查询和更新"><a href="#动态散列的查询和更新" class="headerlink" title="动态散列的查询和更新"></a>动态散列的查询和更新</h3><p>[1] 查询</p>
+<ol>
+<li>取h(K)前i个高位</li>
+<li>为这个位串查找对应的表项</li>
+<li>根据表项指针得到对应桶的位置</li>
+</ol>
+<p>[2] 删除</p>
+<ol>
+<li>将搜索码从桶中删除, 把记录从文件中删除</li>
+<li>如果桶是空的, 桶也要删除——合并桶 / 桶地址表的大小也可能减半</li>
+</ol>
+<p>[3] 插入 (<strong>例子: 293-296页</strong>)</p>
+<ol>
+<li>如果桶j有剩余空间, 将记录插入该桶</li>
+<li>如果桶j已满, 分裂这个桶并将已有记录和新记录一起重新分配:<br>如果桶地址表只有一个表项指向桶j——增加桶底指标的大小, 容纳桶j分裂产生的两个桶指针<br>散列值+1位——原表中每个表项被两个表项替代, 两个表项都包含和原始表项一样的指针;<br>如果桶地址表有多个表项指向j, 分配一个新桶</li>
+</ol>
+<h3 id="顺序索引和散列的比较"><a href="#顺序索引和散列的比较" class="headerlink" title="顺序索引和散列的比较"></a>顺序索引和散列的比较</h3><p>考虑因素:<br>[1] 周期性重组的代价<br>[2] 插入和删除的相对频率<br>[3] 以最坏情况的访问时间为代价优化平均访问时间<br>[4] 查询类型(值查询 / 范围查询)</p>
+<table>
 <thead>
 <tr>
-<th style="text-align:left">聚集索引</th>
-<th style="text-align:left">辅助索引 (非聚集索引)</th>
+<th style="text-align:left">B+树索引</th>
+<th style="text-align:left">散列索引</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">以主键创建的索引 (也叫做主索引)</td>
-<td style="text-align:left">以非主键创建的索引 (也叫做二级索引)</td>
+<td style="text-align:left">优点: 支持的数据量大，压缩效果好，可以更多的索引放在内存中，以保证每次查询小于等于1的读盘次数</td>
+<td style="text-align:left">查找(hit), 写入的时间复杂度非常低, 性能非常高, 要比采用B+树的方法快得多</td>
 </tr>
 <tr>
-<td style="text-align:left">搜索码的排序序列和关系的排序序列相匹配</td>
-<td style="text-align:left">搜索码的排序序列和关系的排序序列<strong>不匹配</strong>——可以提高<strong>不以聚集索引的搜索码</strong>作为搜索码的查询的性能, 但是增加了修改数据库的开销</td>
+<td style="text-align:left">缺点: 索引查找(hit和miss相同)、索引创建的性能、数据库的写入性能慢</td>
+<td style="text-align:left">hash的方法为了处理碰撞, 空间利用率比较低, 占用空间较大。在miss的情况下, hash方法的查找效率会急剧下降</td>
 </tr>
 <tr>
-<td style="text-align:left">在叶子节点存放的表中的<strong>数据</strong></td>
-<td style="text-align:left">在叶子节点中存放的是<strong>主键和索引列</strong>; 查询数据时, 拿到叶子上的主键再去查找相应的数据 (回表)</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">非聚集索引在建立的时候也未必是单列的, 可以多个列来创建索引,  但创建多个单列(非聚集)索引的时候, 会生成多个索引树 (所以过多创建索引会占用磁盘空间)</td>
-</tr>
-<tr>
-<td style="text-align:left">如果搜索码不是候选码, 索引只要指向具有该特定搜索码的第一条记录</td>
-<td style="text-align:left">如果搜索码不是候选码, 索引必须包含指向<strong>每一条记录</strong>的指针 (因为记录是按照聚集索引的搜索码顺序存放的, 具有同一个搜索码的记录可能分布在文件的任何地方)</td>
+<td style="text-align:left">可以用于使用 =, &gt;, &gt;=, &lt;, &lt;= 或者 BETWEEN 运算符的列比较; 如果 LIKE 的参数是一个<strong>没有以通配符起始的常量字符串</strong>的话也可以使用这种索引</td>
+<td style="text-align:left"><strong>只能够用于使用 = 运算符的相等比较</strong> (但是速度更快); 散列索引<strong>不能够</strong>用于诸如 &lt;, &gt; 等用于查找一个范围值的比较运算符; 依赖于单值查找的系统被称为 “键-值存储”, 对于这种系统, 尽可能地使用散列索引</td>
 </tr>
 <tr>
 <td style="text-align:left"></td>
-<td style="text-align:left">实现非候选码的搜索码上的辅助索引: <strong>间接指针层</strong>, 指针不直接指向文件, 而是指向一个包含文件指针的桶</td>
+<td style="text-align:left">优化器<strong>不能够</strong>使用 hash 索引来加速 ORDER BY 操作; 这种类型的索引不能够用于按照顺序查找下一个条目</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">MySql <strong>无法</strong>使用 hash 索引估计两个值之间有多少行 (这种情况由范围优化器来决定使用哪个索引)</td>
+</tr>
+<tr>
+<td style="text-align:left">任何该键的左前缀都可用以查找记录</td>
+<td style="text-align:left"><strong>不支持</strong>最左匹配原则, 查找某行记录必须进行<strong>全键匹配</strong></td>
 </tr>
 </tbody>
 </table>
-<h3 id="稠密索引和稀疏索引"><a href="#稠密索引和稀疏索引" class="headerlink" title="稠密索引和稀疏索引"></a>稠密索引和稀疏索引</h3><p>[1] <strong>稠密索引</strong>为每个搜索码值建立索引, <strong>稀疏索引</strong>只对某些搜索码值包含索引项<br>[2] <strong>只有索引是聚集索引时才能使用稀疏索引</strong><br>[3] 为每个块建立一个索引是较好的存取时间和空间开销的折中</p>
-<h3 id="多码访问"><a href="#多码访问" class="headerlink" title="多码访问"></a>多码访问</h3><p>[1] 具有两级和两级以上的索引称为<strong>多级索引</strong><br>[2] 包含多个属性的搜索码称为复合搜索码, 搜索码值按照字典序排序<br>[2] <strong>覆盖索引</strong>: 在创建多列索引的时候, 要查询出的列和索引是对应的, 不做回表操作</p>
-<h3 id="最左匹配原则"><a href="#最左匹配原则" class="headerlink" title="最左匹配原则"></a>最左匹配原则</h3><p>[1] 针对：联合索引</p>
-<p><br></p>
-<p>[2] 最左匹配原则遇上范围查询就会停止, 剩下的字段都无法使用索引。<br>例如<code>a = 1 and b = 2</code> a、b字段都可以使用索引, 因为在a值确定的情况下b是相对有序的；<br>而<code>a &gt; 1 and b = 2</code>, a字段可以匹配上索引, 但b值不可以, 因为a的值是一个范围。</p>
-<p><br></p>
-<p>[3] <code>b = 2</code> 如果建立(a, b)顺序的索引, 匹配不到(a, b)索引；<br>但是如果查询条件是<code>a = 1 and b = 2</code>或者<code>a = 1</code>(又或者是<code>b = 2 and a = 1</code>)就可以, 因为优化器会自动调整a, b的顺序。<br>再比如<code>a = 1 and b = 2 and c &gt; 3 and d = 4</code>如果建立(a,b,c,d)顺序的索引, d是用不到索引的, 因为c字段是一个范围查询, 它之后的字段会停止匹配。</p>
-<h3 id="索引技术的评价"><a href="#索引技术的评价" class="headerlink" title="索引技术的评价"></a>索引技术的评价</h3><p>[1] 访问类型、访问时间、插入时间、删除时间、空间开销<br>[2] <strong>MySQL数据库</strong>支持多种索引类型, 如BTree索引, 哈希索引, 全文索引等等。</p>
-<p><br></p>
-<p>[3] <strong>KV存储引擎的索引</strong>根据key是否有序, 分为两种：<br>如果key无序, 则可以采用hash的方法<br>如果key有序, 则可以采用B+树的方法, 或者类B+树的方法。</p>
-<h2 id="散列索引-hash"><a href="#散列索引-hash" class="headerlink" title="散列索引 (hash)"></a>散列索引 (hash)</h2><blockquote>
-<p>Hash 索引<strong>只能够用于使用 = 运算符的相等比较</strong> (但是速度更快)。<br>Hash 索引<strong>不能够</strong>用于诸如 &lt;, &gt; 等用于查找一个范围值的比较运算符。<br>依赖于单值查找的系统被称为 “键-值存储”；对于这种系统, 尽可能地使用 hash 索引。 </p>
-</blockquote>
-<p><br></p>
-<p>[1] 优点：查找(hit), 写入的时间复杂度非常低, 性能非常高, 要比采用B+树的方法快得多<br>[2] 缺点：hash的方法为了处理碰撞, 空间利用率比较低, 占用空间较大。在miss的情况下, hash方法的查找效率会急剧下降<br>[3] 优化器<strong>不能够</strong>使用 hash 索引来加速 ORDER BY 操作。这种类型的索引不能够用于按照顺序查找下一个条目。<br>[4] MySql <strong>无法</strong>使用 hash 索引估计两个值之间有多少行 (这种情况由范围优化器来决定使用哪个索引)。<br>[5] <strong>不支持</strong>最左匹配原则, 查找某行记录必须进行<strong>全键匹配</strong>。而 B-tree 索引, 任何该键的左前缀都可用以查找记录。</p>
+<h2 id="位图索引"><a href="#位图索引" class="headerlink" title="位图索引"></a>位图索引</h2><p>[1] 每一个位图索引都建立在一个码上, 位图索引是为多码上的简单查询设计的特殊索引<br>[2] 位图索引很小, <strong>每个位图的位数=关系中的记录数</strong>, 一位表示一条记录<br>[3] 应用:</p>
+<ul>
+<li>属性只能取很少的一些数值(2~20), 对多个码的选择操作, 逻辑<strong>and</strong><br>如果满足条件的记录所占比例很大, 扫描整个关系代价更低</li>
+<li>统计满足所给选择条件的元组数</li>
+</ul>
+<p>[4] <strong>存在位图</strong>可用于识别被删除的记录</p>
+<ul>
+<li>计算对某个条件取反的断言(not)后, 补码位图必须与存在位图and使得已删除对应的位为0</li>
+<li>处理空值补码位图也必须和空值的补码位图and</li>
+</ul>
+<p>[5] 计算位图中1的数目: 维护一个256大小数组, 第i项存储<strong>i的二进制表示</strong>中值为1的个数<br>开始总计数值为0, 位图中每一<strong>字节</strong>作为数组下标, 将其中存储的值加到总计数值上</p>
+<p>[6] 对于一些属性经常出现, 另一些属性出现频率很小的关系, 结合B+树和位图索引<br>B+树索引叶节点保留这个值为索引属性值的所有记录列表, 列表的每个元素可以是记录标识符; 对于在许多记录中出现的值(多于1/64), 存储一个位图而不是记录的列表</p>
 <h2 id="不同存储引擎对索引的实现方式"><a href="#不同存储引擎对索引的实现方式" class="headerlink" title="不同存储引擎对索引的实现方式"></a>不同存储引擎对索引的实现方式</h2><p>索引本身很大, 不可能全部存储在<strong>内存</strong>中, 往往以索引文件的形式存储的<strong>磁盘</strong>上, 查找过程中就要产生磁盘I/O消耗, 相对于内存存取, I/O存取的消耗要高几个数量级。<br>评价数据结构作为索引的优劣最重要的指标：在查找过程中磁盘I/O操作次数的复杂度。</p>
 <h3 id="MyISAM索引：非聚集"><a href="#MyISAM索引：非聚集" class="headerlink" title="MyISAM索引：非聚集"></a>MyISAM索引：非聚集</h3><p>[1] 使用B+Tree作为索引结构, 叶节点的data域存放的是数据记录的地址（索引文件和数据文件分离, 索引文件仅保存数据记录的地址）。<br>[2] 算法：首先按照B+Tree搜索算法搜索索引, 如果指定的Key存在, 则取出其data域的值, 然后以data域的值为地址, 读取相应数据记录。</p>
 <h3 id="InnoDB索引：聚集"><a href="#InnoDB索引：聚集" class="headerlink" title="InnoDB索引：聚集"></a>InnoDB索引：聚集</h3><p>[1] 数据文件本身就是索引文件, 表数据文件本身就是按B+Tree组织的一个索引结构, 这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键, 因此<strong>InnoDB表数据文件本身就是主索引</strong>。<br>[2] InnoDB要求表必须有主键（MyISAM可以没有）；如果没有显式指定, MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键；如果不存在这种列, MySQL自动为InnoDB表生成一个隐含字段作为主键, 这个字段长度为6个字节, 类型为长整形。<br>[3] InnoDB的辅助索引data域存储相应记录主键的值而不是地址, 即<strong>InnoDB的所有辅助索引都引用主键作为data域</strong>。主键的搜索十分高效, 但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键, 然后用主键到主索引中检索获得记录。</p>
@@ -231,7 +251,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本概念"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x672C;&#x6982;&#x5FF5;" class="headerlink" title="&#x57FA;&#x672C;&#x6982;&#x5FF5;"></a>&#x57FA;&#x672C;&#x6982;&#x5FF5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#聚集索引和辅助索引"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x805A;&#x96C6;&#x7D22;&#x5F15;&#x548C;&#x8F85;&#x52A9;&#x7D22;&#x5F15;" class="headerlink" title="&#x805A;&#x96C6;&#x7D22;&#x5F15;&#x548C;&#x8F85;&#x52A9;&#x7D22;&#x5F15;"></a>&#x805A;&#x96C6;&#x7D22;&#x5F15;&#x548C;&#x8F85;&#x52A9;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#稠密索引和稀疏索引"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x7A20;&#x5BC6;&#x7D22;&#x5F15;&#x548C;&#x7A00;&#x758F;&#x7D22;&#x5F15;" class="headerlink" title="&#x7A20;&#x5BC6;&#x7D22;&#x5F15;&#x548C;&#x7A00;&#x758F;&#x7D22;&#x5F15;"></a>&#x7A20;&#x5BC6;&#x7D22;&#x5F15;&#x548C;&#x7A00;&#x758F;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多码访问"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7801;&#x8BBF;&#x95EE;" class="headerlink" title="&#x591A;&#x7801;&#x8BBF;&#x95EE;"></a>&#x591A;&#x7801;&#x8BBF;&#x95EE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最左匹配原则"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x5DE6;&#x5339;&#x914D;&#x539F;&#x5219;" class="headerlink" title="&#x6700;&#x5DE6;&#x5339;&#x914D;&#x539F;&#x5219;"></a>&#x6700;&#x5DE6;&#x5339;&#x914D;&#x539F;&#x5219;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#索引技术的评价"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x6280;&#x672F;&#x7684;&#x8BC4;&#x4EF7;" class="headerlink" title="&#x7D22;&#x5F15;&#x6280;&#x672F;&#x7684;&#x8BC4;&#x4EF7;"></a>&#x7D22;&#x5F15;&#x6280;&#x672F;&#x7684;&#x8BC4;&#x4EF7;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#散列索引-hash"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x6563;&#x5217;&#x7D22;&#x5F15;-hash" class="headerlink" title="&#x6563;&#x5217;&#x7D22;&#x5F15; (hash)"></a>&#x6563;&#x5217;&#x7D22;&#x5F15; (hash)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#不同存储引擎对索引的实现方式"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x4E0D;&#x540C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5BF9;&#x7D22;&#x5F15;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;" class="headerlink" title="&#x4E0D;&#x540C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5BF9;&#x7D22;&#x5F15;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;"></a>&#x4E0D;&#x540C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5BF9;&#x7D22;&#x5F15;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MyISAM索引：非聚集"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#MyISAM&#x7D22;&#x5F15;&#xFF1A;&#x975E;&#x805A;&#x96C6;" class="headerlink" title="MyISAM&#x7D22;&#x5F15;&#xFF1A;&#x975E;&#x805A;&#x96C6;"></a>MyISAM&#x7D22;&#x5F15;&#xFF1A;&#x975E;&#x805A;&#x96C6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#InnoDB索引：聚集"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#InnoDB&#x7D22;&#x5F15;&#xFF1A;&#x805A;&#x96C6;" class="headerlink" title="InnoDB&#x7D22;&#x5F15;&#xFF1A;&#x805A;&#x96C6;"></a>InnoDB&#x7D22;&#x5F15;&#xFF1A;&#x805A;&#x96C6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#散列索引"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6563;&#x5217;&#x7D22;&#x5F15;" class="headerlink" title="&#x6563;&#x5217;&#x7D22;&#x5F15;"></a>&#x6563;&#x5217;&#x7D22;&#x5F15;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#静态散列"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x9759;&#x6001;&#x6563;&#x5217;" class="headerlink" title="&#x9759;&#x6001;&#x6563;&#x5217;"></a>&#x9759;&#x6001;&#x6563;&#x5217;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态散列"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x52A8;&#x6001;&#x6563;&#x5217;" class="headerlink" title="&#x52A8;&#x6001;&#x6563;&#x5217;"></a>&#x52A8;&#x6001;&#x6563;&#x5217;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态散列的查询和更新"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x52A8;&#x6001;&#x6563;&#x5217;&#x7684;&#x67E5;&#x8BE2;&#x548C;&#x66F4;&#x65B0;" class="headerlink" title="&#x52A8;&#x6001;&#x6563;&#x5217;&#x7684;&#x67E5;&#x8BE2;&#x548C;&#x66F4;&#x65B0;"></a>&#x52A8;&#x6001;&#x6563;&#x5217;&#x7684;&#x67E5;&#x8BE2;&#x548C;&#x66F4;&#x65B0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#顺序索引和散列的比较"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><a href="#&#x987A;&#x5E8F;&#x7D22;&#x5F15;&#x548C;&#x6563;&#x5217;&#x7684;&#x6BD4;&#x8F83;" class="headerlink" title="&#x987A;&#x5E8F;&#x7D22;&#x5F15;&#x548C;&#x6563;&#x5217;&#x7684;&#x6BD4;&#x8F83;"></a>&#x987A;&#x5E8F;&#x7D22;&#x5F15;&#x548C;&#x6563;&#x5217;&#x7684;&#x6BD4;&#x8F83;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#位图索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x4F4D;&#x56FE;&#x7D22;&#x5F15;" class="headerlink" title="&#x4F4D;&#x56FE;&#x7D22;&#x5F15;"></a>&#x4F4D;&#x56FE;&#x7D22;&#x5F15;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#不同存储引擎对索引的实现方式"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x4E0D;&#x540C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5BF9;&#x7D22;&#x5F15;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;" class="headerlink" title="&#x4E0D;&#x540C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5BF9;&#x7D22;&#x5F15;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;"></a>&#x4E0D;&#x540C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5BF9;&#x7D22;&#x5F15;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MyISAM索引：非聚集"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#MyISAM&#x7D22;&#x5F15;&#xFF1A;&#x975E;&#x805A;&#x96C6;" class="headerlink" title="MyISAM&#x7D22;&#x5F15;&#xFF1A;&#x975E;&#x805A;&#x96C6;"></a>MyISAM&#x7D22;&#x5F15;&#xFF1A;&#x975E;&#x805A;&#x96C6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#InnoDB索引：聚集"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#InnoDB&#x7D22;&#x5F15;&#xFF1A;&#x805A;&#x96C6;" class="headerlink" title="InnoDB&#x7D22;&#x5F15;&#xFF1A;&#x805A;&#x96C6;"></a>InnoDB&#x7D22;&#x5F15;&#xFF1A;&#x805A;&#x96C6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
                 
     </div>
 </aside>

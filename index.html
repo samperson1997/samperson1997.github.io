@@ -115,9 +115,49 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2020/01/29/dbsc12/">⛵️帆船书#12 | 查询处理</a>
+      </h2>
+      <p class="article-date">January 29, 2020</p>
+      
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          查询代价的度量[1] 基本步骤: 语法分析与翻译 (物理层上使用的表达式) ——优化——执行[2] 查询代价的度量: 磁盘存取、执行查询的CPU时间、并行/分布式系统的通信代价查询计算计划: 传送磁盘块数、搜索磁盘次数写磁盘的代价通常是读磁盘的两倍 (写后重新读验证写操作成功)[3] 优化器 ...
+        
+      </div>
+      <a class="more" href="/2020/01/29/dbsc12/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2020/01/28/dbsc11-2/">⛵️帆船书#11-2 | 散列索引</a>
       </h2>
       <p class="article-date">January 28, 2020</p>
+      
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          散列索引静态散列[1] 散列文件组织中通过计算所需记录搜索码值上的函数直接获得该记录的磁盘块地址散列索引组织中把搜索码以及它们相关联的指针组织成散列文件结构[2] 散列字符串的散列函数: 最初把散列函数值设为0, 然后从字符串的第一个字符开始迭代, 把散列函数的值*31再加上下一个字符的值每 ...
+        
+      </div>
+      <a class="more" href="/2020/01/28/dbsc11-2/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/01/27/dbsc11/">⛵️帆船书#11-1 | 顺序索引</a>
+      </h2>
+      <p class="article-date">January 27, 2020</p>
       
         
   <a href="/tags#数据库系统概念" >
@@ -142,29 +182,6 @@
 
 
 搜索码的排序 ...
-        
-      </div>
-      <a class="more" href="/2020/01/28/dbsc11-2/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/01/27/dbsc11/">⛵️帆船书#11-1 | 顺序索引</a>
-      </h2>
-      <p class="article-date">January 27, 2020</p>
-      
-        
-  <a href="/tags#数据库系统概念" >
-    <span class="tag-code">数据库系统概念</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          索引的更新插入[1] 稠密索引:用出现在待插入记录中的搜索码进行查找, 如果不在索引中就在合适的位置插入索引项; 否则:
-
-如果索引项存储的是指向具有相同搜索码所有记录的指针, 就在索引项中增加一个指向新记录的指针;
-否则索引项存储的是指向具有相同搜索码的第一条记录的指针, 把待插入的记录放 ...
         
       </div>
       <a class="more" href="/2020/01/27/dbsc11/">Read more</a>
@@ -339,26 +356,6 @@ DTWDynamic time warping (DTW)是对时间序列更可靠的距离度量方法，
         
       </div>
       <a class="more" href="/2019/07/22/Keogh-1/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/07/05/hadoop-spark/">Ubuntu+Hadoop+Spark+IoTDB部署</a>
-      </h2>
-      <p class="article-date">July 5, 2019</p>
-      
-        
-  <a href="/tags#分布式" >
-    <span class="tag-code">分布式</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          安装及配置Hadoop[1] 安装apt: sudo apt-get update[2] 安装vim: sudo apt-get install vim[3] 安装Java8: sudo apt-get install openjdk-8-jre openjdk-8-jdk找到安装路径, 用 ...
-        
-      </div>
-      <a class="more" href="/2019/07/05/hadoop-spark/">Read more</a>
     </article>
   
 
