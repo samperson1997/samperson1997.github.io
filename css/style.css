@@ -3,7 +3,7 @@
   src: url("../fonts/SourceSansPro.ttf");
 }
 ::selection {
-  background: #66f;
+  background: #42b983;
   color: #fff;
 }
 body {
@@ -30,7 +30,7 @@ p {
 }
 a {
   text-decoration: none;
-  color: #66f;
+  color: #42b983;
   cursor: pointer;
 }
 p {
@@ -100,7 +100,7 @@ h2.article-head {
   color: #34495e;
 }
 .article-head > a:hover {
-  border-bottom: 2px solid #66f;
+  border-bottom: 2px solid #42b983;
 }
 .article-date {
   color: #7f8c8d;
@@ -304,7 +304,7 @@ h2.article-head {
   width: 40px;
   height: 40px;
   padding: 5px;
-  background-color: #66f;
+  background-color: #42b983;
   border-radius: 20px;
   transform: translate(80px, 0);
   transition: all 0.3s ease;
@@ -337,7 +337,7 @@ h2.article-head {
   box-shadow: 0 0 3px rgba(14,14,14,0.26);
 }
 .fixed-header .home-link {
-  color: #66f;
+  color: #42b983;
 }
 .fixed-header .menu .icon-bar {
   background-color: #7f8c8d;
@@ -396,10 +396,10 @@ h2.article-head {
   padding-bottom: 3px;
 }
 .item-link:hover {
-  border-bottom: 3px solid #66f;
+  border-bottom: 3px solid #42b983;
 }
 .active {
-  border-bottom: 3px solid #66f;
+  border-bottom: 3px solid #42b983;
 }
 .menu {
   display: none;
@@ -467,7 +467,7 @@ h2.article-head {
   color: #7f8c8d;
 }
 .mobile-active {
-  color: #66f;
+  color: #42b983;
 }
 .app-footer {
   padding: 1em 0;
@@ -525,6 +525,7 @@ h2.article-head {
 .markdown-content p,
 .article-summary p {
   line-height: 1.6em;
+  padding: 8px 0px;
 }
 .markdown-content p code,
 .article-summary p code {
@@ -558,7 +559,7 @@ h2.article-head {
 .markdown-content h4:before,
 .article-summary h4:before {
   content: "#";
-  color: #66f;
+  color: #42b983;
   margin-right: 5px;
   font-size: 1.2em;
   font-weight: 700;
@@ -571,8 +572,8 @@ h2.article-head {
 .markdown-content blockquote,
 .article-summary blockquote {
   margin: 1em 0;
-  padding: 15px 20px;
-  border-left: 4px solid #66f;
+  padding: 0 20px;
+  border-left: 4px solid #42b983;
   background: #f8f8f8;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
@@ -626,7 +627,7 @@ h2.article-head {
 }
 .markdown-content > table thead,
 .article-summary > table thead {
-  background-color: #66f;
+  background-color: #42b983;
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: #e5e5e5;
@@ -692,7 +693,7 @@ h2.article-head {
 }
 .tag-name:before {
   content: "#";
-  color: #66f;
+  color: #42b983;
   position: absolute;
   left: -0.7em;
   top: -2px;
@@ -714,7 +715,7 @@ h2.article-head {
   left: 30px;
   height: auto;
   content: '';
-  background-color: #66f;
+  background-color: #42b983;
   width: 4px;
 }
 .time-section {
@@ -734,7 +735,7 @@ h2.article-head {
   background-color: #fff;
   width: 12px;
   height: 12px;
-  border: 2px solid #66f;
+  border: 2px solid #42b983;
   border-radius: 50%;
 }
 .time-section .section-list .section-list-item {
@@ -746,7 +747,7 @@ h2.article-head {
   left: -29px;
   top: 7px;
   content: '';
-  background-color: #66f;
+  background-color: #42b983;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -757,7 +758,7 @@ h2.article-head {
   font-size: 1.1em;
 }
 .time-section .section-list .section-list-item .archive-title:hover {
-  color: #66f;
+  color: #42b983;
   padding-left: 10px;
 }
 .time-section .section-list .section-list-item .archive-date {
@@ -823,7 +824,7 @@ h2.article-head {
   transition: all 0.4s;
   transition-delay: 0.05s;
 }
-.author .discription {
+.author .description {
   opacity: 0;
   transform: translateY(-20px);
   transition: all 0.4s;
@@ -850,6 +851,9 @@ h2.article-head {
 }
 .author .share-icons .icon-github {
   color: #333;
+}
+.author .share-icons .icon-linkedin {
+  color: #0077b5;
 }
 .author .share-icons .icon-zhihu {
   color: #0767c8;
@@ -971,6 +975,11 @@ h2.article-head {
 .catalog-container .toc-main .toc-nav {
   padding: 0;
   margin-top: 1em;
+  overflow-y: scroll;
+  max-height: 480px;
+}
+.catalog-container .toc-main .toc-nav::-webkit-scrollbar {
+  display: none;
 }
 .catalog-container .toc-main ol {
   padding-left: 20px;
@@ -978,6 +987,28 @@ h2.article-head {
 .catalog-container .toc-main li {
   list-style-type: none;
   line-height: 1.5;
+}
+.nav-container {
+  width: 100%;
+  padding-top: 1.5em;
+  margin-top: 1.5em;
+  border-top: 1px dashed #e5e5e5;
+  font-weight: 600;
+}
+.nav-container:after,
+.nav-container:before {
+  content: '';
+  display: table;
+  clear: both;
+}
+.nav-container .nav-left {
+  float: left;
+}
+.nav-container .nav-right {
+  float: right;
+}
+.nav-container .nav-arrow {
+  color: #34495e;
 }
 @-moz-keyframes shine {
   0%, 100% {

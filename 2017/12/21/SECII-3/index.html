@@ -13,16 +13,46 @@
       软件工程与计算II重点整理(第8-11章) | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        软件工程与计算II重点整理(第8-11章)
-    </h2>
-    <p class="post-date">
-        2017-12-21
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>软件工程与计算II重点整理(第8-11章)</h2>
+  <p class="post-date">2017-12-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <h1 id="第八章-软件设计基础"><a href="#第八章-软件设计基础" class="headerlink" title="第八章 软件设计基础"></a>第八章 软件设计基础</h1><h2 id="1-软件设计（名词解释）"><a href="#1-软件设计（名词解释）" class="headerlink" title="1.软件设计（名词解释）"></a>1.软件设计（名词解释）</h2><p>a)为使一软件系统满足规定的需求而定义系统或部件的体系结构、部件、接口和其他特征的过程；<br>b)设计过程的结果。</p>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="第八章-软件设计基础"><a href="#第八章-软件设计基础" class="headerlink" title="第八章 软件设计基础"></a>第八章 软件设计基础</h1><h2 id="1-软件设计（名词解释）"><a href="#1-软件设计（名词解释）" class="headerlink" title="1.软件设计（名词解释）"></a>1.软件设计（名词解释）</h2><p>a)为使一软件系统满足规定的需求而定义系统或部件的体系结构、部件、接口和其他特征的过程；<br>b)设计过程的结果。</p>
 <h2 id="2-软件设计的核心思想"><a href="#2-软件设计的核心思想" class="headerlink" title="2.软件设计的核心思想"></a>2.软件设计的核心思想</h2><p>复杂度控制<br>分解、抽象、层次性</p>
 <h1 id="第九、十章-软件体系结构设计与构建"><a href="#第九、十章-软件体系结构设计与构建" class="headerlink" title="第九、十章 软件体系结构设计与构建"></a>第九、十章 软件体系结构设计与构建</h1><h2 id="1-体系结构概念"><a href="#1-体系结构概念" class="headerlink" title="1.体系结构概念"></a>1.体系结构概念</h2><p>部件+连接件+配置<br>部件：承载系统主要功能，包括处理与数据<br>连接件：定义部件间的交互，是连接的抽象表示<br>配置：定义了部件和连接件之间的关联方式，将它们组织称系统的总体结构</p>
 <h2 id="2-体系结构的风格的优缺点"><a href="#2-体系结构的风格的优缺点" class="headerlink" title="2.体系结构的风格的优缺点"></a>2.体系结构的风格的优缺点</h2><p>常见风格模式：</p>
@@ -162,26 +187,48 @@
 <p>（2）反馈<br>让用户能够意识到行为的结果，但不能打断用户工作时的意识流<br>用户喜欢较短的响应时间；较长的响应时间（&gt;15秒）具有破坏性；<br>用户会根据响应时间的变化调整自己的工作方式；<br>较短的响应时间导致了较短的用户思考时间；较快的节奏可能会提高效率，但也会增加出错率；<br>根据任务选择适当的响应时间：打字、光标移动、鼠标定位：50～150毫秒；简单频繁的任务：1秒；普通的任务：2～4秒；复杂的任务：8～12秒<br>响应时间适度的变化是可接受的；意外延迟可能具有破坏性；经验测试有助于设置适当的响应时间。</p>
 <p>（3）协作式设计<br>A.简洁设计（摘要图片优于文字描述）<br>列举、隐藏、赋予（标签、图标等线索暗示）<br>B.一致性设计（确认与删除键相对位置不一致）<br>C.低出错率设计（用具体的指导来提示用户出错）<br>限制输入：列表、可选框等选择性组件代替输入框；按钮代替命令行；限定输入：类型，范围，格式…<br>限制范围：简单化单步操作<br>辅助：事前提示；事后检查；随时可以撤销<br>D.易记性设计<br>减少短期记忆负担；使用逐层递进的方式展示信息；使用直观的快捷方式。重新认知比记忆更容易；设置有意义的缺省值，可以帮助用户减少记忆负担。</p>
 <h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>👉<a href="https://samperson1997.github.io/2017/12/20/SECII-1/" title="软件工程与计算II重点整理(第1-5章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第1-5章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-2/" title="软件工程与计算II重点整理(第6-7章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第6-7章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-4/" title="软件工程与计算II重点整理(第12-15章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第12-15章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-5/" title="软件工程与计算II重点整理(第16-19章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第16-19章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-6/" title="软件工程与计算II重点整理(第20-23章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第20-23章)</a></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#软件工程与计算II" >
     <span class="tag-code">软件工程与计算II</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/21/SECII-2/">
+        <span class="nav-arrow">← </span>
+        
+          软件工程与计算II重点整理(第6-7章)
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/12/21/SECII-4/">
+        
+          软件工程与计算II重点整理(第12-15章)
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -190,33 +237,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第八章-软件设计基础"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x516B;&#x7AE0;-&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x57FA;&#x7840;" class="headerlink" title="&#x7B2C;&#x516B;&#x7AE0; &#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x57FA;&#x7840;"></a>&#x7B2C;&#x516B;&#x7AE0; &#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x57FA;&#x7840;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-软件设计（名词解释）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-软件设计的核心思想"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;" class="headerlink" title="2.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;"></a>2.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第九、十章-软件体系结构设计与构建"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E5D;&#x3001;&#x5341;&#x7AE0;-&#x8F6F;&#x4EF6;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x4E0E;&#x6784;&#x5EFA;" class="headerlink" title="&#x7B2C;&#x4E5D;&#x3001;&#x5341;&#x7AE0; &#x8F6F;&#x4EF6;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x4E0E;&#x6784;&#x5EFA;"></a>&#x7B2C;&#x4E5D;&#x3001;&#x5341;&#x7AE0; &#x8F6F;&#x4EF6;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x4E0E;&#x6784;&#x5EFA;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-体系结构概念"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6982;&#x5FF5;" class="headerlink" title="1.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6982;&#x5FF5;"></a>1.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6982;&#x5FF5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-体系结构的风格的优缺点"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x7684;&#x98CE;&#x683C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;" class="headerlink" title="2.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x7684;&#x98CE;&#x683C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;"></a>2.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x7684;&#x98CE;&#x683C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1）主程序-子程序风格"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text"><a href="#1&#xFF09;&#x4E3B;&#x7A0B;&#x5E8F;-&#x5B50;&#x7A0B;&#x5E8F;&#x98CE;&#x683C;" class="headerlink" title="(1&#xFF09;&#x4E3B;&#x7A0B;&#x5E8F;/&#x5B50;&#x7A0B;&#x5E8F;&#x98CE;&#x683C;"></a>(1&#xFF09;&#x4E3B;&#x7A0B;&#x5E8F;/&#x5B50;&#x7A0B;&#x5E8F;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2）面向对象式风格"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text"><a href="#2&#xFF09;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x5F0F;&#x98CE;&#x683C;" class="headerlink" title="(2&#xFF09;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x5F0F;&#x98CE;&#x683C;"></a>(2&#xFF09;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x5F0F;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3）分层风格"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text"><a href="#3&#xFF09;&#x5206;&#x5C42;&#x98CE;&#x683C;" class="headerlink" title="(3&#xFF09;&#x5206;&#x5C42;&#x98CE;&#x683C;"></a>(3&#xFF09;&#x5206;&#x5C42;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4）MVC风格"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text"><a href="#4&#xFF09;MVC&#x98CE;&#x683C;" class="headerlink" title="(4&#xFF09;MVC&#x98CE;&#x683C;"></a>(4&#xFF09;MVC&#x98CE;&#x683C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-体系结构设计的过程"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#3-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x7684;&#x8FC7;&#x7A0B;" class="headerlink" title="3.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x7684;&#x8FC7;&#x7A0B;"></a>3.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x7684;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-包的原则"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#4-&#x5305;&#x7684;&#x539F;&#x5219;" class="headerlink" title="4.&#x5305;&#x7684;&#x539F;&#x5219;"></a>4.&#x5305;&#x7684;&#x539F;&#x5219;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（1）复用发布等价原则REP"><span class="toc-nav-number">2.4.1.</span> <span class="toc-nav-text"><a href="#&#xFF08;1&#xFF09;&#x590D;&#x7528;&#x53D1;&#x5E03;&#x7B49;&#x4EF7;&#x539F;&#x5219;REP" class="headerlink" title="&#xFF08;1&#xFF09;&#x590D;&#x7528;&#x53D1;&#x5E03;&#x7B49;&#x4EF7;&#x539F;&#x5219;REP"></a>&#xFF08;1&#xFF09;&#x590D;&#x7528;&#x53D1;&#x5E03;&#x7B49;&#x4EF7;&#x539F;&#x5219;REP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（2）共同封闭原则CCP"><span class="toc-nav-number">2.4.2.</span> <span class="toc-nav-text"><a href="#&#xFF08;2&#xFF09;&#x5171;&#x540C;&#x5C01;&#x95ED;&#x539F;&#x5219;CCP" class="headerlink" title="&#xFF08;2&#xFF09;&#x5171;&#x540C;&#x5C01;&#x95ED;&#x539F;&#x5219;CCP"></a>&#xFF08;2&#xFF09;&#x5171;&#x540C;&#x5C01;&#x95ED;&#x539F;&#x5219;CCP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（3）共同复用原则CRP"><span class="toc-nav-number">2.4.3.</span> <span class="toc-nav-text"><a href="#&#xFF08;3&#xFF09;&#x5171;&#x540C;&#x590D;&#x7528;&#x539F;&#x5219;CRP" class="headerlink" title="&#xFF08;3&#xFF09;&#x5171;&#x540C;&#x590D;&#x7528;&#x539F;&#x5219;CRP"></a>&#xFF08;3&#xFF09;&#x5171;&#x540C;&#x590D;&#x7528;&#x539F;&#x5219;CRP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（4）无环依赖原则ACP"><span class="toc-nav-number">2.4.4.</span> <span class="toc-nav-text"><a href="#&#xFF08;4&#xFF09;&#x65E0;&#x73AF;&#x4F9D;&#x8D56;&#x539F;&#x5219;ACP" class="headerlink" title="&#xFF08;4&#xFF09;&#x65E0;&#x73AF;&#x4F9D;&#x8D56;&#x539F;&#x5219;ACP"></a>&#xFF08;4&#xFF09;&#x65E0;&#x73AF;&#x4F9D;&#x8D56;&#x539F;&#x5219;ACP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（5）稳定依赖原则SDP"><span class="toc-nav-number">2.4.5.</span> <span class="toc-nav-text"><a href="#&#xFF08;5&#xFF09;&#x7A33;&#x5B9A;&#x4F9D;&#x8D56;&#x539F;&#x5219;SDP" class="headerlink" title="&#xFF08;5&#xFF09;&#x7A33;&#x5B9A;&#x4F9D;&#x8D56;&#x539F;&#x5219;SDP"></a>&#xFF08;5&#xFF09;&#x7A33;&#x5B9A;&#x4F9D;&#x8D56;&#x539F;&#x5219;SDP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（6）稳定抽象原则SAP"><span class="toc-nav-number">2.4.6.</span> <span class="toc-nav-text"><a href="#&#xFF08;6&#xFF09;&#x7A33;&#x5B9A;&#x62BD;&#x8C61;&#x539F;&#x5219;SAP" class="headerlink" title="&#xFF08;6&#xFF09;&#x7A33;&#x5B9A;&#x62BD;&#x8C61;&#x539F;&#x5219;SAP"></a>&#xFF08;6&#xFF09;&#x7A33;&#x5B9A;&#x62BD;&#x8C61;&#x539F;&#x5219;SAP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-体系结构构件之间接口的定义"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text"><a href="#5-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6784;&#x4EF6;&#x4E4B;&#x95F4;&#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="5.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6784;&#x4EF6;&#x4E4B;&#x95F4;&#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;"></a>5.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6784;&#x4EF6;&#x4E4B;&#x95F4;&#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-体系结构开发集成测试用例：Stub和Driver"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text"><a href="#6-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x5F00;&#x53D1;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;Stub&#x548C;Driver" class="headerlink" title="6.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x5F00;&#x53D1;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;Stub&#x548C;Driver"></a>6.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x5F00;&#x53D1;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;Stub&#x548C;Driver</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第11章-人机交互设计"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7B2C;11&#x7AE0;-&#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x8BBE;&#x8BA1;" class="headerlink" title="&#x7B2C;11&#x7AE0; &#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x8BBE;&#x8BA1;"></a>&#x7B2C;11&#x7AE0; &#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x8BBE;&#x8BA1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-可用性（名词解释）"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#1-&#x53EF;&#x7528;&#x6027;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x53EF;&#x7528;&#x6027;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x53EF;&#x7528;&#x6027;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-界面设计的注意事项及解释（至少5个）"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#2-&#x754C;&#x9762;&#x8BBE;&#x8BA1;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x53CA;&#x89E3;&#x91CA;&#xFF08;&#x81F3;&#x5C11;5&#x4E2A;&#xFF09;" class="headerlink" title="2.&#x754C;&#x9762;&#x8BBE;&#x8BA1;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x53CA;&#x89E3;&#x91CA;&#xFF08;&#x81F3;&#x5C11;5&#x4E2A;&#xFF09;"></a>2.&#x754C;&#x9762;&#x8BBE;&#x8BA1;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x53CA;&#x89E3;&#x91CA;&#xFF08;&#x81F3;&#x5C11;5&#x4E2A;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-精神模型，差异性"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#3-&#x7CBE;&#x795E;&#x6A21;&#x578B;&#xFF0C;&#x5DEE;&#x5F02;&#x6027;" class="headerlink" title="3.&#x7CBE;&#x795E;&#x6A21;&#x578B;&#xFF0C;&#x5DEE;&#x5F02;&#x6027;"></a>3.&#x7CBE;&#x795E;&#x6A21;&#x578B;&#xFF0C;&#x5DEE;&#x5F02;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-导航、反馈、协作式设计"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#4-&#x5BFC;&#x822A;&#x3001;&#x53CD;&#x9988;&#x3001;&#x534F;&#x4F5C;&#x5F0F;&#x8BBE;&#x8BA1;" class="headerlink" title="4.&#x5BFC;&#x822A;&#x3001;&#x53CD;&#x9988;&#x3001;&#x534F;&#x4F5C;&#x5F0F;&#x8BBE;&#x8BA1;"></a>4.&#x5BFC;&#x822A;&#x3001;&#x53CD;&#x9988;&#x3001;&#x534F;&#x4F5C;&#x5F0F;&#x8BBE;&#x8BA1;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第八章-软件设计基础"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x516B;&#x7AE0;-&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x57FA;&#x7840;" class="headerlink" title="&#x7B2C;&#x516B;&#x7AE0; &#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x57FA;&#x7840;"></a>&#x7B2C;&#x516B;&#x7AE0; &#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x57FA;&#x7840;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-软件设计（名词解释）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-软件设计的核心思想"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;" class="headerlink" title="2.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;"></a>2.&#x8F6F;&#x4EF6;&#x8BBE;&#x8BA1;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第九、十章-软件体系结构设计与构建"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E5D;&#x3001;&#x5341;&#x7AE0;-&#x8F6F;&#x4EF6;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x4E0E;&#x6784;&#x5EFA;" class="headerlink" title="&#x7B2C;&#x4E5D;&#x3001;&#x5341;&#x7AE0; &#x8F6F;&#x4EF6;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x4E0E;&#x6784;&#x5EFA;"></a>&#x7B2C;&#x4E5D;&#x3001;&#x5341;&#x7AE0; &#x8F6F;&#x4EF6;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x4E0E;&#x6784;&#x5EFA;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-体系结构概念"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6982;&#x5FF5;" class="headerlink" title="1.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6982;&#x5FF5;"></a>1.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6982;&#x5FF5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-体系结构的风格的优缺点"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x7684;&#x98CE;&#x683C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;" class="headerlink" title="2.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x7684;&#x98CE;&#x683C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;"></a>2.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x7684;&#x98CE;&#x683C;&#x7684;&#x4F18;&#x7F3A;&#x70B9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1）主程序-子程序风格"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text"><a href="#1&#xFF09;&#x4E3B;&#x7A0B;&#x5E8F;-&#x5B50;&#x7A0B;&#x5E8F;&#x98CE;&#x683C;" class="headerlink" title="(1&#xFF09;&#x4E3B;&#x7A0B;&#x5E8F;/&#x5B50;&#x7A0B;&#x5E8F;&#x98CE;&#x683C;"></a>(1&#xFF09;&#x4E3B;&#x7A0B;&#x5E8F;/&#x5B50;&#x7A0B;&#x5E8F;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2）面向对象式风格"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text"><a href="#2&#xFF09;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x5F0F;&#x98CE;&#x683C;" class="headerlink" title="(2&#xFF09;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x5F0F;&#x98CE;&#x683C;"></a>(2&#xFF09;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x5F0F;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3）分层风格"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text"><a href="#3&#xFF09;&#x5206;&#x5C42;&#x98CE;&#x683C;" class="headerlink" title="(3&#xFF09;&#x5206;&#x5C42;&#x98CE;&#x683C;"></a>(3&#xFF09;&#x5206;&#x5C42;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4）MVC风格"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text"><a href="#4&#xFF09;MVC&#x98CE;&#x683C;" class="headerlink" title="(4&#xFF09;MVC&#x98CE;&#x683C;"></a>(4&#xFF09;MVC&#x98CE;&#x683C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-体系结构设计的过程"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#3-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x7684;&#x8FC7;&#x7A0B;" class="headerlink" title="3.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x7684;&#x8FC7;&#x7A0B;"></a>3.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x8BBE;&#x8BA1;&#x7684;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-包的原则"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#4-&#x5305;&#x7684;&#x539F;&#x5219;" class="headerlink" title="4.&#x5305;&#x7684;&#x539F;&#x5219;"></a>4.&#x5305;&#x7684;&#x539F;&#x5219;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（1）复用发布等价原则REP"><span class="toc-nav-number">2.4.1.</span> <span class="toc-nav-text"><a href="#&#xFF08;1&#xFF09;&#x590D;&#x7528;&#x53D1;&#x5E03;&#x7B49;&#x4EF7;&#x539F;&#x5219;REP" class="headerlink" title="&#xFF08;1&#xFF09;&#x590D;&#x7528;&#x53D1;&#x5E03;&#x7B49;&#x4EF7;&#x539F;&#x5219;REP"></a>&#xFF08;1&#xFF09;&#x590D;&#x7528;&#x53D1;&#x5E03;&#x7B49;&#x4EF7;&#x539F;&#x5219;REP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（2）共同封闭原则CCP"><span class="toc-nav-number">2.4.2.</span> <span class="toc-nav-text"><a href="#&#xFF08;2&#xFF09;&#x5171;&#x540C;&#x5C01;&#x95ED;&#x539F;&#x5219;CCP" class="headerlink" title="&#xFF08;2&#xFF09;&#x5171;&#x540C;&#x5C01;&#x95ED;&#x539F;&#x5219;CCP"></a>&#xFF08;2&#xFF09;&#x5171;&#x540C;&#x5C01;&#x95ED;&#x539F;&#x5219;CCP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（3）共同复用原则CRP"><span class="toc-nav-number">2.4.3.</span> <span class="toc-nav-text"><a href="#&#xFF08;3&#xFF09;&#x5171;&#x540C;&#x590D;&#x7528;&#x539F;&#x5219;CRP" class="headerlink" title="&#xFF08;3&#xFF09;&#x5171;&#x540C;&#x590D;&#x7528;&#x539F;&#x5219;CRP"></a>&#xFF08;3&#xFF09;&#x5171;&#x540C;&#x590D;&#x7528;&#x539F;&#x5219;CRP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（4）无环依赖原则ACP"><span class="toc-nav-number">2.4.4.</span> <span class="toc-nav-text"><a href="#&#xFF08;4&#xFF09;&#x65E0;&#x73AF;&#x4F9D;&#x8D56;&#x539F;&#x5219;ACP" class="headerlink" title="&#xFF08;4&#xFF09;&#x65E0;&#x73AF;&#x4F9D;&#x8D56;&#x539F;&#x5219;ACP"></a>&#xFF08;4&#xFF09;&#x65E0;&#x73AF;&#x4F9D;&#x8D56;&#x539F;&#x5219;ACP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（5）稳定依赖原则SDP"><span class="toc-nav-number">2.4.5.</span> <span class="toc-nav-text"><a href="#&#xFF08;5&#xFF09;&#x7A33;&#x5B9A;&#x4F9D;&#x8D56;&#x539F;&#x5219;SDP" class="headerlink" title="&#xFF08;5&#xFF09;&#x7A33;&#x5B9A;&#x4F9D;&#x8D56;&#x539F;&#x5219;SDP"></a>&#xFF08;5&#xFF09;&#x7A33;&#x5B9A;&#x4F9D;&#x8D56;&#x539F;&#x5219;SDP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（6）稳定抽象原则SAP"><span class="toc-nav-number">2.4.6.</span> <span class="toc-nav-text"><a href="#&#xFF08;6&#xFF09;&#x7A33;&#x5B9A;&#x62BD;&#x8C61;&#x539F;&#x5219;SAP" class="headerlink" title="&#xFF08;6&#xFF09;&#x7A33;&#x5B9A;&#x62BD;&#x8C61;&#x539F;&#x5219;SAP"></a>&#xFF08;6&#xFF09;&#x7A33;&#x5B9A;&#x62BD;&#x8C61;&#x539F;&#x5219;SAP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-体系结构构件之间接口的定义"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text"><a href="#5-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6784;&#x4EF6;&#x4E4B;&#x95F4;&#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="5.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6784;&#x4EF6;&#x4E4B;&#x95F4;&#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;"></a>5.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x6784;&#x4EF6;&#x4E4B;&#x95F4;&#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-体系结构开发集成测试用例：Stub和Driver"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text"><a href="#6-&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x5F00;&#x53D1;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;Stub&#x548C;Driver" class="headerlink" title="6.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x5F00;&#x53D1;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;Stub&#x548C;Driver"></a>6.&#x4F53;&#x7CFB;&#x7ED3;&#x6784;&#x5F00;&#x53D1;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;Stub&#x548C;Driver</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第11章-人机交互设计"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7B2C;11&#x7AE0;-&#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x8BBE;&#x8BA1;" class="headerlink" title="&#x7B2C;11&#x7AE0; &#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x8BBE;&#x8BA1;"></a>&#x7B2C;11&#x7AE0; &#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x8BBE;&#x8BA1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-可用性（名词解释）"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#1-&#x53EF;&#x7528;&#x6027;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x53EF;&#x7528;&#x6027;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x53EF;&#x7528;&#x6027;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-界面设计的注意事项及解释（至少5个）"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#2-&#x754C;&#x9762;&#x8BBE;&#x8BA1;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x53CA;&#x89E3;&#x91CA;&#xFF08;&#x81F3;&#x5C11;5&#x4E2A;&#xFF09;" class="headerlink" title="2.&#x754C;&#x9762;&#x8BBE;&#x8BA1;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x53CA;&#x89E3;&#x91CA;&#xFF08;&#x81F3;&#x5C11;5&#x4E2A;&#xFF09;"></a>2.&#x754C;&#x9762;&#x8BBE;&#x8BA1;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x53CA;&#x89E3;&#x91CA;&#xFF08;&#x81F3;&#x5C11;5&#x4E2A;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-精神模型，差异性"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#3-&#x7CBE;&#x795E;&#x6A21;&#x578B;&#xFF0C;&#x5DEE;&#x5F02;&#x6027;" class="headerlink" title="3.&#x7CBE;&#x795E;&#x6A21;&#x578B;&#xFF0C;&#x5DEE;&#x5F02;&#x6027;"></a>3.&#x7CBE;&#x795E;&#x6A21;&#x578B;&#xFF0C;&#x5DEE;&#x5F02;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-导航、反馈、协作式设计"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#4-&#x5BFC;&#x822A;&#x3001;&#x53CD;&#x9988;&#x3001;&#x534F;&#x4F5C;&#x5F0F;&#x8BBE;&#x8BA1;" class="headerlink" title="4.&#x5BFC;&#x822A;&#x3001;&#x53CD;&#x9988;&#x3001;&#x534F;&#x4F5C;&#x5F0F;&#x8BBE;&#x8BA1;"></a>4.&#x5BFC;&#x822A;&#x3001;&#x53CD;&#x9988;&#x3001;&#x534F;&#x4F5C;&#x5F0F;&#x8BBE;&#x8BA1;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -240,125 +288,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "软件工程与计算II重点整理(第8-11章)",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "软件工程与计算II重点整理(第8-11章)",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>

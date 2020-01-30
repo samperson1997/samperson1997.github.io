@@ -13,16 +13,46 @@
       软件工程与计算II重点整理(第6-7章) | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        软件工程与计算II重点整理(第6-7章)
-    </h2>
-    <p class="post-date">
-        2017-12-21
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>软件工程与计算II重点整理(第6-7章)</h2>
+  <p class="post-date">2017-12-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <h1 id="第六章-需求分析方法"><a href="#第六章-需求分析方法" class="headerlink" title="第六章 需求分析方法"></a>第六章 需求分析方法</h1><h2 id="1-建立用例图"><a href="#1-建立用例图" class="headerlink" title="1.建立用例图"></a>1.建立用例图</h2><p>参与者是与开发的系统进行交互的用户或其他系统等角色<br>用例图中一个单一的参与者可以代表多个用户（或系统）<br>一个单一的用户（或系统）可能扮演多种角色<br>参与者不一定是人，例如，需要从当前系统获取信息的外部系统也是参与者<br>步骤：1）目标分析与解决方向确定 2）寻找参与者 3）寻找用例 4）细化用例</p>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="第六章-需求分析方法"><a href="#第六章-需求分析方法" class="headerlink" title="第六章 需求分析方法"></a>第六章 需求分析方法</h1><h2 id="1-建立用例图"><a href="#1-建立用例图" class="headerlink" title="1.建立用例图"></a>1.建立用例图</h2><p>参与者是与开发的系统进行交互的用户或其他系统等角色<br>用例图中一个单一的参与者可以代表多个用户（或系统）<br>一个单一的用户（或系统）可能扮演多种角色<br>参与者不一定是人，例如，需要从当前系统获取信息的外部系统也是参与者<br>步骤：1）目标分析与解决方向确定 2）寻找参与者 3）寻找用例 4）细化用例</p>
 <blockquote>
 <p>【示例1】<br>×××连锁商店是一家刚刚发展起来的小型连锁商店，其前身是一家独立的小百货门面店。<br>首先是随着商店规模的扩大，顾客量大幅增长，手工作业销售迟缓，顾客购物排队现象严重，导致流失客源。其次是商店的商品品种增多，无法准确掌握库存，商品积压、缺货和报废的现象上升明显。再次是商店面临的竞争比以前更大，希望在降低成本，吸引顾客，增强竞争力的同时，保持盈利水平。</p>
 <p>BR1：在系统使用6个月后，商品积压、缺货和报废的现象要减少50%<br>BR2：在系统使用3个月后，销售人员工作效率提高50%<br>BR3：在系统使用6个月后，运营成本要降低15%<br>范围：人力成本和库存成本，度量：检查平均员工数量和平均每10,000元销售额的库存成本<br>BR4：在系统使用6个月后，销售额度要提高20%，最好情况：40%，最可能情况：20%，最坏情况：10%</p>
@@ -170,26 +195,48 @@
 </blockquote>
 <h2 id="3-给定的需求示例，设计功能测试用例"><a href="#3-给定的需求示例，设计功能测试用例" class="headerlink" title="3.给定的需求示例，设计功能测试用例"></a>3.给定的需求示例，设计功能测试用例</h2><p>结合测试方法</p>
 <h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>👉<a href="https://samperson1997.github.io/2017/12/20/SECII-1/" title="软件工程与计算II重点整理(第1-5章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第1-5章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-3/" title="软件工程与计算II重点整理(第8-11章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第8-11章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-4/" title="软件工程与计算II重点整理(第12-15章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第12-15章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-5/" title="软件工程与计算II重点整理(第16-19章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第16-19章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-6/" title="软件工程与计算II重点整理(第20-23章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第20-23章)</a></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#软件工程与计算II" >
     <span class="tag-code">软件工程与计算II</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/20/SECII-1/">
+        <span class="nav-arrow">← </span>
+        
+          软件工程与计算II重点整理(第1-5章)
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/12/21/SECII-3/">
+        
+          软件工程与计算II重点整理(第8-11章)
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -198,33 +245,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第六章-需求分析方法"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x516D;&#x7AE0;-&#x9700;&#x6C42;&#x5206;&#x6790;&#x65B9;&#x6CD5;" class="headerlink" title="&#x7B2C;&#x516D;&#x7AE0; &#x9700;&#x6C42;&#x5206;&#x6790;&#x65B9;&#x6CD5;"></a>&#x7B2C;&#x516D;&#x7AE0; &#x9700;&#x6C42;&#x5206;&#x6790;&#x65B9;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-建立用例图"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x5EFA;&#x7ACB;&#x7528;&#x4F8B;&#x56FE;" class="headerlink" title="1.&#x5EFA;&#x7ACB;&#x7528;&#x4F8B;&#x56FE;"></a>1.&#x5EFA;&#x7ACB;&#x7528;&#x4F8B;&#x56FE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-建立分析类图（概念类图／领域模型）"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x5EFA;&#x7ACB;&#x5206;&#x6790;&#x7C7B;&#x56FE;&#xFF08;&#x6982;&#x5FF5;&#x7C7B;&#x56FE;&#xFF0F;&#x9886;&#x57DF;&#x6A21;&#x578B;&#xFF09;" class="headerlink" title="2.&#x5EFA;&#x7ACB;&#x5206;&#x6790;&#x7C7B;&#x56FE;&#xFF08;&#x6982;&#x5FF5;&#x7C7B;&#x56FE;&#xFF0F;&#x9886;&#x57DF;&#x6A21;&#x578B;&#xFF09;"></a>2.&#x5EFA;&#x7ACB;&#x5206;&#x6790;&#x7C7B;&#x56FE;&#xFF08;&#x6982;&#x5FF5;&#x7C7B;&#x56FE;&#xFF0F;&#x9886;&#x57DF;&#x6A21;&#x578B;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-建立系统顺序图（交互图）"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#3-&#x5EFA;&#x7ACB;&#x7CFB;&#x7EDF;&#x987A;&#x5E8F;&#x56FE;&#xFF08;&#x4EA4;&#x4E92;&#x56FE;&#xFF09;" class="headerlink" title="3.&#x5EFA;&#x7ACB;&#x7CFB;&#x7EDF;&#x987A;&#x5E8F;&#x56FE;&#xFF08;&#x4EA4;&#x4E92;&#x56FE;&#xFF09;"></a>3.&#x5EFA;&#x7ACB;&#x7CFB;&#x7EDF;&#x987A;&#x5E8F;&#x56FE;&#xFF08;&#x4EA4;&#x4E92;&#x56FE;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-建立状态图"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><a href="#4-&#x5EFA;&#x7ACB;&#x72B6;&#x6001;&#x56FE;" class="headerlink" title="4.&#x5EFA;&#x7ACB;&#x72B6;&#x6001;&#x56FE;"></a>4.&#x5EFA;&#x7ACB;&#x72B6;&#x6001;&#x56FE;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第七章-需求文档化与验证"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E03;&#x7AE0;-&#x9700;&#x6C42;&#x6587;&#x6863;&#x5316;&#x4E0E;&#x9A8C;&#x8BC1;" class="headerlink" title="&#x7B2C;&#x4E03;&#x7AE0; &#x9700;&#x6C42;&#x6587;&#x6863;&#x5316;&#x4E0E;&#x9A8C;&#x8BC1;"></a>&#x7B2C;&#x4E03;&#x7AE0; &#x9700;&#x6C42;&#x6587;&#x6863;&#x5316;&#x4E0E;&#x9A8C;&#x8BC1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-为什么建立需求规格说明？结合试验说明"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x4E3A;&#x4EC0;&#x4E48;&#x5EFA;&#x7ACB;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#xFF1F;&#x7ED3;&#x5408;&#x8BD5;&#x9A8C;&#x8BF4;&#x660E;" class="headerlink" title="1.&#x4E3A;&#x4EC0;&#x4E48;&#x5EFA;&#x7ACB;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#xFF1F;&#x7ED3;&#x5408;&#x8BD5;&#x9A8C;&#x8BF4;&#x660E;"></a>1.&#x4E3A;&#x4EC0;&#x4E48;&#x5EFA;&#x7ACB;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#xFF1F;&#x7ED3;&#x5408;&#x8BD5;&#x9A8C;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-对给定的需求规格说明示例，判定并修正其错误。"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#x793A;&#x4F8B;&#xFF0C;&#x5224;&#x5B9A;&#x5E76;&#x4FEE;&#x6B63;&#x5176;&#x9519;&#x8BEF;&#x3002;" class="headerlink" title="2.&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#x793A;&#x4F8B;&#xFF0C;&#x5224;&#x5B9A;&#x5E76;&#x4FEE;&#x6B63;&#x5176;&#x9519;&#x8BEF;&#x3002;"></a>2.&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#x793A;&#x4F8B;&#xFF0C;&#x5224;&#x5B9A;&#x5E76;&#x4FEE;&#x6B63;&#x5176;&#x9519;&#x8BEF;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-给定的需求示例，设计功能测试用例"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#3-&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x793A;&#x4F8B;&#xFF0C;&#x8BBE;&#x8BA1;&#x529F;&#x80FD;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;" class="headerlink" title="3.&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x793A;&#x4F8B;&#xFF0C;&#x8BBE;&#x8BA1;&#x529F;&#x80FD;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;"></a>3.&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x793A;&#x4F8B;&#xFF0C;&#x8BBE;&#x8BA1;&#x529F;&#x80FD;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第六章-需求分析方法"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x516D;&#x7AE0;-&#x9700;&#x6C42;&#x5206;&#x6790;&#x65B9;&#x6CD5;" class="headerlink" title="&#x7B2C;&#x516D;&#x7AE0; &#x9700;&#x6C42;&#x5206;&#x6790;&#x65B9;&#x6CD5;"></a>&#x7B2C;&#x516D;&#x7AE0; &#x9700;&#x6C42;&#x5206;&#x6790;&#x65B9;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-建立用例图"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x5EFA;&#x7ACB;&#x7528;&#x4F8B;&#x56FE;" class="headerlink" title="1.&#x5EFA;&#x7ACB;&#x7528;&#x4F8B;&#x56FE;"></a>1.&#x5EFA;&#x7ACB;&#x7528;&#x4F8B;&#x56FE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-建立分析类图（概念类图／领域模型）"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x5EFA;&#x7ACB;&#x5206;&#x6790;&#x7C7B;&#x56FE;&#xFF08;&#x6982;&#x5FF5;&#x7C7B;&#x56FE;&#xFF0F;&#x9886;&#x57DF;&#x6A21;&#x578B;&#xFF09;" class="headerlink" title="2.&#x5EFA;&#x7ACB;&#x5206;&#x6790;&#x7C7B;&#x56FE;&#xFF08;&#x6982;&#x5FF5;&#x7C7B;&#x56FE;&#xFF0F;&#x9886;&#x57DF;&#x6A21;&#x578B;&#xFF09;"></a>2.&#x5EFA;&#x7ACB;&#x5206;&#x6790;&#x7C7B;&#x56FE;&#xFF08;&#x6982;&#x5FF5;&#x7C7B;&#x56FE;&#xFF0F;&#x9886;&#x57DF;&#x6A21;&#x578B;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-建立系统顺序图（交互图）"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#3-&#x5EFA;&#x7ACB;&#x7CFB;&#x7EDF;&#x987A;&#x5E8F;&#x56FE;&#xFF08;&#x4EA4;&#x4E92;&#x56FE;&#xFF09;" class="headerlink" title="3.&#x5EFA;&#x7ACB;&#x7CFB;&#x7EDF;&#x987A;&#x5E8F;&#x56FE;&#xFF08;&#x4EA4;&#x4E92;&#x56FE;&#xFF09;"></a>3.&#x5EFA;&#x7ACB;&#x7CFB;&#x7EDF;&#x987A;&#x5E8F;&#x56FE;&#xFF08;&#x4EA4;&#x4E92;&#x56FE;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-建立状态图"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><a href="#4-&#x5EFA;&#x7ACB;&#x72B6;&#x6001;&#x56FE;" class="headerlink" title="4.&#x5EFA;&#x7ACB;&#x72B6;&#x6001;&#x56FE;"></a>4.&#x5EFA;&#x7ACB;&#x72B6;&#x6001;&#x56FE;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第七章-需求文档化与验证"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E03;&#x7AE0;-&#x9700;&#x6C42;&#x6587;&#x6863;&#x5316;&#x4E0E;&#x9A8C;&#x8BC1;" class="headerlink" title="&#x7B2C;&#x4E03;&#x7AE0; &#x9700;&#x6C42;&#x6587;&#x6863;&#x5316;&#x4E0E;&#x9A8C;&#x8BC1;"></a>&#x7B2C;&#x4E03;&#x7AE0; &#x9700;&#x6C42;&#x6587;&#x6863;&#x5316;&#x4E0E;&#x9A8C;&#x8BC1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-为什么建立需求规格说明？结合试验说明"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x4E3A;&#x4EC0;&#x4E48;&#x5EFA;&#x7ACB;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#xFF1F;&#x7ED3;&#x5408;&#x8BD5;&#x9A8C;&#x8BF4;&#x660E;" class="headerlink" title="1.&#x4E3A;&#x4EC0;&#x4E48;&#x5EFA;&#x7ACB;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#xFF1F;&#x7ED3;&#x5408;&#x8BD5;&#x9A8C;&#x8BF4;&#x660E;"></a>1.&#x4E3A;&#x4EC0;&#x4E48;&#x5EFA;&#x7ACB;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#xFF1F;&#x7ED3;&#x5408;&#x8BD5;&#x9A8C;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-对给定的需求规格说明示例，判定并修正其错误。"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#x793A;&#x4F8B;&#xFF0C;&#x5224;&#x5B9A;&#x5E76;&#x4FEE;&#x6B63;&#x5176;&#x9519;&#x8BEF;&#x3002;" class="headerlink" title="2.&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#x793A;&#x4F8B;&#xFF0C;&#x5224;&#x5B9A;&#x5E76;&#x4FEE;&#x6B63;&#x5176;&#x9519;&#x8BEF;&#x3002;"></a>2.&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x89C4;&#x683C;&#x8BF4;&#x660E;&#x793A;&#x4F8B;&#xFF0C;&#x5224;&#x5B9A;&#x5E76;&#x4FEE;&#x6B63;&#x5176;&#x9519;&#x8BEF;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-给定的需求示例，设计功能测试用例"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#3-&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x793A;&#x4F8B;&#xFF0C;&#x8BBE;&#x8BA1;&#x529F;&#x80FD;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;" class="headerlink" title="3.&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x793A;&#x4F8B;&#xFF0C;&#x8BBE;&#x8BA1;&#x529F;&#x80FD;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;"></a>3.&#x7ED9;&#x5B9A;&#x7684;&#x9700;&#x6C42;&#x793A;&#x4F8B;&#xFF0C;&#x8BBE;&#x8BA1;&#x529F;&#x80FD;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -248,125 +296,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "软件工程与计算II重点整理(第6-7章)",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "软件工程与计算II重点整理(第6-7章)",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>

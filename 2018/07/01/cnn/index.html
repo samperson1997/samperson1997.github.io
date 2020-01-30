@@ -13,16 +13,46 @@
       卷积神经网络 | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        卷积神经网络
-    </h2>
-    <p class="post-date">
-        2018-07-01
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>卷积神经网络</h2>
+  <p class="post-date">2018-07-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <h2 id="CNN简介"><a href="#CNN简介" class="headerlink" title="CNN简介"></a>CNN简介</h2><table>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="CNN简介"><a href="#CNN简介" class="headerlink" title="CNN简介"></a>CNN简介</h2><table>
 <thead>
 <tr>
 <th></th>
@@ -166,26 +191,48 @@
 <p>[3] 使用CNN<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weight_variable</span><span class="params">(shape)</span>:</span></span><br><span class="line">    initial = tf.truncated_normal(shape, stddev=<span class="number">0.1</span>)</span><br><span class="line">    <span class="keyword">return</span> tf.Variable(initial)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bias_variable</span><span class="params">(shape)</span>:</span></span><br><span class="line">    initial = tf.constant(<span class="number">0.1</span>, shape=shape)</span><br><span class="line">    <span class="keyword">return</span> tf.Variable(initial)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x, W)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.conv2d(x, W, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool_2x2</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.max_pool(x, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                          strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line">W_conv1 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>])</span><br><span class="line">b_conv1 = bias_variable([<span class="number">32</span>])</span><br><span class="line">x_image = tf.reshape(x, [<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</span><br><span class="line">h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)</span><br><span class="line">h_pool1 = max_pool_2x2(h_conv1)</span><br><span class="line"></span><br><span class="line">W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>])</span><br><span class="line">b_conv2 = bias_variable([<span class="number">64</span>])</span><br><span class="line"></span><br><span class="line">h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)</span><br><span class="line">h_pool2 = max_pool_2x2(h_conv2)</span><br><span class="line"></span><br><span class="line">W_fc1 = weight_variable([<span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>])</span><br><span class="line">b_fc1 = bias_variable([<span class="number">1024</span>])</span><br><span class="line"></span><br><span class="line">h_pool2_flat = tf.reshape(h_pool2, [<span class="number">-1</span>, <span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>])</span><br><span class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</span><br><span class="line"></span><br><span class="line">keep_prob = tf.placeholder(<span class="string">"float"</span>)</span><br><span class="line">h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)</span><br><span class="line">W_fc2 = weight_variable([<span class="number">1024</span>, <span class="number">10</span>])</span><br><span class="line">b_fc2 = bias_variable([<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)</span><br><span class="line"></span><br><span class="line">cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))</span><br><span class="line">train_step = tf.train.AdamOptimizer(<span class="number">1e-4</span>).minimize(cross_entropy)</span><br><span class="line"></span><br><span class="line">correct_prediction = tf.equal(tf.argmax(y_conv, <span class="number">1</span>), tf.argmax(y_, <span class="number">1</span>))</span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, <span class="string">"float"</span>))</span><br><span class="line"></span><br><span class="line">sess.run(tf.initialize_all_variables())</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20000</span>):</span><br><span class="line">    batch = mnist.train.next_batch(<span class="number">50</span>)</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">        train_accuracy = accuracy.eval(feed_dict=&#123;</span><br><span class="line">            x: batch[<span class="number">0</span>], y_: batch[<span class="number">1</span>], keep_prob: <span class="number">1.0</span>&#125;)</span><br><span class="line">        print(<span class="string">"step %d, training accuracy %g"</span> % (i, train_accuracy))</span><br><span class="line">        print(<span class="string">"test accuracy %g"</span> % accuracy.eval(feed_dict=&#123;</span><br><span class="line">            x: mnist.test.images, y_: mnist.test.labels, keep_prob: <span class="number">1.0</span>&#125;))</span><br><span class="line"></span><br><span class="line">    train_step.run(feed_dict=&#123;x: batch[<span class="number">0</span>], y_: batch[<span class="number">1</span>], keep_prob: <span class="number">0.5</span>&#125;)</span><br></pre></td></tr></table></figure></p>
 <h2 id="交叉参见"><a href="#交叉参见" class="headerlink" title="交叉参见"></a>交叉参见</h2><p><a href="https://samperson1997.github.io/2018/06/03/classification-algorithm/" title="适于二分类的机器学习算法" target="_blank" rel="noopener">适于二分类的机器学习算法</a>，<a href="https://samperson1997.github.io/2018/06/18/decision-tree/" title="决策树" target="_blank" rel="noopener">决策树</a>，<a href="https://samperson1997.github.io/2018/06/24/svm/" title="SVM" target="_blank" rel="noopener">SVM</a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] 山下降义. 图解深度学习[M]. 北京:人民邮电出版社, 2018. 19-48<br>[2] <a href="http://www.tensorfly.cn/tfdoc/tutorials/mnist_pros.html" target="_blank" rel="noopener">http://www.tensorfly.cn/tfdoc/tutorials/mnist_pros.html</a></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#机器学习" >
     <span class="tag-code">机器学习</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/06/24/svm/">
+        <span class="nav-arrow">← </span>
+        
+          SVM——Sklearn库实现
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/09/08/THU1/">
+        
+          五天准备清华九推机考
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -194,33 +241,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CNN简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#CNN&#x7B80;&#x4ECB;" class="headerlink" title="CNN&#x7B80;&#x4ECB;"></a>CNN&#x7B80;&#x4ECB;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#大卫·休伯尔实验"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x5927;&#x536B;&#xB7;&#x4F11;&#x4F2F;&#x5C14;&#x5B9E;&#x9A8C;" class="headerlink" title="&#x5927;&#x536B;&#xB7;&#x4F11;&#x4F2F;&#x5C14;&#x5B9E;&#x9A8C;"></a>&#x5927;&#x536B;&#xB7;&#x4F11;&#x4F2F;&#x5C14;&#x5B9E;&#x9A8C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#神经认知机模型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x795E;&#x7ECF;&#x8BA4;&#x77E5;&#x673A;&#x6A21;&#x578B;" class="headerlink" title="&#x795E;&#x7ECF;&#x8BA4;&#x77E5;&#x673A;&#x6A21;&#x578B;"></a>&#x795E;&#x7ECF;&#x8BA4;&#x77E5;&#x673A;&#x6A21;&#x578B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积神经网络的结构"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x7684;&#x7ED3;&#x6784;" class="headerlink" title="&#x5377;&#x79EF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x7684;&#x7ED3;&#x6784;"></a>&#x5377;&#x79EF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x7684;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#卷积层"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x5C42;" class="headerlink" title="&#x5377;&#x79EF;&#x5C42;"></a>&#x5377;&#x79EF;&#x5C42;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积操作"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x64CD;&#x4F5C;" class="headerlink" title="&#x5377;&#x79EF;&#x64CD;&#x4F5C;"></a>&#x5377;&#x79EF;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积层相关概念"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x5C42;&#x76F8;&#x5173;&#x6982;&#x5FF5;" class="headerlink" title="&#x5377;&#x79EF;&#x5C42;&#x76F8;&#x5173;&#x6982;&#x5FF5;"></a>&#x5377;&#x79EF;&#x5C42;&#x76F8;&#x5173;&#x6982;&#x5FF5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#池化层"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6C60;&#x5316;&#x5C42;" class="headerlink" title="&#x6C60;&#x5316;&#x5C42;"></a>&#x6C60;&#x5316;&#x5C42;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#池化操作"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x6C60;&#x5316;&#x64CD;&#x4F5C;" class="headerlink" title="&#x6C60;&#x5316;&#x64CD;&#x4F5C;"></a>&#x6C60;&#x5316;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#池化方法"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x6C60;&#x5316;&#x65B9;&#x6CD5;" class="headerlink" title="&#x6C60;&#x5316;&#x65B9;&#x6CD5;"></a>&#x6C60;&#x5316;&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#全连接层"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x5168;&#x8FDE;&#x63A5;&#x5C42;" class="headerlink" title="&#x5168;&#x8FDE;&#x63A5;&#x5C42;"></a>&#x5168;&#x8FDE;&#x63A5;&#x5C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CNN的训练"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#CNN&#x7684;&#x8BAD;&#x7EC3;" class="headerlink" title="CNN&#x7684;&#x8BAD;&#x7EC3;"></a>CNN&#x7684;&#x8BAD;&#x7EC3;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#误差更新方法"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text"><a href="#&#x8BEF;&#x5DEE;&#x66F4;&#x65B0;&#x65B9;&#x6CD5;" class="headerlink" title="&#x8BEF;&#x5DEE;&#x66F4;&#x65B0;&#x65B9;&#x6CD5;"></a>&#x8BEF;&#x5DEE;&#x66F4;&#x65B0;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#参数设定方法"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x6570;&#x8BBE;&#x5B9A;&#x65B9;&#x6CD5;" class="headerlink" title="&#x53C2;&#x6570;&#x8BBE;&#x5B9A;&#x65B9;&#x6CD5;"></a>&#x53C2;&#x6570;&#x8BBE;&#x5B9A;&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例：Hello-MNIST"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x793A;&#x4F8B;&#xFF1A;Hello-MNIST" class="headerlink" title="&#x793A;&#x4F8B;&#xFF1A;Hello MNIST"></a>&#x793A;&#x4F8B;&#xFF1A;Hello MNIST</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉参见"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x4EA4;&#x53C9;&#x53C2;&#x89C1;" class="headerlink" title="&#x4EA4;&#x53C9;&#x53C2;&#x89C1;"></a>&#x4EA4;&#x53C9;&#x53C2;&#x89C1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">8.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CNN简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#CNN&#x7B80;&#x4ECB;" class="headerlink" title="CNN&#x7B80;&#x4ECB;"></a>CNN&#x7B80;&#x4ECB;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#大卫·休伯尔实验"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x5927;&#x536B;&#xB7;&#x4F11;&#x4F2F;&#x5C14;&#x5B9E;&#x9A8C;" class="headerlink" title="&#x5927;&#x536B;&#xB7;&#x4F11;&#x4F2F;&#x5C14;&#x5B9E;&#x9A8C;"></a>&#x5927;&#x536B;&#xB7;&#x4F11;&#x4F2F;&#x5C14;&#x5B9E;&#x9A8C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#神经认知机模型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x795E;&#x7ECF;&#x8BA4;&#x77E5;&#x673A;&#x6A21;&#x578B;" class="headerlink" title="&#x795E;&#x7ECF;&#x8BA4;&#x77E5;&#x673A;&#x6A21;&#x578B;"></a>&#x795E;&#x7ECF;&#x8BA4;&#x77E5;&#x673A;&#x6A21;&#x578B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积神经网络的结构"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x7684;&#x7ED3;&#x6784;" class="headerlink" title="&#x5377;&#x79EF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x7684;&#x7ED3;&#x6784;"></a>&#x5377;&#x79EF;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x7684;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#卷积层"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x5C42;" class="headerlink" title="&#x5377;&#x79EF;&#x5C42;"></a>&#x5377;&#x79EF;&#x5C42;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积操作"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x64CD;&#x4F5C;" class="headerlink" title="&#x5377;&#x79EF;&#x64CD;&#x4F5C;"></a>&#x5377;&#x79EF;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积层相关概念"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5377;&#x79EF;&#x5C42;&#x76F8;&#x5173;&#x6982;&#x5FF5;" class="headerlink" title="&#x5377;&#x79EF;&#x5C42;&#x76F8;&#x5173;&#x6982;&#x5FF5;"></a>&#x5377;&#x79EF;&#x5C42;&#x76F8;&#x5173;&#x6982;&#x5FF5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#池化层"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6C60;&#x5316;&#x5C42;" class="headerlink" title="&#x6C60;&#x5316;&#x5C42;"></a>&#x6C60;&#x5316;&#x5C42;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#池化操作"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x6C60;&#x5316;&#x64CD;&#x4F5C;" class="headerlink" title="&#x6C60;&#x5316;&#x64CD;&#x4F5C;"></a>&#x6C60;&#x5316;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#池化方法"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x6C60;&#x5316;&#x65B9;&#x6CD5;" class="headerlink" title="&#x6C60;&#x5316;&#x65B9;&#x6CD5;"></a>&#x6C60;&#x5316;&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#全连接层"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x5168;&#x8FDE;&#x63A5;&#x5C42;" class="headerlink" title="&#x5168;&#x8FDE;&#x63A5;&#x5C42;"></a>&#x5168;&#x8FDE;&#x63A5;&#x5C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CNN的训练"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#CNN&#x7684;&#x8BAD;&#x7EC3;" class="headerlink" title="CNN&#x7684;&#x8BAD;&#x7EC3;"></a>CNN&#x7684;&#x8BAD;&#x7EC3;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#误差更新方法"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text"><a href="#&#x8BEF;&#x5DEE;&#x66F4;&#x65B0;&#x65B9;&#x6CD5;" class="headerlink" title="&#x8BEF;&#x5DEE;&#x66F4;&#x65B0;&#x65B9;&#x6CD5;"></a>&#x8BEF;&#x5DEE;&#x66F4;&#x65B0;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#参数设定方法"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x6570;&#x8BBE;&#x5B9A;&#x65B9;&#x6CD5;" class="headerlink" title="&#x53C2;&#x6570;&#x8BBE;&#x5B9A;&#x65B9;&#x6CD5;"></a>&#x53C2;&#x6570;&#x8BBE;&#x5B9A;&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例：Hello-MNIST"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x793A;&#x4F8B;&#xFF1A;Hello-MNIST" class="headerlink" title="&#x793A;&#x4F8B;&#xFF1A;Hello MNIST"></a>&#x793A;&#x4F8B;&#xFF1A;Hello MNIST</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉参见"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x4EA4;&#x53C9;&#x53C2;&#x89C1;" class="headerlink" title="&#x4EA4;&#x53C9;&#x53C2;&#x89C1;"></a>&#x4EA4;&#x53C9;&#x53C2;&#x89C1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">8.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -244,125 +292,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "卷积神经网络",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "卷积神经网络",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>

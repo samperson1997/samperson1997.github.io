@@ -13,16 +13,46 @@
       论文#5 | Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        论文#5 | Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming
-    </h2>
-    <p class="post-date">
-        2019-10-06
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>论文#5 | Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming</h2>
+  <p class="post-date">2019-10-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <p>以下是论文<a href="https://ieeexplore_ieee.gg363.site/abstract/document/8731533" target="_blank" rel="noopener">Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming</a>的笔记。</p>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>以下是论文<a href="https://ieeexplore_ieee.gg363.site/abstract/document/8731533" target="_blank" rel="noopener">Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming</a>的笔记。</p>
 <h2 id="LP模型-Linear-Programming"><a href="#LP模型-Linear-Programming" class="headerlink" title="LP模型 (Linear Programming)"></a>LP模型 (Linear Programming)</h2><p>[1] 目的：计算具有最低总内存容量的部分副本(partial replicas)集，同时均衡查询负载</p>
 <p><br></p>
 <p>[2] 用于：scale-out方式，常见如Master replication，单个主节点(master node)处理所有OLTP工作负载，而OLAP查询在副本节点(replica nodes)上负载均衡</p>
@@ -184,26 +209,48 @@
 <p>[3] 对于不同数量节点K，结果如下：<br><img style="width:100%; max-width:500px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66285988-dcca5f00-e901-11e9-82ce-0cce703b6572.png"><br>最佳分配实现了完美的工作负载分布L* = 1 / K；复制因子W* / V &lt; K (完全复制的复制因子)。<br>k &gt;= 9的最优分配不能在合理的时间内计算</p>
 <p><br></p>
 <h3 id="分解算法"><a href="#分解算法" class="headerlink" title="分解算法"></a>分解算法</h3><p>在惩罚公式中使用（标准化）因子α = 1000 * V。 W / V仅比W* / V大1%～5%，且实现完美的工作负载分布L = 1 / K<br><img style="width:100%; max-width:650px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/66290586-3e92c500-e912-11e9-815c-89cbe17ef68b.png"></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#分布式" >
     <span class="tag-code">分布式</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/08/08/Keogh-2/">
+        <span class="nav-arrow">← </span>
+        
+          论文#2 | iSAX - disk-aware mining and indexing of massive time series datasets
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/10/14/DPISA/">
+        
+          论文#6 | Dual-PISA - An index for aggregation operations on time series data
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -212,33 +259,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LP模型-Linear-Programming"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#LP&#x6A21;&#x578B;-Linear-Programming" class="headerlink" title="LP&#x6A21;&#x578B; (Linear Programming)"></a>LP&#x6A21;&#x578B; (Linear Programming)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最优解"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x4F18;&#x89E3;" class="headerlink" title="&#x6700;&#x4F18;&#x89E3;"></a>&#x6700;&#x4F18;&#x89E3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#启发式分解算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法解决方法"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法模型"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#利用TPC-H基准分析评估"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;" class="headerlink" title="&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;"></a>&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最优解-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x4F18;&#x89E3;-1" class="headerlink" title="&#x6700;&#x4F18;&#x89E3;"></a>&#x6700;&#x4F18;&#x89E3;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a></li></ol></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LP模型-Linear-Programming"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#LP&#x6A21;&#x578B;-Linear-Programming" class="headerlink" title="LP&#x6A21;&#x578B; (Linear Programming)"></a>LP&#x6A21;&#x578B; (Linear Programming)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最优解"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x4F18;&#x89E3;" class="headerlink" title="&#x6700;&#x4F18;&#x89E3;"></a>&#x6700;&#x4F18;&#x89E3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#启发式分解算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>&#x542F;&#x53D1;&#x5F0F;&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法解决方法"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法模型"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;&#x6A21;&#x578B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#利用TPC-H基准分析评估"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;" class="headerlink" title="&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;"></a>&#x5229;&#x7528;TPC-H&#x57FA;&#x51C6;&#x5206;&#x6790;&#x8BC4;&#x4F30;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最优解-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x6700;&#x4F18;&#x89E3;-1" class="headerlink" title="&#x6700;&#x4F18;&#x89E3;"></a>&#x6700;&#x4F18;&#x89E3;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分解算法"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a></li></ol></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -262,125 +310,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "论文#5 | Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "论文#5 | Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>

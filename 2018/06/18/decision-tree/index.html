@@ -13,16 +13,46 @@
       决策树——Sklearn库实现 | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        决策树——Sklearn库实现
-    </h2>
-    <p class="post-date">
-        2018-06-18
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>决策树——Sklearn库实现</h2>
+  <p class="post-date">2018-06-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <h2 id="决策树简介"><a href="#决策树简介" class="headerlink" title="决策树简介"></a>决策树简介</h2><table>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="决策树简介"><a href="#决策树简介" class="headerlink" title="决策树简介"></a>决策树简介</h2><table>
 <thead>
 <tr>
 <th></th>
@@ -193,26 +218,48 @@
 <h2 id="决策树算法"><a href="#决策树算法" class="headerlink" title="决策树算法"></a>决策树算法</h2><p>[1] ID3（Iterative Dichotomiser 3，迭代二叉树 第3代）创建了一个多叉树，并（以一种贪婪的方式）寻找每个节点上的分类特征，并为分类目标获取出最大的信息收益。一般这种算法生成的树都会”生长”到最大尺寸，所以经常需要一个修剪阶段来提高其应用在新数据上的能力。<br>[2] C4.5 是 ID3 算法的后继者，它通过动态地定义离散参数（基于数值变量），将连续的属性值转化为一组间距离散来取消特征必须是分类型的这一约束条件。C4.5将经过训练的树（即经过ID3算法输出的多叉树）转化为一个”如果…即…”的规则组。然后这些规则组将会通过评估后，以确定其排序位置。如果树的准确度没有提高，那么将会通过去除一些规则来完成修剪操作。<br>[3] C5.0 是昆兰根据其所有权下对该算法的最新版本。比起C4.5，它占用的内存更少，建立出的规则组规模更小，但精准度更高。<br>[4] CART（Classification and Regression Trees，分类与回归树）跟 C4.5 相比很相似，但是其不同点在于它（在回归问题）支持数值的目标变量和不需要计算规则组。CART 通过在每个节点上使用特征和阈值来产生出最大的信息收益。<br><strong>scikit-learn中使用的CART算法是经过优化后的版本。</strong></p>
 <h2 id="交叉参见"><a href="#交叉参见" class="headerlink" title="交叉参见"></a>交叉参见</h2><p><a href="https://samperson1997.github.io/2018/06/03/classification-algorithm/" title="适于二分类的机器学习算法" target="_blank" rel="noopener">适于二分类的机器学习算法</a>，<a href="https://samperson1997.github.io/2018/06/24/svm/" title="SVM" target="_blank" rel="noopener">SVM</a>，<a href="https://samperson1997.github.io/2018/07/01/cnn/" title="卷积神经网络" target="_blank" rel="noopener">卷积神经网络</a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier" target="_blank" rel="noopener">http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier</a><br>[2] <a href="https://www.cnblogs.com/zhaoxy/p/5054938.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaoxy/p/5054938.html</a><br>[3] <a href="https://www.cnblogs.com/AlwaysT-Mac/p/6647192.html" target="_blank" rel="noopener">https://www.cnblogs.com/AlwaysT-Mac/p/6647192.html</a><br>[4] <a href="https://blog.csdn.net/lihou1987/article/details/71125145" target="_blank" rel="noopener">https://blog.csdn.net/lihou1987/article/details/71125145</a><br>[5] <a href="https://www.jianshu.com/p/0724dde480f0" target="_blank" rel="noopener">https://www.jianshu.com/p/0724dde480f0</a></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#机器学习" >
     <span class="tag-code">机器学习</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/06/03/classification-algorithm/">
+        <span class="nav-arrow">← </span>
+        
+          适于二分类的机器学习算法
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/06/24/svm/">
+        
+          SVM——Sklearn库实现
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -221,33 +268,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#决策树简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x51B3;&#x7B56;&#x6811;&#x7B80;&#x4ECB;" class="headerlink" title="&#x51B3;&#x7B56;&#x6811;&#x7B80;&#x4ECB;"></a>&#x51B3;&#x7B56;&#x6811;&#x7B80;&#x4ECB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Demo"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重要的参数"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x7684;&#x53C2;&#x6570;" class="headerlink" title="&#x91CD;&#x8981;&#x7684;&#x53C2;&#x6570;"></a>&#x91CD;&#x8981;&#x7684;&#x53C2;&#x6570;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重要的属性方法"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x7684;&#x5C5E;&#x6027;&#x65B9;&#x6CD5;" class="headerlink" title="&#x91CD;&#x8981;&#x7684;&#x5C5E;&#x6027;&#x65B9;&#x6CD5;"></a>&#x91CD;&#x8981;&#x7684;&#x5C5E;&#x6027;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重要的方法"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x7684;&#x65B9;&#x6CD5;" class="headerlink" title="&#x91CD;&#x8981;&#x7684;&#x65B9;&#x6CD5;"></a>&#x91CD;&#x8981;&#x7684;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用建议"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x4F7F;&#x7528;&#x5EFA;&#x8BAE;" class="headerlink" title="&#x4F7F;&#x7528;&#x5EFA;&#x8BAE;"></a>&#x4F7F;&#x7528;&#x5EFA;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#官网示例代码"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x5B98;&#x7F51;&#x793A;&#x4F8B;&#x4EE3;&#x7801;" class="headerlink" title="&#x5B98;&#x7F51;&#x793A;&#x4F8B;&#x4EE3;&#x7801;"></a>&#x5B98;&#x7F51;&#x793A;&#x4F8B;&#x4EE3;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#决策树算法"><span class="toc-nav-number">8.</span> <span class="toc-nav-text"><a href="#&#x51B3;&#x7B56;&#x6811;&#x7B97;&#x6CD5;" class="headerlink" title="&#x51B3;&#x7B56;&#x6811;&#x7B97;&#x6CD5;"></a>&#x51B3;&#x7B56;&#x6811;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉参见"><span class="toc-nav-number">9.</span> <span class="toc-nav-text"><a href="#&#x4EA4;&#x53C9;&#x53C2;&#x89C1;" class="headerlink" title="&#x4EA4;&#x53C9;&#x53C2;&#x89C1;"></a>&#x4EA4;&#x53C9;&#x53C2;&#x89C1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">10.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#决策树简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x51B3;&#x7B56;&#x6811;&#x7B80;&#x4ECB;" class="headerlink" title="&#x51B3;&#x7B56;&#x6811;&#x7B80;&#x4ECB;"></a>&#x51B3;&#x7B56;&#x6811;&#x7B80;&#x4ECB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Demo"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重要的参数"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x7684;&#x53C2;&#x6570;" class="headerlink" title="&#x91CD;&#x8981;&#x7684;&#x53C2;&#x6570;"></a>&#x91CD;&#x8981;&#x7684;&#x53C2;&#x6570;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重要的属性方法"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x7684;&#x5C5E;&#x6027;&#x65B9;&#x6CD5;" class="headerlink" title="&#x91CD;&#x8981;&#x7684;&#x5C5E;&#x6027;&#x65B9;&#x6CD5;"></a>&#x91CD;&#x8981;&#x7684;&#x5C5E;&#x6027;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重要的方法"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x7684;&#x65B9;&#x6CD5;" class="headerlink" title="&#x91CD;&#x8981;&#x7684;&#x65B9;&#x6CD5;"></a>&#x91CD;&#x8981;&#x7684;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用建议"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x4F7F;&#x7528;&#x5EFA;&#x8BAE;" class="headerlink" title="&#x4F7F;&#x7528;&#x5EFA;&#x8BAE;"></a>&#x4F7F;&#x7528;&#x5EFA;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#官网示例代码"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x5B98;&#x7F51;&#x793A;&#x4F8B;&#x4EE3;&#x7801;" class="headerlink" title="&#x5B98;&#x7F51;&#x793A;&#x4F8B;&#x4EE3;&#x7801;"></a>&#x5B98;&#x7F51;&#x793A;&#x4F8B;&#x4EE3;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#决策树算法"><span class="toc-nav-number">8.</span> <span class="toc-nav-text"><a href="#&#x51B3;&#x7B56;&#x6811;&#x7B97;&#x6CD5;" class="headerlink" title="&#x51B3;&#x7B56;&#x6811;&#x7B97;&#x6CD5;"></a>&#x51B3;&#x7B56;&#x6811;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉参见"><span class="toc-nav-number">9.</span> <span class="toc-nav-text"><a href="#&#x4EA4;&#x53C9;&#x53C2;&#x89C1;" class="headerlink" title="&#x4EA4;&#x53C9;&#x53C2;&#x89C1;"></a>&#x4EA4;&#x53C9;&#x53C2;&#x89C1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">10.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -271,125 +319,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "决策树——Sklearn库实现",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "决策树——Sklearn库实现",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>

@@ -13,16 +13,46 @@
       零起点Centos+Hadoop+xgboost部署 (伪分布式) | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        零起点Centos+Hadoop+xgboost部署 (伪分布式)
-    </h2>
-    <p class="post-date">
-        2018-05-16
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>零起点Centos+Hadoop+xgboost部署 (伪分布式)</h2>
+  <p class="post-date">2018-05-16</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <p>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢。</p>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢。</p>
 <h2 id="安装Hadoop"><a href="#安装Hadoop" class="headerlink" title="安装Hadoop"></a>安装Hadoop</h2><p>[1] 下载地址：<a href="https://archive.apache.org/dist/hadoop/common/hadoop-2.8.5/" target="_blank" rel="noopener">https://archive.apache.org/dist/hadoop/common/hadoop-2.8.5/</a><br>下载hadoop-2.8.5.tar.gz<br>[2] 解压到/usr/local/hadoop，并重命名为hadoop(方便后续)</p>
 <h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>所有配置文件都在/hadoop/etc/hadoop下。<br>[1] core-site.xml：该配置文件用于指明namenode的主机名和端口，hadoop临时目录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://0.0.0.0:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- 指定hadoop运行时产生文件的存储路径 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/temp&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
 <p>[2] hdfs-site.xml：默认副本数3，修改为1，dfs.namenode.name.dir指明fsimage存放目录，多个目录用逗号隔开。dfs.datanode.data.dir指定块文件存放目录，多个目录逗号隔开。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">　　 &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/tmp/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/tmp/hdfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.http.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;0.0.0.0:50070&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
@@ -153,26 +178,48 @@
 <p>[2] 创建data文件夹：<code>hadoop dfs -mkdir -p /xgboost/data</code><br>[3] 上传文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $(HOME)/xgboost-package</span><br><span class="line">hadoop -put ./xgboost/demo/data/agaricus.txt.test /xgboost/data</span><br><span class="line">hadoop -put ./xgboost/demo/data/agaricus.txt.train /xgboost/data</span><br></pre></td></tr></table></figure></p>
 <p>[4] 进入测试目录：<code>cd xgboost/dmlc-core/tracker</code><br>[5] 提交<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dmlc-submit —cluster=yarn —num-workers=2 —worker-cores=2\</span><br><span class="line">&gt;     ../../xgboost mushroom.aws.conf nthread=2\</span><br><span class="line">&gt;     data=///xgboost/data/agaricus.txt.train\</span><br><span class="line">&gt;     eval[test]=hdfs://0.0.0.0:9000/xgboost/data/agaricus.txt.test\</span><br><span class="line">&gt;     model_dir=hdfs://0.0.0.0:9000/xgboost/model_new</span><br></pre></td></tr></table></figure></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] 手把手教你安装mac版hadoop2.7.3教程 <a href="https://www.cnblogs.com/landed/p/6831758.html" target="_blank" rel="noopener">https://www.cnblogs.com/landed/p/6831758.html</a><br>[2] xgboost分布式部署教程 <a href="https://blog.csdn.net/u010306433/article/details/51403894" target="_blank" rel="noopener">https://blog.csdn.net/u010306433/article/details/51403894</a><br>[3] Distributed XGBoost YARN on AWS <a href="http://xgboost.readthedocs.io/en/latest/tutorials/aws_yarn.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/tutorials/aws_yarn.html</a></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#分布式" >
     <span class="tag-code">分布式</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/05/09/fuzzywuzzy/">
+        <span class="nav-arrow">← </span>
+        
+          字符串相似度比较：JavaWuzzy文档
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/06/03/classification-algorithm/">
+        
+          适于二分类的机器学习算法
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -181,33 +228,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装Hadoop"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;Hadoop" class="headerlink" title="&#x5B89;&#x88C5;Hadoop"></a>&#x5B89;&#x88C5;Hadoop</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#修改配置文件"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#运行Hadoop"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x8FD0;&#x884C;Hadoop" class="headerlink" title="&#x8FD0;&#x884C;Hadoop"></a>&#x8FD0;&#x884C;Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试：运行Hadoop示例"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x6D4B;&#x8BD5;&#xFF1A;&#x8FD0;&#x884C;Hadoop&#x793A;&#x4F8B;" class="headerlink" title="&#x6D4B;&#x8BD5;&#xFF1A;&#x8FD0;&#x884C;Hadoop&#x793A;&#x4F8B;"></a>&#x6D4B;&#x8BD5;&#xFF1A;&#x8FD0;&#x884C;Hadoop&#x793A;&#x4F8B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#xgboost分布式部署"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#xgboost&#x5206;&#x5E03;&#x5F0F;&#x90E8;&#x7F72;" class="headerlink" title="xgboost&#x5206;&#x5E03;&#x5F0F;&#x90E8;&#x7F72;"></a>xgboost&#x5206;&#x5E03;&#x5F0F;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#下载xgboost"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x4E0B;&#x8F7D;xgboost" class="headerlink" title="&#x4E0B;&#x8F7D;xgboost"></a>&#x4E0B;&#x8F7D;xgboost</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装编译依赖的包"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x4F9D;&#x8D56;&#x7684;&#x5305;" class="headerlink" title="&#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x4F9D;&#x8D56;&#x7684;&#x5305;"></a>&#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x4F9D;&#x8D56;&#x7684;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#下载编译libhdfs"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;libhdfs" class="headerlink" title="&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;libhdfs"></a>&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;libhdfs</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#编译xgboost"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#&#x7F16;&#x8BD1;xgboost" class="headerlink" title="&#x7F16;&#x8BD1;xgboost"></a>&#x7F16;&#x8BD1;xgboost</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text"><a href="#&#x6D4B;&#x8BD5;" class="headerlink" title="&#x6D4B;&#x8BD5;"></a>&#x6D4B;&#x8BD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装Hadoop"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;Hadoop" class="headerlink" title="&#x5B89;&#x88C5;Hadoop"></a>&#x5B89;&#x88C5;Hadoop</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#修改配置文件"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#运行Hadoop"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x8FD0;&#x884C;Hadoop" class="headerlink" title="&#x8FD0;&#x884C;Hadoop"></a>&#x8FD0;&#x884C;Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试：运行Hadoop示例"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x6D4B;&#x8BD5;&#xFF1A;&#x8FD0;&#x884C;Hadoop&#x793A;&#x4F8B;" class="headerlink" title="&#x6D4B;&#x8BD5;&#xFF1A;&#x8FD0;&#x884C;Hadoop&#x793A;&#x4F8B;"></a>&#x6D4B;&#x8BD5;&#xFF1A;&#x8FD0;&#x884C;Hadoop&#x793A;&#x4F8B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#xgboost分布式部署"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#xgboost&#x5206;&#x5E03;&#x5F0F;&#x90E8;&#x7F72;" class="headerlink" title="xgboost&#x5206;&#x5E03;&#x5F0F;&#x90E8;&#x7F72;"></a>xgboost&#x5206;&#x5E03;&#x5F0F;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#下载xgboost"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x4E0B;&#x8F7D;xgboost" class="headerlink" title="&#x4E0B;&#x8F7D;xgboost"></a>&#x4E0B;&#x8F7D;xgboost</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装编译依赖的包"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x4F9D;&#x8D56;&#x7684;&#x5305;" class="headerlink" title="&#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x4F9D;&#x8D56;&#x7684;&#x5305;"></a>&#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x4F9D;&#x8D56;&#x7684;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#下载编译libhdfs"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;libhdfs" class="headerlink" title="&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;libhdfs"></a>&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;libhdfs</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#编译xgboost"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#&#x7F16;&#x8BD1;xgboost" class="headerlink" title="&#x7F16;&#x8BD1;xgboost"></a>&#x7F16;&#x8BD1;xgboost</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text"><a href="#&#x6D4B;&#x8BD5;" class="headerlink" title="&#x6D4B;&#x8BD5;"></a>&#x6D4B;&#x8BD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -231,125 +279,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "零起点Centos+Hadoop+xgboost部署 (伪分布式)",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "零起点Centos+Hadoop+xgboost部署 (伪分布式)",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>

@@ -13,16 +13,46 @@
       软件工程与计算II重点整理(第1-5章) | Blog of Samperson
     
   </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
 </head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
@@ -112,21 +142,16 @@
 </header>
 
     <div id="article-banner">
-    <h2>
-        软件工程与计算II重点整理(第1-5章)
-    </h2>
-    <p class="post-date">
-        2017-12-20
-    </p>
-    <div class="arrow-down">
-        <a href="javascript:;"></a>
-    </div>
+  <h2>软件工程与计算II重点整理(第1-5章)</h2>
+  <p class="post-date">2017-12-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
 <main class="app-body flex-box">
-    <!-- Article START -->
-    <article class="post-article">
-        <section class="markdown-content">
-            <h1 id="第一、二章-软件工程概论"><a href="#第一、二章-软件工程概论" class="headerlink" title="第一、二章 软件工程概论"></a>第一、二章 软件工程概论</h1><h2 id="1-软件工程（名词解释）"><a href="#1-软件工程（名词解释）" class="headerlink" title="1.软件工程（名词解释）"></a>1.软件工程（名词解释）</h2><p>(1)应用系统的、规范的、可量化的方法，来开发、运行和维护软件，即将工程应用到软件。<br>(2)对(1)中各种方法的研究。</p>
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="第一、二章-软件工程概论"><a href="#第一、二章-软件工程概论" class="headerlink" title="第一、二章 软件工程概论"></a>第一、二章 软件工程概论</h1><h2 id="1-软件工程（名词解释）"><a href="#1-软件工程（名词解释）" class="headerlink" title="1.软件工程（名词解释）"></a>1.软件工程（名词解释）</h2><p>(1)应用系统的、规范的、可量化的方法，来开发、运行和维护软件，即将工程应用到软件。<br>(2)对(1)中各种方法的研究。</p>
 <h2 id="2-从1950s—2000s之间的特点（简答）"><a href="#2-从1950s—2000s之间的特点（简答）" class="headerlink" title="2.从1950s—2000s之间的特点（简答）"></a>2.从1950s—2000s之间的特点（简答）</h2><p>1950s：科学计算；以机器为中心进行编程；像生产硬件一样生产软件。<br>1960s：业务应用（批量数据处理和事物计算）；软件不同于硬件；用软件工艺的方式生产软件。<br>1970s：结构化方法；瀑布模型；强调规则和纪律。它们奠定了软件工程的基础，是后续年代软件工程发展的支撑。<br>1980s：追求生产力最大化；现代结构化方法/面向对象编程广泛应用；重视过程的作用。<br>1990s：企业为中心的大规模软件系统开发；追求快速开发、可变更性和用户价值；web应用出现<br>2000s：大规模web应用；大量面向大众的web产品；追求快速开发、可变更性、用户价值和创新。</p>
 <h1 id="第三、四章-项目启动"><a href="#第三、四章-项目启动" class="headerlink" title="第三、四章 项目启动"></a>第三、四章 项目启动</h1><h2 id="1-团队结构：主程序员团队；民主团队；开放团队"><a href="#1-团队结构：主程序员团队；民主团队；开放团队" class="headerlink" title="1.团队结构：主程序员团队；民主团队；开放团队"></a>1.团队结构：主程序员团队；民主团队；开放团队</h2><p>如何管理团队：建立团队章程；持续成功；和谐沟通；避免团队杀手</p>
 <h2 id="2-质量保障有哪些措施？结合实验进行说明"><a href="#2-质量保障有哪些措施？结合实验进行说明" class="headerlink" title="2.质量保障有哪些措施？结合实验进行说明"></a>2.质量保障有哪些措施？结合实验进行说明</h2><p> (1)需求开发——需求评审和需求度量；<br> (2)体系结构——体系结构评审和集成测试(持续集成)；<br> (3)详细设计——详细设计评审、设计度量和集成测试(持续集成)；<br> (4)构造阶段——代码评审、代码度量、测试（测试驱动和持续集成）；<br> (5)测试阶段——测试、测试度量。</p>
@@ -167,26 +192,41 @@
 <p>例如，连锁超市销售系统可以使用数据需求DR1和DR2。<br>DR1：系统需要存储的数据实体及其关系为图6-14的内容。<br>DR2：系统需要存储1年内的销售记录和退货记录。</p>
 </blockquote>
 <h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-2/" title="软件工程与计算II重点整理(第6-7章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第6-7章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-3/" title="软件工程与计算II重点整理(第8-11章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第8-11章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-4/" title="软件工程与计算II重点整理(第12-15章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第12-15章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-5/" title="软件工程与计算II重点整理(第16-19章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第16-19章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-6/" title="软件工程与计算II重点整理(第20-23章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第20-23章)</a></p>
-
-        </section>
-        <!-- Tags START -->
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
         
-            <div class="tags">
-                <span>Tags:</span>
-                
   <a href="/tags#软件工程与计算II" >
     <span class="tag-code">软件工程与计算II</span>
   </a>
 
-            </div>
-            
-                <!-- Tags END -->
-                <!-- 打赏 START -->
-                
-                    <div class="money-like">
-                        <div class="reward-btn">
-                            赏
-                            <span class="money-code">
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+    
+      <a class="nav-right" href="/2017/12/21/SECII-2/">
+        
+          软件工程与计算II重点整理(第6-7章)
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
             <span class="alipay-code">
               <div class="code-image"></div>
               <b>使用支付宝打赏</b>
@@ -195,33 +235,34 @@
               <div class="code-image"></div>
               <b>使用微信打赏</b>
             </span>
-                            </span>
-                        </div>
-                        <p class="notice">如果觉得我的文章对您有帮助，欢迎点击上方按钮对我打赏</p>
-                    </div>
-                    
-                        <!-- 打赏 END -->
-                        <!-- 二维码 START -->
-                        
-                                <!-- 二维码 END -->
-                                
-                                            <!-- No Comment -->
-                                            
-    </article>
-    <!-- Article END -->
-    <!-- Catalog START -->
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
     
-        <aside class="catalog-container">
-    <div class="toc-main">
-        <strong class="toc-title">Catalog</strong>
-        
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第一、二章-软件工程概论"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E00;&#x3001;&#x4E8C;&#x7AE0;-&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x6982;&#x8BBA;" class="headerlink" title="&#x7B2C;&#x4E00;&#x3001;&#x4E8C;&#x7AE0; &#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x6982;&#x8BBA;"></a>&#x7B2C;&#x4E00;&#x3001;&#x4E8C;&#x7AE0; &#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x6982;&#x8BBA;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-软件工程（名词解释）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-从1950s—2000s之间的特点（简答）"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x4ECE;1950s&#x2014;2000s&#x4E4B;&#x95F4;&#x7684;&#x7279;&#x70B9;&#xFF08;&#x7B80;&#x7B54;&#xFF09;" class="headerlink" title="2.&#x4ECE;1950s&#x2014;2000s&#x4E4B;&#x95F4;&#x7684;&#x7279;&#x70B9;&#xFF08;&#x7B80;&#x7B54;&#xFF09;"></a>2.&#x4ECE;1950s&#x2014;2000s&#x4E4B;&#x95F4;&#x7684;&#x7279;&#x70B9;&#xFF08;&#x7B80;&#x7B54;&#xFF09;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第三、四章-项目启动"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E09;&#x3001;&#x56DB;&#x7AE0;-&#x9879;&#x76EE;&#x542F;&#x52A8;" class="headerlink" title="&#x7B2C;&#x4E09;&#x3001;&#x56DB;&#x7AE0; &#x9879;&#x76EE;&#x542F;&#x52A8;"></a>&#x7B2C;&#x4E09;&#x3001;&#x56DB;&#x7AE0; &#x9879;&#x76EE;&#x542F;&#x52A8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-团队结构：主程序员团队；民主团队；开放团队"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x56E2;&#x961F;&#x7ED3;&#x6784;&#xFF1A;&#x4E3B;&#x7A0B;&#x5E8F;&#x5458;&#x56E2;&#x961F;&#xFF1B;&#x6C11;&#x4E3B;&#x56E2;&#x961F;&#xFF1B;&#x5F00;&#x653E;&#x56E2;&#x961F;" class="headerlink" title="1.&#x56E2;&#x961F;&#x7ED3;&#x6784;&#xFF1A;&#x4E3B;&#x7A0B;&#x5E8F;&#x5458;&#x56E2;&#x961F;&#xFF1B;&#x6C11;&#x4E3B;&#x56E2;&#x961F;&#xFF1B;&#x5F00;&#x653E;&#x56E2;&#x961F;"></a>1.&#x56E2;&#x961F;&#x7ED3;&#x6784;&#xFF1A;&#x4E3B;&#x7A0B;&#x5E8F;&#x5458;&#x56E2;&#x961F;&#xFF1B;&#x6C11;&#x4E3B;&#x56E2;&#x961F;&#xFF1B;&#x5F00;&#x653E;&#x56E2;&#x961F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-质量保障有哪些措施？结合实验进行说明"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x8D28;&#x91CF;&#x4FDD;&#x969C;&#x6709;&#x54EA;&#x4E9B;&#x63AA;&#x65BD;&#xFF1F;&#x7ED3;&#x5408;&#x5B9E;&#x9A8C;&#x8FDB;&#x884C;&#x8BF4;&#x660E;" class="headerlink" title="2.&#x8D28;&#x91CF;&#x4FDD;&#x969C;&#x6709;&#x54EA;&#x4E9B;&#x63AA;&#x65BD;&#xFF1F;&#x7ED3;&#x5408;&#x5B9E;&#x9A8C;&#x8FDB;&#x884C;&#x8BF4;&#x660E;"></a>2.&#x8D28;&#x91CF;&#x4FDD;&#x969C;&#x6709;&#x54EA;&#x4E9B;&#x63AA;&#x65BD;&#xFF1F;&#x7ED3;&#x5408;&#x5B9E;&#x9A8C;&#x8FDB;&#x884C;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-配置管理有哪些活动？实验中是如何进行配置管理的"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#3-&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x6709;&#x54EA;&#x4E9B;&#x6D3B;&#x52A8;&#xFF1F;&#x5B9E;&#x9A8C;&#x4E2D;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x7684;" class="headerlink" title="3.&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x6709;&#x54EA;&#x4E9B;&#x6D3B;&#x52A8;&#xFF1F;&#x5B9E;&#x9A8C;&#x4E2D;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x7684;"></a>3.&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x6709;&#x54EA;&#x4E9B;&#x6D3B;&#x52A8;&#xFF1F;&#x5B9E;&#x9A8C;&#x4E2D;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x7684;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第五章-软件需求基础"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E94;&#x7AE0;-&#x8F6F;&#x4EF6;&#x9700;&#x6C42;&#x57FA;&#x7840;" class="headerlink" title="&#x7B2C;&#x4E94;&#x7AE0; &#x8F6F;&#x4EF6;&#x9700;&#x6C42;&#x57FA;&#x7840;"></a>&#x7B2C;&#x4E94;&#x7AE0; &#x8F6F;&#x4EF6;&#x9700;&#x6C42;&#x57FA;&#x7840;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-需求（名词解释）"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#1-&#x9700;&#x6C42;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x9700;&#x6C42;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x9700;&#x6C42;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-区分需求的三个层次：业务需求，用户需求，系统级需求"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#2-&#x533A;&#x5206;&#x9700;&#x6C42;&#x7684;&#x4E09;&#x4E2A;&#x5C42;&#x6B21;&#xFF1A;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x6C42;&#xFF0C;&#x7CFB;&#x7EDF;&#x7EA7;&#x9700;&#x6C42;" class="headerlink" title="2.&#x533A;&#x5206;&#x9700;&#x6C42;&#x7684;&#x4E09;&#x4E2A;&#x5C42;&#x6B21;&#xFF1A;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x6C42;&#xFF0C;&#x7CFB;&#x7EDF;&#x7EA7;&#x9700;&#x6C42;"></a>2.&#x533A;&#x5206;&#x9700;&#x6C42;&#x7684;&#x4E09;&#x4E2A;&#x5C42;&#x6B21;&#xFF1A;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x6C42;&#xFF0C;&#x7CFB;&#x7EDF;&#x7EA7;&#x9700;&#x6C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-掌握需求的类型"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#3-&#x638C;&#x63E1;&#x9700;&#x6C42;&#x7684;&#x7C7B;&#x578B;" class="headerlink" title="3.&#x638C;&#x63E1;&#x9700;&#x6C42;&#x7684;&#x7C7B;&#x578B;"></a>3.&#x638C;&#x63E1;&#x9700;&#x6C42;&#x7684;&#x7C7B;&#x578B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
-                
-    </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第一、二章-软件工程概论"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E00;&#x3001;&#x4E8C;&#x7AE0;-&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x6982;&#x8BBA;" class="headerlink" title="&#x7B2C;&#x4E00;&#x3001;&#x4E8C;&#x7AE0; &#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x6982;&#x8BBA;"></a>&#x7B2C;&#x4E00;&#x3001;&#x4E8C;&#x7AE0; &#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x6982;&#x8BBA;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-软件工程（名词解释）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-从1950s—2000s之间的特点（简答）"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x4ECE;1950s&#x2014;2000s&#x4E4B;&#x95F4;&#x7684;&#x7279;&#x70B9;&#xFF08;&#x7B80;&#x7B54;&#xFF09;" class="headerlink" title="2.&#x4ECE;1950s&#x2014;2000s&#x4E4B;&#x95F4;&#x7684;&#x7279;&#x70B9;&#xFF08;&#x7B80;&#x7B54;&#xFF09;"></a>2.&#x4ECE;1950s&#x2014;2000s&#x4E4B;&#x95F4;&#x7684;&#x7279;&#x70B9;&#xFF08;&#x7B80;&#x7B54;&#xFF09;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第三、四章-项目启动"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E09;&#x3001;&#x56DB;&#x7AE0;-&#x9879;&#x76EE;&#x542F;&#x52A8;" class="headerlink" title="&#x7B2C;&#x4E09;&#x3001;&#x56DB;&#x7AE0; &#x9879;&#x76EE;&#x542F;&#x52A8;"></a>&#x7B2C;&#x4E09;&#x3001;&#x56DB;&#x7AE0; &#x9879;&#x76EE;&#x542F;&#x52A8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-团队结构：主程序员团队；民主团队；开放团队"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x56E2;&#x961F;&#x7ED3;&#x6784;&#xFF1A;&#x4E3B;&#x7A0B;&#x5E8F;&#x5458;&#x56E2;&#x961F;&#xFF1B;&#x6C11;&#x4E3B;&#x56E2;&#x961F;&#xFF1B;&#x5F00;&#x653E;&#x56E2;&#x961F;" class="headerlink" title="1.&#x56E2;&#x961F;&#x7ED3;&#x6784;&#xFF1A;&#x4E3B;&#x7A0B;&#x5E8F;&#x5458;&#x56E2;&#x961F;&#xFF1B;&#x6C11;&#x4E3B;&#x56E2;&#x961F;&#xFF1B;&#x5F00;&#x653E;&#x56E2;&#x961F;"></a>1.&#x56E2;&#x961F;&#x7ED3;&#x6784;&#xFF1A;&#x4E3B;&#x7A0B;&#x5E8F;&#x5458;&#x56E2;&#x961F;&#xFF1B;&#x6C11;&#x4E3B;&#x56E2;&#x961F;&#xFF1B;&#x5F00;&#x653E;&#x56E2;&#x961F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-质量保障有哪些措施？结合实验进行说明"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x8D28;&#x91CF;&#x4FDD;&#x969C;&#x6709;&#x54EA;&#x4E9B;&#x63AA;&#x65BD;&#xFF1F;&#x7ED3;&#x5408;&#x5B9E;&#x9A8C;&#x8FDB;&#x884C;&#x8BF4;&#x660E;" class="headerlink" title="2.&#x8D28;&#x91CF;&#x4FDD;&#x969C;&#x6709;&#x54EA;&#x4E9B;&#x63AA;&#x65BD;&#xFF1F;&#x7ED3;&#x5408;&#x5B9E;&#x9A8C;&#x8FDB;&#x884C;&#x8BF4;&#x660E;"></a>2.&#x8D28;&#x91CF;&#x4FDD;&#x969C;&#x6709;&#x54EA;&#x4E9B;&#x63AA;&#x65BD;&#xFF1F;&#x7ED3;&#x5408;&#x5B9E;&#x9A8C;&#x8FDB;&#x884C;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-配置管理有哪些活动？实验中是如何进行配置管理的"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#3-&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x6709;&#x54EA;&#x4E9B;&#x6D3B;&#x52A8;&#xFF1F;&#x5B9E;&#x9A8C;&#x4E2D;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x7684;" class="headerlink" title="3.&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x6709;&#x54EA;&#x4E9B;&#x6D3B;&#x52A8;&#xFF1F;&#x5B9E;&#x9A8C;&#x4E2D;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x7684;"></a>3.&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x6709;&#x54EA;&#x4E9B;&#x6D3B;&#x52A8;&#xFF1F;&#x5B9E;&#x9A8C;&#x4E2D;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x7BA1;&#x7406;&#x7684;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第五章-软件需求基础"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7B2C;&#x4E94;&#x7AE0;-&#x8F6F;&#x4EF6;&#x9700;&#x6C42;&#x57FA;&#x7840;" class="headerlink" title="&#x7B2C;&#x4E94;&#x7AE0; &#x8F6F;&#x4EF6;&#x9700;&#x6C42;&#x57FA;&#x7840;"></a>&#x7B2C;&#x4E94;&#x7AE0; &#x8F6F;&#x4EF6;&#x9700;&#x6C42;&#x57FA;&#x7840;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-需求（名词解释）"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#1-&#x9700;&#x6C42;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x9700;&#x6C42;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x9700;&#x6C42;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-区分需求的三个层次：业务需求，用户需求，系统级需求"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#2-&#x533A;&#x5206;&#x9700;&#x6C42;&#x7684;&#x4E09;&#x4E2A;&#x5C42;&#x6B21;&#xFF1A;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x6C42;&#xFF0C;&#x7CFB;&#x7EDF;&#x7EA7;&#x9700;&#x6C42;" class="headerlink" title="2.&#x533A;&#x5206;&#x9700;&#x6C42;&#x7684;&#x4E09;&#x4E2A;&#x5C42;&#x6B21;&#xFF1A;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x6C42;&#xFF0C;&#x7CFB;&#x7EDF;&#x7EA7;&#x9700;&#x6C42;"></a>2.&#x533A;&#x5206;&#x9700;&#x6C42;&#x7684;&#x4E09;&#x4E2A;&#x5C42;&#x6B21;&#xFF1A;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x6C42;&#xFF0C;&#x7CFB;&#x7EDF;&#x7EA7;&#x9700;&#x6C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-掌握需求的类型"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#3-&#x638C;&#x63E1;&#x9700;&#x6C42;&#x7684;&#x7C7B;&#x578B;" class="headerlink" title="3.&#x638C;&#x63E1;&#x9700;&#x6C42;&#x7684;&#x7C7B;&#x578B;"></a>3.&#x638C;&#x63E1;&#x9700;&#x6C42;&#x7684;&#x7C7B;&#x578B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
+    
+  </div>
 </aside>
-
-            
-                <!-- Catalog END -->
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -245,125 +286,117 @@
             })
         })
 
-        // zoom image
-        $(".markdown-content img").on('click', function() {
-            var src = $(this).attr('src')
-            if (src !== 'http://file.muyutech.com/error-img.png') {
-                var imageW = $(this).width()
-                var imageH = $(this).height()
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
 
-                var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-                zoom = zoom < 1 ? 1 : zoom
-                zoom = zoom > 2 ? 2 : zoom
-                var transY = (($(window).height() - imageH) / 2).toFixed(2)
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-                $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
-                $('.image-view-wrap').addClass('wrap-active')
-                $('.image-view-wrap img').css({
-                    'width': `${imageW}`,
-                    'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-                })
-                $('html').css('overflow', 'hidden')
-
-                $('.image-view-wrap').on('click', function() {
-                    $(this).remove()
-                    $('html').attr('style', '')
-                })
-            }
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
         })
+        $('html').css('overflow', 'hidden')
 
-        // qrcode
-        var qr = new QRious({
-            element: document.getElementById('share-qrcode'),
-            value: document.location.href
-        });
-
-        // gitment
-        var gitmentConfig = "samperson1997";
-        if (gitmentConfig !== 'undefined') {
-            var gitment = new Gitment({
-                id: "软件工程与计算II重点整理(第1-5章)",
-                owner: "samperson1997",
-                repo: "samperson1997.github.io",
-                oauth: {
-                    client_id: "649cae277b0b34f46d41",
-                    client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
-                },
-                theme: {
-                    render(state, instance) {
-                        const container = document.createElement('div')
-                        container.lang = "en-US"
-                        container.className = 'gitment-container gitment-root-container'
-                        container.appendChild(instance.renderHeader(state, instance))
-                        container.appendChild(instance.renderEditor(state, instance))
-                        container.appendChild(instance.renderComments(state, instance))
-                        container.appendChild(instance.renderFooter(state, instance))
-                        return container;
-                    }
-                }
-            })
-            gitment.render(document.getElementById('comments'))
-        }
-    })();
-
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
 </script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "软件工程与计算II重点整理(第1-5章)",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
 
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
     <footer class="app-footer">
-    <p class="copyright">
-        &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <br> Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-    </p>
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
 </footer>
 
 <script>
-    function async(u, c) {
-        var d = document,
-            t = 'script',
-            o = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        o.src = u;
-        if (c) {
-            o.addEventListener('load', function(e) {
-                c(null, e);
-            }, false);
-        }
-        s.parentNode.insertBefore(o, s);
-    }
-
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
-        FastClick.attach(document.body);
-    })
-
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
 <script>
-    var hasLine = 'true';
-    async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function() {
-        $('figure pre').each(function(i, block) {
-            var figure = $(this).parents('figure');
-            if (hasLine === 'false') {
-                figure.find('.gutter').hide();
-            }
-            var lang = figure.attr('class').split(' ')[1] || 'code';
-            var codeHtml = $(this).html();
-            var codeTag = document.createElement('code');
-            codeTag.className = lang;
-            codeTag.innerHTML = codeHtml;
-            $(this).attr('class', '').empty().html(codeTag);
-            figure.attr('data-lang', lang.toUpperCase());
-            hljs.highlightBlock(block);
-        });
-    })
-
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
 <!-- Baidu Tongji -->
 
-        <script src="/js/script.js"></script>
-
+<script src="/js/script.js"></script>
   </body>
 </html>
