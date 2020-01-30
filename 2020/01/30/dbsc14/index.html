@@ -10,7 +10,7 @@
   
   <title>
     
-      ⛵️帆船书#14 | 事务 | Blog of Samperson
+      ⛵️帆船书#14&amp;15 | 事务和并发控制 | Blog of Samperson
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -138,7 +138,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>⛵️帆船书#14 | 事务</h2>
+  <h2>⛵️帆船书#14&15 | 事务和并发控制</h2>
   <p class="post-date">2020-01-30</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -147,7 +147,89 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"></section>
+    <section class="markdown-content"><blockquote>
+<p><strong>事务</strong>是访问并可能更新各种数据项的一个<strong>程序执行单位</strong>, ACID: 原子性, 一致性, 隔离性, 持久性<br>数据库<strong>并发控制管理部件</strong>负责处理并发控制机制</p>
+</blockquote>
+<h2 id="原子性和持久性"><a href="#原子性和持久性" class="headerlink" title="原子性和持久性"></a>原子性和持久性</h2><p>[1] 保持原子性的基本思路: 在磁盘<strong>日志</strong>记录要执行写操作的数据项的旧值<br>[2] 达到持久性:</p>
+<ul>
+<li>事务做的<strong>更新</strong>在事务结束前已经写入磁盘</li>
+<li>事务已执行的<strong>更新信息</strong>写到磁盘, 数据库在系统出现故障后重新启动时重新构造更新</li>
+</ul>
+<p>[3] 存储结构</p>
+<ul>
+<li>易失性存储器(主存, cache): 计算机崩溃时丢失</li>
+<li>非易失性存储器(磁盘, 闪存, 光盘, 磁带): 磁盘崩溃时丢失</li>
+<li>稳定性存储器: 永不丢失, 可以复制非易失性存储器介质并采用<strong>独立故障模式</strong><br><strong>必须支持在线访问</strong>的稳定存储器与<strong>磁盘镜像</strong>或者其他形式的提供冗余数据存储的<strong>RAID</strong>接近<br>对于<strong>离线或归档</strong>的情况, 稳定性存储器可以由存储在物理安全位置的数据的<strong>多个磁盘备份</strong>构成</li>
+</ul>
+<p>[4] 事务的状态: 活动, 部分提交, 失败, 中止, 提交<br><strong>中止</strong>事务对数据库所做的任何改变必须撤销, 此外:</p>
+<ul>
+<li>如果引起中止的是<strong>硬件错误</strong>或者<strong>不是</strong>内部逻辑产生的软件错误, 采用<strong>重启</strong>新的事务</li>
+<li>如果引起中止的是<strong>内部逻辑</strong>错误/输入错误/所需数据没有在数据库中找到, 采用<strong>杀死事务</strong></li>
+</ul>
+<p>[5] 可见的外部写: 写到用户屏幕<br>实现: 在非易失性存储设备中临时写下与外部写相关所有数据, 然后在事务进入提交状态后执行真正的写操作<br>如果事务进入提交状态而外部写未完成时系统出现故障, 可以在重启后用存储在非易失性设备中的数据执行外部写操作</p>
+<h2 id="隔离性和可串性化"><a href="#隔离性和可串性化" class="headerlink" title="隔离性和可串性化"></a>隔离性和可串性化</h2><p>[1] 事务的并发执行</p>
+<ul>
+<li>提高事务吞吐量和系统利用率: I/O和CPU并行运作, 给定时间内执行事务数增加, 处理器和磁盘利用率提高</li>
+<li>减少事务等待时间: 共享CPU周期和磁盘存取, 减少一个事务从提交到完成所需要的平均响应时间</li>
+</ul>
+<p>[2] 多个事务并发执行, 数据<strong>一致性</strong>可能不再维持, 但是事务的<strong>串行执行</strong>能保证一致性<br>[3] <strong>调度</strong>捕获影响事务并发执行的关键操作(read/write), 忽略事务执行的内部细节<br>调度的执行效果等价于按照某种串行执行的效果——可以通过并发控制机制保证<strong>可串行化</strong><br><strong>不是所有的串行调度相互之间都冲突等价</strong><br>[4] 通过为调度构造<strong>优先图</strong>, 搜索<strong>是否无环</strong>判断是否冲突可串性化<br>有环: 非冲突可串性化<br>深度优先搜索检测环是否存在: n^2数量级, 其中n为事务数</p>
+<h3 id="可恢复调度和无级联调度"><a href="#可恢复调度和无级联调度" class="headerlink" title="可恢复调度和无级联调度"></a>可恢复调度和无级联调度</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">T1</th>
+<th style="text-align:center">T2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">read(A)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">write(A)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">read(A)</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">commit</td>
+</tr>
+<tr>
+<td style="text-align:center">read(B)</td>
+</tr>
+</tbody>
+</table>
+<p>[1] T2读取T1写入的值——T2<strong>依赖于</strong>T1<br>T1提交前发生故障, 但是T7已提交, 不能终止, 因此不可恢复<br>只有T1比T2先提交, 才是可恢复调度<br><strong>调度必须可恢复</strong>: 若a看到b的影响, b中止时a也要中止<br>[2] 调度<strong>最好无级联</strong>: 通过<strong>只允许事务读取已提交数据</strong>保证, 不会由于一个事务中止引起其他事务级联中止<br>每一个无级联调度都是可恢复调度</p>
+<h2 id="隔离性级别及其实现"><a href="#隔离性级别及其实现" class="headerlink" title="隔离性级别及其实现"></a>隔离性级别及其实现</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">隔离性级别</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">可串性化</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center">可重复读</td>
+<td style="text-align:left">只允许读取已提交数据, 而且在一个事务两次读取一个数据项期间, 其他事务不得更新该数据</td>
+</tr>
+<tr>
+<td style="text-align:center">已提交读</td>
+<td style="text-align:left">只允许读取已提交数据, 但不要求可重复读, 默认级别</td>
+</tr>
+<tr>
+<td style="text-align:center">未提交读</td>
+<td style="text-align:left">允许读取未提交数据, SQL最低一致性级别</td>
+</tr>
+</tbody>
+</table>
+<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><h4 id="死锁处理"><a href="#死锁处理" class="headerlink" title="死锁处理"></a>死锁处理</h4><h4 id="多粒度"><a href="#多粒度" class="headerlink" title="多粒度"></a>多粒度</h4><h3 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h3><h3 id="有效性检查"><a href="#有效性检查" class="headerlink" title="有效性检查"></a>有效性检查</h3><h3 id="多版本"><a href="#多版本" class="headerlink" title="多版本"></a>多版本</h3><h3 id="快照隔离"><a href="#快照隔离" class="headerlink" title="快照隔离"></a>快照隔离</h3><h2 id="插入、删除与谓词读"><a href="#插入、删除与谓词读" class="headerlink" title="插入、删除与谓词读"></a>插入、删除与谓词读</h2><h2 id="实践中的弱一致级别"><a href="#实践中的弱一致级别" class="headerlink" title="实践中的弱一致级别"></a>实践中的弱一致级别</h2><h2 id="索引结构中的并发"><a href="#索引结构中的并发" class="headerlink" title="索引结构中的并发"></a>索引结构中的并发</h2></section>
     <!-- Tags START -->
     
       <div class="tags">
@@ -165,13 +247,20 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2020/01/30/dbsc13/">
+      <a class="nav-left" href="/2020/01/29/dbsc12/">
         <span class="nav-arrow">← </span>
         
-          ⛵️帆船书#13 | 查询优化
+          ⛵️帆船书#12 | 查询处理
         
       </a>
     
+    
+      <a class="nav-right" href="/2020/02/01/dbsc13/">
+        
+          ⛵️帆船书#13 | 查询优化
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
@@ -184,7 +273,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#原子性和持久性"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;" class="headerlink" title="&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;"></a>&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#隔离性和可串性化"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x6027;&#x5316;" class="headerlink" title="&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x6027;&#x5316;"></a>&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x6027;&#x5316;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#可恢复调度和无级联调度"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;" class="headerlink" title="&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;"></a>&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#隔离性级别及其实现"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;" class="headerlink" title="&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;"></a>&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#锁"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x9501;" class="headerlink" title="&#x9501;"></a>&#x9501;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#死锁处理"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text"><a href="#&#x6B7B;&#x9501;&#x5904;&#x7406;" class="headerlink" title="&#x6B7B;&#x9501;&#x5904;&#x7406;"></a>&#x6B7B;&#x9501;&#x5904;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#多粒度"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7C92;&#x5EA6;" class="headerlink" title="&#x591A;&#x7C92;&#x5EA6;"></a>&#x591A;&#x7C92;&#x5EA6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#时间戳"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x65F6;&#x95F4;&#x6233;" class="headerlink" title="&#x65F6;&#x95F4;&#x6233;"></a>&#x65F6;&#x95F4;&#x6233;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有效性检查"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;" class="headerlink" title="&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;"></a>&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多版本"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7248;&#x672C;" class="headerlink" title="&#x591A;&#x7248;&#x672C;"></a>&#x591A;&#x7248;&#x672C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#快照隔离"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text"><a href="#&#x5FEB;&#x7167;&#x9694;&#x79BB;" class="headerlink" title="&#x5FEB;&#x7167;&#x9694;&#x79BB;"></a>&#x5FEB;&#x7167;&#x9694;&#x79BB;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入、删除与谓词读"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;" class="headerlink" title="&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;"></a>&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实践中的弱一致级别"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;" class="headerlink" title="&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;"></a>&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引结构中的并发"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;" class="headerlink" title="&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;"></a>&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;</span></a></li></ol>
     
   </div>
 </aside>
@@ -253,9 +342,8 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
