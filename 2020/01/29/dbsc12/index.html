@@ -204,10 +204,37 @@
 <li>若连接的结果大小几乎与两个关系的笛卡尔积相当, 则采用<strong>块嵌套循环</strong></li>
 <li>若存在索引, 使用<strong>索引嵌套循环</strong></li>
 <li>若关系已排序, 使用<strong>归并连接</strong></li>
-<li><strong>散列连接</strong>将关系划分为多个部分, 每个部分都可以被内存容纳, 划分过程通过连接属性上的散列函数进行, 相应划分对可以独立的进行连接</li>
+<li><strong>散列连接</strong>将关系划分为多个部分, 每个部分都可以被内存容纳, 划分过程通过连接属性上的散列函数进行, 相应划分对可以独立的进行连接<br>因为归并连接需要做更多的排序, 所以消耗的资源更多。通常来讲, 能够使用归并连接, 散列连接都可以发挥更好的性能</li>
 </ul>
 </blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>[1] 去除重复</p>
+<h3 id="块-索引-嵌套循环"><a href="#块-索引-嵌套循环" class="headerlink" title="(块/索引)嵌套循环"></a>(块/索引)嵌套循环</h3><p>[1] 内表被外表驱动, 外表返回的每一行都要在内表中检索找到与它匹配的行<br>[2] 适用于被连接的数据子集较小的情况, 要把返回子集较小表的作为外表<br>如果缓冲区太小, 内存不能完全容纳任何一个关系, 以<strong>块</strong>的方式处理关系<br>[3] 进一步改进:</p>
+<ul>
+<li>连接属性是内层关系的码, 对于每个外层关系元组, 内层只要循环找到首条匹配元组就可以终止</li>
+<li>可以不以磁盘块作为分块单位, 而是以内存中最多容纳的大小</li>
+<li>对内层循环轮流向前、向后扫描, 对磁盘块读写请求进行排序, 使得<strong>上一次扫描留在缓冲区中的数据可以重用</strong>, 减少磁盘存取次数</li>
+</ul>
+<p>[4] 内表有索引时利用索引<br>如果两个表都有索引, 把<strong>元组较少的关系作为外层关系</strong>, 否则磁盘代价还是会增加(因为尽管块传输次数减少了, 但是有更多的磁盘搜索代价, 磁盘搜索代价比块传输要高)</p>
+<h3 id="归并连接"><a href="#归并连接" class="headerlink" title="归并连接"></a>归并连接</h3><p>[1] 前提: 两张关系表数据排好序<br>[2] 步骤:</p>
+<ol>
+<li>先比较两张关系表的第一个元素</li>
+<li>如果第一个元素相等, 将这两条数据放到结果集中, 然后比较下一个元素</li>
+<li>如果不相等, 取小的元素所在表的下一个元素</li>
+<li>重复前面的几步操作, 直到其中一张表的数据比较完</li>
+</ol>
+<p>[3] <strong>混合归并</strong>: 一个关系排序, 另一个未排序但是有B+树辅助索引, 可以讲排序关系与辅助索引叶结点进行归并<br>得到: 已排序关系的元组及未排序关系的元组地址<br>按照未排序关系元组地址进行排序, 对相关元组按照物理存储顺序进行有效检索, 完成连接</p>
+<h3 id="散列连接"><a href="#散列连接" class="headerlink" title="散列连接"></a>散列连接</h3><p>[1] 思想: ri中的元组r只需要与si中的元组s比较, 不需要与其他任何划分里的元组s相比较<br>[2] 步骤: 将两个表中<strong>较小的一个</strong>在内存中构造一个散列表作为<strong>驱动表</strong>, 扫描另一个表(<strong>探查表</strong>), 同样对JOIN KEY进行哈希后探测是否可以JOIN。<br>[3] 适用于记录集比较大的情况<br>[4] <strong>递归划分</strong>: 如果哈希表太大, 无法一次构造在内存中, 则分成若干趟<br>每一趟使用的散列函数与上一趟不同, 系统不断重复输入的分裂过程直到构造用输入关系的每个划分都能被内存容纳为止<br>[5] <strong>溢出处理</strong>: 散列索引大于主存</p>
+<ul>
+<li>增加划分数(避让因子20%)</li>
+<li>溢出分解: 若si太大, 适用年龄一个散列函数进一步划分, ri同样处理</li>
+<li>溢出避免: 首先将s划分成许多小划分, 然后在确保每个组合后的划分都能被内存容纳的前提下进行组合</li>
+</ul>
+<p>如果大量元组在连接属性有相同的值, 不采用创建内存散列索引, 而是用嵌套循环连接<br>[6] <strong>混合散列连接</strong>: 内存相对较大, 但不足以容纳整个s关系</p>
+<ol>
+<li>划分阶段: 为每一个划分提供一个<strong>缓冲区内存块</strong>+一个<strong>输入缓冲区内存块</strong><br>划分后, 让s0完全在内存中且可以建立散列索引</li>
+<li>划分r: r0的元组不写回磁盘, 而是在元组产生时查找驻留在内存中的s0散列索引, 并产生连接后的元组<br>r0的元组使用后抛弃, 不占用空间</li>
+<li>其他划分的元组按鸥亭当时写出, 以后再连接</li>
+</ol>
+<h2 id="其他运算"><a href="#其他运算" class="headerlink" title="其他运算"></a>其他运算</h2><p>[1] 去除重复</p>
 <ul>
 <li><strong>排序</strong>: 删除其他副本只保留一个<br>外排: 创建归并段文件时发现重复元组, 写回磁盘之前去除重复元组(减少块传输次数)</li>
 <li><strong>散列</strong>: 基于一个散列函数对整个关系划分, 每个划分读入内存, 建立<strong>内存散列索引</strong><br>创建散列索引时, 只插入不在索引中的元组, 否则元组被抛弃</li>
@@ -298,10 +325,8 @@
                         
                                 <!-- 二维码 END -->
                                 
-                                    <!-- Gitment START -->
-                                    <div id="comments"></div>
-                                    <!-- Gitment END -->
-                                    
+                                            <!-- No Comment -->
+                                            
     </article>
     <!-- Article END -->
     <!-- Catalog START -->
@@ -310,7 +335,7 @@
     <div class="toc-main">
         <strong class="toc-title">Catalog</strong>
         
-            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询代价的度量"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;"></a>&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选择"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9009;&#x62E9;" class="headerlink" title="&#x9009;&#x62E9;"></a>&#x9009;&#x62E9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#复杂选择"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x590D;&#x6742;&#x9009;&#x62E9;" class="headerlink" title="&#x590D;&#x6742;&#x9009;&#x62E9;"></a>&#x590D;&#x6742;&#x9009;&#x62E9;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#排序"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6392;&#x5E8F;" class="headerlink" title="&#x6392;&#x5E8F;"></a>&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x8FDE;&#x63A5;" class="headerlink" title="&#x8FDE;&#x63A5;"></a>&#x8FDE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5176;&#x4ED6;" class="headerlink" title="&#x5176;&#x4ED6;"></a>&#x5176;&#x4ED6;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达式计算"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;" class="headerlink" title="&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;"></a>&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#物化"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text"><a href="#&#x7269;&#x5316;" class="headerlink" title="&#x7269;&#x5316;"></a>&#x7269;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#流水线"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text"><a href="#&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x6D41;&#x6C34;&#x7EBF;"></a>&#x6D41;&#x6C34;&#x7EBF;</span></a></li></ol></li></ol>
+            <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询代价的度量"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;"></a>&#x67E5;&#x8BE2;&#x4EE3;&#x4EF7;&#x7684;&#x5EA6;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选择"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9009;&#x62E9;" class="headerlink" title="&#x9009;&#x62E9;"></a>&#x9009;&#x62E9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#复杂选择"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x590D;&#x6742;&#x9009;&#x62E9;" class="headerlink" title="&#x590D;&#x6742;&#x9009;&#x62E9;"></a>&#x590D;&#x6742;&#x9009;&#x62E9;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#排序"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6392;&#x5E8F;" class="headerlink" title="&#x6392;&#x5E8F;"></a>&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x8FDE;&#x63A5;" class="headerlink" title="&#x8FDE;&#x63A5;"></a>&#x8FDE;&#x63A5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#块-索引-嵌套循环"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x5757;-&#x7D22;&#x5F15;-&#x5D4C;&#x5957;&#x5FAA;&#x73AF;" class="headerlink" title="(&#x5757;/&#x7D22;&#x5F15;)&#x5D4C;&#x5957;&#x5FAA;&#x73AF;"></a>(&#x5757;/&#x7D22;&#x5F15;)&#x5D4C;&#x5957;&#x5FAA;&#x73AF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#归并连接"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#&#x5F52;&#x5E76;&#x8FDE;&#x63A5;" class="headerlink" title="&#x5F52;&#x5E76;&#x8FDE;&#x63A5;"></a>&#x5F52;&#x5E76;&#x8FDE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#散列连接"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text"><a href="#&#x6563;&#x5217;&#x8FDE;&#x63A5;" class="headerlink" title="&#x6563;&#x5217;&#x8FDE;&#x63A5;"></a>&#x6563;&#x5217;&#x8FDE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他运算"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5176;&#x4ED6;&#x8FD0;&#x7B97;" class="headerlink" title="&#x5176;&#x4ED6;&#x8FD0;&#x7B97;"></a>&#x5176;&#x4ED6;&#x8FD0;&#x7B97;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达式计算"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;" class="headerlink" title="&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;"></a>&#x8868;&#x8FBE;&#x5F0F;&#x8BA1;&#x7B97;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#物化"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text"><a href="#&#x7269;&#x5316;" class="headerlink" title="&#x7269;&#x5316;"></a>&#x7269;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#流水线"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text"><a href="#&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x6D41;&#x6C34;&#x7EBF;"></a>&#x6D41;&#x6C34;&#x7EBF;</span></a></li></ol></li></ol>
                 
     </div>
 </aside>
