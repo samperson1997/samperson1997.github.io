@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      J2EE第6次作业的坑 (JPA技术) | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>J2EE第6次作业的坑 (JPA技术)</h2>
+  <p class="post-date">2018-01-08</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>首先对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢！</strong>第6次作业总体来说没什么难度，只是PPT上给的xml文件有坑。当然我这边的两张数据库表是完全独立的，所以从第5次作业过渡到第6次会容易一些。更多的语法和内容可以参考PPT，有什么大家都碰到的坑我还是会不断继续整理在这篇博客里的。</p>
+<h1 id="项目要求"><a href="#项目要求" class="headerlink" title="项目要求"></a>项目要求</h1><h2 id="整体要求"><a href="#整体要求" class="headerlink" title="整体要求"></a>整体要求</h2><p>[1] 客户登录, 跟据客户的ID／PW, 查询订单情况, 并根据具体情况, 返回不同结果：有缺货的订单项，警示页面；正常结果: 标准页面, 每一项订单包括多项属性(时间、名称、数量、价格), 分页显示；未知的客户ID: 错误页面<br>[2] 使用过滤器解决表单中的中文请求后的乱码问题<br>[3] 统计在线人数：总人数、已登录人数、游客人数<br>[4] 用户通过URL直接访问XXXServlet或XXX.JSP时，已登录用户可访问，未登录用户转向登录页面</p>
+<h2 id="第6次作业要求"><a href="#第6次作业要求" class="headerlink" title="第6次作业要求"></a>第6次作业要求</h2><p>[1] 基于第5次作业<br>[2] 数据访问层设计使用 JPA EntityManager<br>[3] Model的设计使用 Entity Beans</p>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>[1] 首先下载 javax.persistence_2.0.0.jar，并添加到项目依赖中。<br>[2] PPT上面给的 persistence.xml 有坑，正确的配置文件内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;persistence version=&quot;2.0&quot; xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot;</span><br><span class="line">             xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">             xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/persistence</span><br><span class="line">             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--必须要有name属性，不能为空 --&gt;</span><br><span class="line">    &lt;persistence-unit name=&quot;nju&quot;&gt;</span><br><span class="line">        &lt;!--厂商的特定属性 --&gt;</span><br><span class="line">        &lt;jta-data-source&gt;java:jboss/datasources/mysqlDS&lt;/jta-data-source&gt;</span><br><span class="line"></span><br><span class="line">        &lt;class&gt;model.User&lt;/class&gt;</span><br><span class="line">        &lt;class&gt;model.Order&lt;/class&gt;</span><br><span class="line"></span><br><span class="line">        &lt;properties&gt;</span><br><span class="line">            &lt;!--配置Hibernate方言 --&gt;</span><br><span class="line">            &lt;property name=&quot;hibernate.dialect&quot; value=&quot;org.hibernate.dialect.MySQL5Dialect&quot;/&gt;</span><br><span class="line">            &lt;!--自动输出schema创建DDL语句 --&gt;</span><br><span class="line">            &lt;property name=&quot;hibernate.hbm2ddl.auto&quot; value=&quot;none&quot;/&gt;</span><br><span class="line"></span><br><span class="line">            &lt;property name=&quot;hibernate.transaction.jta.platform&quot;</span><br><span class="line">                      value=&quot;org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform&quot;/&gt;</span><br><span class="line">        &lt;/properties&gt;</span><br><span class="line">    &lt;/persistence-unit&gt;</span><br><span class="line"></span><br><span class="line">&lt;/persistence&gt;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意 &lt;property name=“hibernate.transaction.jta.platform” value=“org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform”/&gt; &lt;/properties&gt; 非常重要。<br>另外 &lt;class&gt; 标签里需要根据自己的项目进行修改。</p>
+</blockquote>
+<p>[3] 配置文件放在 src/META-INF 下面，没有这个文件夹需要自己创建。如果是 maven 项目，则应该放在 resources 文件夹里。（因为我自己写作业时不是 maven 项目，所以上一篇博客忘记说明了，导致一些同学出现了问题。在我内疚的时候，<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>指出这应该是基本常识，但还是觉得应该说明一下）</p>
+<h1 id="Model设计"><a href="#Model设计" class="headerlink" title="Model设计"></a>Model设计</h1><p>model的修改必须与数据库表对应好，包括每一个column的名字，不然服务器端会报错。以user为例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.Column;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Table;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"users"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"user_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> userId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"password"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    ... <span class="comment">// Constructor, Getter and Setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="DaoImpl设计"><a href="#DaoImpl设计" class="headerlink" title="DaoImpl设计"></a>DaoImpl设计</h1><p>Container-Managed EntityManagers 和 Application-Managed EntityManagers<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PersistenceUnit</span>(name = <span class="string">"nju"</span>)</span><br><span class="line"><span class="keyword">private</span> EntityManagerFactory factory;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line"><span class="keyword">private</span> EntityManager em;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">UserDaoBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    factory = Persistence.createEntityManagerFactory(<span class="string">"nju"</span>);</span><br><span class="line">    em = factory.createEntityManager();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这边没有什么难度，注意 persistence-unit 的 name 和配置文件对应就好。</p>
+<h2 id="一些常用查询语句的注意事项"><a href="#一些常用查询语句的注意事项" class="headerlink" title="一些常用查询语句的注意事项"></a>一些常用查询语句的注意事项</h2><p>[1] find：需要注意类型转换，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User user = em.find(User.class, Integer.valueOf(userId));</span><br></pre></td></tr></table></figure></p>
+<p>[2] createQuery：通过使用泛型来减少强制类型转换，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TypedQuery&lt;Order&gt; query = em.createQuery(<span class="string">"FROM model.Order o WHERE o.userId = userId"</span>, Order.class);</span><br><span class="line">List&lt;Order&gt; list = query.getResultList();</span><br><span class="line"></span><br><span class="line">em.clear(); </span><br><span class="line"><span class="comment">// 在处理大量实体的时候，如果不把已经处理过的实体从EntityManager中分离出来，将会消耗大量的内存</span></span><br><span class="line"><span class="comment">// 此方法分离内存中受管理的实体Bean，让VM进行垃圾回收</span></span><br></pre></td></tr></table></figure></p>
+<p>另外还要注意 FROM 后面跟的是model的路径名字，不是数据库表的名字。</p>
+<p>[3] createNativeQuery：使用原生语句，例如下面的语句使用了 mysql 的 LIMIT 语法，起到数据库分页的作用：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Query query = em.createNativeQuery(<span class="string">"SELECT * FROM user_orders WHERE user_id = "</span></span><br><span class="line">                    + id + <span class="string">" LIMIT "</span> + start + <span class="string">", "</span> + pageSize, Order.class);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>J2EE的小作业还有3次，分别是 Hibernate、 Spring 和 Struts，按照老师的进度预计应该本周会布置第7次作业，下周三布置第8次和第9次，所以在时间上还是蛮有挑战性的。写博客是希望大家可以更好的一起讨论和交流，在上一篇博客发布后收到了很多同学们的私信和评论，有的针对某些问题进行探讨，有的找我帮忙debug(我也竭尽全力帮助大家)，还有一些感激和鼓舞。在这里想谢谢大家！让我们一起营造更好的学习氛围，一起学习、一起进步！</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#J2EE与中间件" >
+    <span class="tag-code">J2EE与中间件</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/01/05/J2EE5/">
+        <span class="nav-arrow">← </span>
+        
+          J2EE第5次作业的坑，我帮你踩过了
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/17/DebuggingTeams/">
+        
+          《进化》读书笔记
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+                            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#项目要求"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x9879;&#x76EE;&#x8981;&#x6C42;" class="headerlink" title="&#x9879;&#x76EE;&#x8981;&#x6C42;"></a>&#x9879;&#x76EE;&#x8981;&#x6C42;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#整体要求"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x6574;&#x4F53;&#x8981;&#x6C42;" class="headerlink" title="&#x6574;&#x4F53;&#x8981;&#x6C42;"></a>&#x6574;&#x4F53;&#x8981;&#x6C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#第6次作业要求"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;6&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;" class="headerlink" title="&#x7B2C;6&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;"></a>&#x7B2C;6&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#配置文件"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Model设计"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#Model&#x8BBE;&#x8BA1;" class="headerlink" title="Model&#x8BBE;&#x8BA1;"></a>Model&#x8BBE;&#x8BA1;</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#DaoImpl设计"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#DaoImpl&#x8BBE;&#x8BA1;" class="headerlink" title="DaoImpl&#x8BBE;&#x8BA1;"></a>DaoImpl&#x8BBE;&#x8BA1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#一些常用查询语句的注意事项"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x4E00;&#x4E9B;&#x5E38;&#x7528;&#x67E5;&#x8BE2;&#x8BED;&#x53E5;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;" class="headerlink" title="&#x4E00;&#x4E9B;&#x5E38;&#x7528;&#x67E5;&#x8BE2;&#x8BED;&#x53E5;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;"></a>&#x4E00;&#x4E9B;&#x5E38;&#x7528;&#x67E5;&#x8BE2;&#x8BED;&#x53E5;&#x7684;&#x6CE8;&#x610F;&#x4E8B;&#x9879;</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2018/01/08/J2EE6/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "J2EE第6次作业的坑 (JPA技术)",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -18,10 +18,14 @@
   <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
   
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
   
+  
+    <script src="/js/gitment.js"></script>
   
   
   
@@ -144,24 +148,41 @@
 <main class="app-body">
   <div id="tag-cloud">
     
-      <a class="tag2" data-name="tag-分布式">分布式</a>
-    
-      <a class="tag2" data-name="tag-J2EE与中间件">J2EE与中间件</a>
-    
-      <a class="tag0" data-name="tag-数据库索引">数据库索引</a>
-    
-      <a class="tag1" data-name="tag-vuejs">vuejs</a>
-    
-      <a class="tag1" data-name="tag-机器学习">机器学习</a>
-    
-      <a class="tag2" data-name="tag-数据库系统概念">数据库系统概念</a>
-    
       <a class="tag1" data-name="tag-读书笔记">读书笔记</a>
     
-      <a class="tag1" data-name="tag-软件工程与计算II">软件工程与计算II</a>
+      <a class="tag0" data-name="tag-分布式">分布式</a>
+    
+      <a class="tag1" data-name="tag-J2EE与中间件">J2EE与中间件</a>
+    
+      <a class="tag1" data-name="tag-数据库索引">数据库索引</a>
+    
+      <a class="tag0" data-name="tag-vuejs">vuejs</a>
+    
+      <a class="tag0" data-name="tag-机器学习">机器学习</a>
+    
+      <a class="tag1" data-name="tag-数据库系统概念">数据库系统概念</a>
+    
+      <a class="tag0" data-name="tag-软件工程与计算II">软件工程与计算II</a>
     
   </div>
   
+    <div class="tag-list">
+      <h3 class="tag-name" id="tag-读书笔记">读书笔记</h3>
+      
+        <ul class="tag-preview">
+          <li>
+            <a href="/2018/01/17/DebuggingTeams/">《进化》读书笔记</a>
+          </li>
+        </ul>
+        
+        <ul class="tag-preview">
+          <li>
+            <a href="/2018/01/17/Monotasking/">《单核工作法图解》读书笔记</a>
+          </li>
+        </ul>
+        
+    </div>
+    
     <div class="tag-list">
       <h3 class="tag-name" id="tag-分布式">分布式</h3>
       
@@ -173,13 +194,13 @@
         
         <ul class="tag-preview">
           <li>
-            <a href="/2018/05/16/hadoop-xgboost/">零起点Centos+Hadoop+xgboost部署 (伪分布式)</a>
+            <a href="/2019/07/05/hadoop-spark/">Ubuntu+Hadoop+Spark+IoTDB部署</a>
           </li>
         </ul>
         
         <ul class="tag-preview">
           <li>
-            <a href="/2019/07/05/hadoop-spark/">Ubuntu+Hadoop+Spark+IoTDB部署</a>
+            <a href="/2018/05/16/hadoop-xgboost/">零起点Centos+Hadoop+xgboost部署 (伪分布式)</a>
           </li>
         </ul>
         
@@ -213,13 +234,13 @@
       
         <ul class="tag-preview">
           <li>
-            <a href="/2019/07/22/Keogh-1/">论文#4 | Exact indexing of dynamic time warping</a>
+            <a href="/2019/08/08/Keogh-2/">论文#2 | iSAX - disk-aware mining and indexing of massive time series datasets</a>
           </li>
         </ul>
         
         <ul class="tag-preview">
           <li>
-            <a href="/2019/08/08/Keogh-2/">论文#2 | iSAX - disk-aware mining and indexing of massive time series datasets</a>
+            <a href="/2019/07/22/Keogh-1/">论文#4 | Exact indexing of dynamic time warping</a>
           </li>
         </ul>
         
@@ -231,13 +252,13 @@
         
         <ul class="tag-preview">
           <li>
-            <a href="/2019/11/26/wangpeng-2/">论文#1 | KV-Match - A Subsequence Matching Approach Supporting Normalization and Time Warping</a>
+            <a href="/2019/10/14/DPISA/">论文#6 | Dual-PISA - An index for aggregation operations on time series data</a>
           </li>
         </ul>
         
         <ul class="tag-preview">
           <li>
-            <a href="/2019/10/14/DPISA/">论文#6 | Dual-PISA - An index for aggregation operations on time series data</a>
+            <a href="/2019/11/26/wangpeng-2/">论文#1 | KV-Match - A Subsequence Matching Approach Supporting Normalization and Time Warping</a>
           </li>
         </ul>
         
@@ -277,13 +298,13 @@
         
         <ul class="tag-preview">
           <li>
-            <a href="/2018/06/18/decision-tree/">决策树——Sklearn库实现</a>
+            <a href="/2018/06/24/svm/">SVM——Sklearn库实现</a>
           </li>
         </ul>
         
         <ul class="tag-preview">
           <li>
-            <a href="/2018/06/24/svm/">SVM——Sklearn库实现</a>
+            <a href="/2018/06/18/decision-tree/">决策树——Sklearn库实现</a>
           </li>
         </ul>
         
@@ -300,13 +321,13 @@
         
         <ul class="tag-preview">
           <li>
-            <a href="/2020/02/01/dbsc13/">⛵️帆船书#13 | 查询优化</a>
+            <a href="/2020/01/30/dbsc13/">⛵️帆船书#13 | 查询优化</a>
           </li>
         </ul>
         
         <ul class="tag-preview">
           <li>
-            <a href="/2020/01/30/dbsc14/">⛵️帆船书#14&15 | 事务和并发控制</a>
+            <a href="/2020/01/30/dbsc14/">⛵️帆船书#14 | 事务</a>
           </li>
         </ul>
         
@@ -319,23 +340,6 @@
         <ul class="tag-preview">
           <li>
             <a href="/2020/01/29/dbsc12/">⛵️帆船书#12 | 查询处理</a>
-          </li>
-        </ul>
-        
-    </div>
-    
-    <div class="tag-list">
-      <h3 class="tag-name" id="tag-读书笔记">读书笔记</h3>
-      
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/01/17/Monotasking/">《单核工作法图解》读书笔记</a>
-          </li>
-        </ul>
-        
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/01/17/DebuggingTeams/">《进化》读书笔记</a>
           </li>
         </ul>
         
@@ -370,13 +374,13 @@
         
         <ul class="tag-preview">
           <li>
-            <a href="/2017/12/21/SECII-6/">软件工程与计算II重点整理(第20-23章)</a>
+            <a href="/2017/12/21/SECII-5/">软件工程与计算II重点整理(第16-19章)</a>
           </li>
         </ul>
         
         <ul class="tag-preview">
           <li>
-            <a href="/2017/12/21/SECII-5/">软件工程与计算II重点整理(第16-19章)</a>
+            <a href="/2017/12/21/SECII-6/">软件工程与计算II重点整理(第20-23章)</a>
           </li>
         </ul>
         
@@ -411,8 +415,9 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 

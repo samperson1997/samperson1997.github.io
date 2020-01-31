@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      论文#2 | iSAX - disk-aware mining and indexing of massive time series datasets | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>论文#2 | iSAX - disk-aware mining and indexing of massive time series datasets</h2>
+  <p class="post-date">2019-08-08</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>以下是论文<a href="https://link.springer.com/article/10.1007/s10618-009-0125-6" target="_blank" rel="noopener"><em>i</em>SAX: disk-aware mining and indexing of massive time series datasets</a>的笔记。</p>
+<h2 id="已有方法及改进"><a href="#已有方法及改进" class="headerlink" title="已有方法及改进"></a>已有方法及改进</h2><p>[1] 已有方法通过首先对原数据进行符号化来促进时间序列搜索，但是都会引入新的衍生符号定义的距离测量</p>
+<p><br></p>
+<p>[2] multi-resolution symbolic representation - <strong>indexable Symbolic Aggregate approXimation (<em>i</em>SAX)</strong><br>用于大数量级数据集的索引，使用符号词对数据进行内部组织和索引，但根据原始数据上的ED检索对象</p>
+<p><br></p>
+<p>[3] 证明: 构建基于<strong>树</strong>的索引结构 - 有助于<strong>快速精确搜索</strong>和<strong>更快速的近似搜索</strong><br>利用两种搜索类型的组合作为数据挖掘算法中的子例程，允许精确挖掘真正庞大的数据集，具有数千万个时间序列，占用多达一兆字节的磁盘空间</p>
+<p><br></p>
+<p>[4] 分析了位约束环境(bit constrained environment)下时间序列表示的参数敏感性(parameter sensitivity)、近似搜索效率(approximate search effectiveness)和下界比较(lower bound comparisons)</p>
+<p><br></p>
+<h2 id="iSAX的优点"><a href="#iSAX的优点" class="headerlink" title="iSAX的优点"></a><em>i</em>SAX的优点</h2><p>[1] <strong>可以动态更改用于评估表示的位数</strong>(the number of bits used for evaluation of representation)，与desired resolution对应<br>这种特性允许叶节点上<strong>索引零重叠</strong>的时间序列(index time series with zero overlap at leaf nodes)，同TS树，不同于R树</p>
+<p><br></p>
+<p>[2] <strong>不需要使用专门的数据库或文件管理器</strong> - 让索引技术可以轻松采用、复制和扩展<br>使用标准Windows XP NTFS文件系统磁盘访问<br>对比：使用复杂的DBMS可能可以达到更快的时间</p>
+<p><br></p>
+<p>[3] <strong>具有符号性</strong> - 允许使用对实际值数据没有很好定义的数据结构和算法<br>包括后缀树、散列、Markov模型</p>
+<p><br></p>
+<h2 id="基础-SAX"><a href="#基础-SAX" class="headerlink" title="基础: SAX"></a>基础: SAX</h2><p>[1] SAX + 允许扩展散列 =&gt; multi-resolution representation<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/62686520-7c00d200-b9f7-11e9-9695-88087451afb8.png"><br>PAA是一种理想的中间表示，因为可以快速降维，提供下边界的距离度量。例子中PAA表示将时间序列的维数从16减少到4。</p>
+<blockquote>
+<p>如果n不能被w整除，求和可以修改为采用分数值。</p>
+</blockquote>
+<p>[2] SAX将PAA作为输入，并将其<strong>离散化</strong>为一个小的符号字母表。<br><strong>离散化</strong>：通过想象一系列与X轴平行的断点，用离散标签标记断点之间的每个区域。任何落在区域的PAA值都可以映射到适当的离散值。</p>
+<p><br></p>
+<p>[3] 如果我们使用有序的数字列表Breakpoints = β1 , … , βa−1，我们可以确保SAX词中几乎等概率的符号，使<strong>标准正态分布 N(0,1)</strong> 曲线下从 βi 到 βi+1 的面积 = 1/a。β0 和 βa 分别被定义为 −∞ 和 ∞。<br>基数a = 2 ~ 8时的断点：<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/62688070-ae5ffe80-b9fa-11e9-919a-de9b4ecf469e.png"></p>
+<p>[4] SAX(T, w, a) = <strong>Ta</strong> = {t1, t2, …, tw−1, tw}<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/62688752-0d724300-b9fc-11e9-9a8d-3afc9acbf267.png"></p>
+<p>时间序列T和S的ED推导：(dist(ti, si)通过查表获得，例如 dist(<strong>00</strong>, <strong>01</strong>) = 0，dist(<strong>00</strong>, <strong>10</strong>) = 0.67)<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/62690690-bcfce480-b9ff-11e9-8e34-e37646e83f20.png"></p>
+<p>[5] 通过更多的SAX符号或者更高的基数a可以获得更紧的下界。</p>
+<p><br></p>
+<h2 id="iSAX"><a href="#iSAX" class="headerlink" title="iSAX"></a><em>i</em>SAX</h2><p>[1] 使用上标表示基数，从而防止模棱两可：<br><img style="width:100%; max-width:500px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/62691446-4b259a80-ba01-11e9-9800-0dff3efc3670.png"></p>
+<p>[2] 比较不同基数的<em>i</em>SAX，需要将较低的基数表示提升为较大的基数表示<br>思想：基数为X的<em>i</em>SAX的断点是基数为2X的<em>i</em>SAX断点的子集（可以参见表2）<br><strong>S2</strong> = {<strong>0</strong>, <strong>0</strong>, <strong>1</strong>, <strong>1</strong>} =&gt; <strong>S8</strong> = {<strong>011</strong>, <strong>011</strong>, <strong>100</strong>, <strong>100</strong>}</p>
+<blockquote>
+<p>转化为有损压缩，无法撤回</p>
+</blockquote>
+<h2 id="iSAX的索引"><a href="#iSAX的索引" class="headerlink" title="iSAX的索引"></a><em>i</em>SAX的索引</h2><p>未完待续</p>
+<p><br></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据库索引" >
+    <span class="tag-code">数据库索引</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/07/23/wangpeng-1/">
+        <span class="nav-arrow">← </span>
+        
+          论文#3 | A Data-adaptive and Dynamic Segmentation Index for Whole Matching on Time Series
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/10/06/lp-replicated/">
+        
+          论文#5 | Workload-Driven Fragment Allocation for Partially Replicated Databases Using Linear Programming
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+                            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#iSAX的优点"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#iSAX&#x7684;&#x4F18;&#x70B9;" class="headerlink" title="iSAX&#x7684;&#x4F18;&#x70B9;"></a><em>i</em>SAX&#x7684;&#x4F18;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基础-SAX"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x7840;-SAX" class="headerlink" title="&#x57FA;&#x7840;: SAX"></a>&#x57FA;&#x7840;: SAX</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#iSAX"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#iSAX" class="headerlink" title="iSAX"></a><em>i</em>SAX</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#iSAX的索引"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#iSAX&#x7684;&#x7D22;&#x5F15;" class="headerlink" title="iSAX&#x7684;&#x7D22;&#x5F15;"></a><em>i</em>SAX&#x7684;&#x7D22;&#x5F15;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2019/08/08/Keogh-2/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "samperson1997";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "论文#2 | iSAX - disk-aware mining and indexing of massive time series datasets",
+        owner: "samperson1997",
+        repo: "samperson1997.github.io",
+        oauth: {
+          client_id: "649cae277b0b34f46d41",
+          client_secret: "0d4bede9a22b662219ad576e375373578e4ec259"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

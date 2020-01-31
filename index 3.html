@@ -18,10 +18,14 @@
   <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
   
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
   
+  
+    <script src="/js/gitment.js"></script>
   
   
   
@@ -141,9 +145,29 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2020/02/01/dbsc13/">⛵️帆船书#13 | 查询优化</a>
+        <a href="/2020/01/30/dbsc14/">⛵️帆船书#14 | 事务</a>
       </h2>
-      <p class="article-date">February 1, 2020</p>
+      <p class="article-date">January 30, 2020</p>
+      
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+        
+      </div>
+      <a class="more" href="/2020/01/30/dbsc14/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/01/30/dbsc13/">⛵️帆船书#13 | 查询优化</a>
+      </h2>
+      <p class="article-date">January 30, 2020</p>
       
         
   <a href="/tags#数据库系统概念" >
@@ -157,33 +181,7 @@
 [1] 复杂查询的执行设计多次存取磁盘的操作, 要选择最小化磁盘存取的方法[2] 查询处理策略第一步: 找到一个关系代数表达式, 使它与所给表达式等价且有更小执行代价。每个关系代数表达式都表示某个特定的操作序列[3] 数据库为每一个关系r存储统计信息: 元组数, 记录大小(字节记数), 特 ...
         
       </div>
-      <a class="more" href="/2020/02/01/dbsc13/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/01/30/dbsc14/">⛵️帆船书#14&15 | 事务和并发控制</a>
-      </h2>
-      <p class="article-date">January 30, 2020</p>
-      
-        
-  <a href="/tags#数据库系统概念" >
-    <span class="tag-code">数据库系统概念</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-事务是访问并可能更新各种数据项的一个程序执行单位ACID: 原子性, 一致性, 隔离性, 持久性数据库并发控制管理部件负责处理并发控制机制
-
-原子性和持久性[1] 保持原子性的基本思路: 在磁盘日志记录要执行写操作的数据项的旧值[2] 达到持久性:
-
-事务做的更新在事务结束前已经写入磁盘
- ...
-        
-      </div>
-      <a class="more" href="/2020/01/30/dbsc14/">Read more</a>
+      <a class="more" href="/2020/01/30/dbsc13/">Read more</a>
     </article>
   
     <article class="article-card">
@@ -404,8 +402,9 @@ LP模型 (Linear Programming)[1] 目的：计算具有最低总内存 ...
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
   </p>
 </footer>
 
