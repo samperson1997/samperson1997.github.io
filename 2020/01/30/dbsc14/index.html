@@ -166,13 +166,12 @@
 <li>如果引起中止的是<strong>硬件错误</strong>或者<strong>不是</strong>内部逻辑产生的软件错误, 采用<strong>重启</strong>新的事务</li>
 <li>如果引起中止的是<strong>内部逻辑</strong>错误/输入错误/所需数据没有在数据库中找到, 采用<strong>杀死事务</strong></li>
 </ul>
-<p>[5] 可见的外部写: 写到用户屏幕<br>实现: 在非易失性存储设备中临时写下与外部写相关所有数据, 然后在事务进入提交状态后执行真正的写操作<br>如果事务进入提交状态而外部写未完成时系统出现故障, 可以在重启后用存储在非易失性设备中的数据执行外部写操作</p>
-<h2 id="隔离性和可串性化"><a href="#隔离性和可串性化" class="headerlink" title="隔离性和可串性化"></a>隔离性和可串性化</h2><p>[1] 事务的并发执行</p>
+<h2 id="隔离性和可串行化"><a href="#隔离性和可串行化" class="headerlink" title="隔离性和可串行化"></a>隔离性和可串行化</h2><p>[1] 事务的并发执行</p>
 <ul>
 <li>提高事务吞吐量和系统利用率: I/O和CPU并行运作, 给定时间内执行事务数增加, 处理器和磁盘利用率提高</li>
 <li>减少事务等待时间: 共享CPU周期和磁盘存取, 减少一个事务从提交到完成所需要的平均响应时间</li>
 </ul>
-<p>[2] 多个事务并发执行, 数据<strong>一致性</strong>可能不再维持, 但是事务的<strong>串行执行</strong>能保证一致性<br>[3] <strong>调度</strong>捕获影响事务并发执行的关键操作(read/write), 忽略事务执行的内部细节<br>调度的执行效果等价于按照某种串行执行的效果——可以通过并发控制机制保证<strong>可串行化</strong><br><strong>不是所有的串行调度相互之间都冲突等价</strong><br>[4] 通过为调度构造<strong>优先图</strong>, 搜索<strong>是否无环</strong>判断是否冲突可串性化<br>有环: 非冲突可串性化<br>深度优先搜索检测环是否存在: n^2数量级, 其中n为事务数</p>
+<p>[2] 多个事务并发执行, 数据<strong>一致性</strong>可能不再维持, 但是事务的<strong>串行执行</strong>能保证一致性<br>[3] <strong>调度</strong>捕获影响事务并发执行的关键操作(read/write), 忽略事务执行的内部细节<br>调度的执行效果等价于按照某种串行执行的效果——可以通过并发控制机制保证<strong>可串行化</strong><br><strong>不是所有的串行调度相互之间都冲突等价</strong><br>[4] 通过为调度构造<strong>优先图</strong>, 搜索<strong>是否无环</strong>判断是否冲突可串行化<br>有环: 非冲突可串行化<br>深度优先搜索检测环是否存在: n^2数量级, 其中n为事务数</p>
 <h3 id="可恢复调度和无级联调度"><a href="#可恢复调度和无级联调度" class="headerlink" title="可恢复调度和无级联调度"></a>可恢复调度和无级联调度</h3><table>
 <thead>
 <tr>
@@ -213,7 +212,7 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">可串性化</td>
+<td style="text-align:center">可串行化</td>
 <td style="text-align:left"></td>
 </tr>
 <tr>
@@ -236,7 +235,7 @@
 <tr>
 <th style="text-align:left">机制</th>
 <th style="text-align:left">说明</th>
-<th style="text-align:center">可串性化</th>
+<th style="text-align:center">可串行化</th>
 <th style="text-align:center">无死锁</th>
 </tr>
 </thead>
@@ -255,13 +254,13 @@
 </tr>
 <tr>
 <td style="text-align:left">多粒度</td>
-<td style="text-align:left">把多个数据项聚为一组, 数据项的层次结构图形化表示为树<br>封锁: 从根节点到叶结点的顺序进行<br>解锁: 从叶结点到根节点到顺序进行</td>
+<td style="text-align:left">把多个数据项聚为一组, 数据项的层次结构图形化表示为树<br>封锁: 从根结点到叶结点的顺序进行<br>解锁: 从叶结点到根结点到顺序进行</td>
 <td style="text-align:center">保证</td>
 <td style="text-align:center">不保证</td>
 </tr>
 <tr>
 <td style="text-align:left">时间戳排序机制</td>
-<td style="text-align:left">事先在每对事务之间选择一个顺序, 每个事务对应一个唯一固定时间戳, 决定事务对可串性化顺序</td>
+<td style="text-align:left">事先在每对事务之间选择一个顺序, 每个事务对应一个唯一固定时间戳, 决定事务对可串行化顺序</td>
 <td style="text-align:center">保证</td>
 <td style="text-align:center">保证</td>
 </tr>
@@ -322,7 +321,7 @@
 <li>回滚次数(让事务被选为牺牲者的次数有限且较少, 防止饿死)</li>
 </ul>
 <p><strong>彻底回滚</strong>: 中止该事务, 然后重新开始<br><strong>部分回滚</strong>: 记录锁的申请/授予序列和事务执行的更新</p>
-<h3 id="多粒度"><a href="#多粒度" class="headerlink" title="多粒度"></a>多粒度</h3><p>[1] 给大粒度<strong>显式</strong>加锁, 则给属于它的记录<strong>隐式</strong>加锁<br>[2] <strong>意向锁</strong>: 在树的较低层显示加锁<br><strong>在一个结点显式加锁之前, 该结点所有祖先全部加意向锁</strong><br>好处: 事务不需要搜索整棵树就能判断能否成功给一个结点加锁; 给结点Q加锁的事务必须<strong>遍历从根到Q的路径, 并给各节点加上意向锁</strong></p>
+<h3 id="多粒度"><a href="#多粒度" class="headerlink" title="多粒度"></a>多粒度</h3><p>[1] 给大粒度<strong>显式</strong>加锁, 则给属于它的记录<strong>隐式</strong>加锁<br>[2] <strong>意向锁</strong>: 在树的较低层显示加锁<br><strong>在一个结点显式加锁之前, 该结点所有祖先全部加意向锁</strong><br>好处: 事务不需要搜索整棵树就能判断能否成功给一个结点加锁; 给结点Q加锁的事务必须<strong>遍历从根到Q的路径, 并给各结点加上意向锁</strong></p>
 <ul>
 <li>共享型意向锁IS: 较低层显式封锁, 但只能加共享锁</li>
 <li>排他型意向锁IX: 较低层显式封锁, 可以加排他锁或者共享锁</li>
@@ -331,13 +330,13 @@
 <p>[3] 多粒度封锁协议:</p>
 <ol>
 <li>锁类型相容函数</li>
-<li>T必须先封锁根节点, 并且可以加任意类型的锁</li>
-<li>仅当T对Q的父节点有<strong>IX或IS</strong>时, T对Q可以加<strong>S或IS</strong></li>
+<li>T必须先封锁根结点, 并且可以加任意类型的锁</li>
+<li>仅当T对Q的父结点有<strong>IX或IS</strong>时, T对Q可以加<strong>S或IS</strong></li>
 <li>仅当T对Q的父结点有<strong>IX或SIX</strong>时, T对Q可以加<strong>X、SIX或IX</strong></li>
 <li>仅当T未曾对任何结点解锁时, 才能对结点加锁(<strong>T为两阶段</strong>)</li>
 <li>仅当T不持有Q子结点的锁时, T可对Q解锁</li>
 </ol>
-<p>[4] 封锁: 从根节点到叶结点的顺序进行, 解锁: 从叶结点到根节点到顺序进行</p>
+<p>[4] 封锁: 从根结点到叶结点的顺序进行, 解锁: 从叶结点到根结点到顺序进行</p>
 <h3 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h3><p>[1] W-timestamp成功执行write的所有事务的最大时间戳<br>R-timestamp成功执行read所有事务的最大时间戳<br>[2] <strong>时间戳排序协议</strong>:<br>T发出read:</p>
 <ol>
 <li>若TS(T) &lt; W-timestamp, T需要读入的值已被覆盖, read操作被拒绝, T回滚</li>
@@ -362,17 +361,17 @@
 <li>若TS(T) &lt; W-timestamp, T试图写入Q值已过时, <strong>write操作被忽略</strong> (<strong>删除事务发出的过时的write操作来使用视图可串行性</strong>)</li>
 <li>否则系统执行write, 将W-timestamp设置为TS(T)</li>
 </ol>
-<h4 id="视图可串性化"><a href="#视图可串性化" class="headerlink" title="视图可串性化"></a>视图可串性化</h4><p>[1] 视图等价:</p>
+<h4 id="视图可串行化"><a href="#视图可串行化" class="headerlink" title="视图可串行化"></a>视图可串行化</h4><p>[1] 视图等价:</p>
 <ol>
 <li>对于每一个Q, 若事务T在调度S中读取了Q的初始值, 那么S’中T也必须读取Q的初始值</li>
 <li>对于每一个Q, 若S中事务T执行了read并且读取的值是由Tj执行write产生的, 那么S’中T的read读取的值也必须是由Tj的同一个write操作产生的 (1和2保证两个调度中每个事务都读取相同的值, 从而进行相同的计算)</li>
 <li>对于每一个Q, 若在S中有事务执行了最后的write操作, 则在S’中该事务也必须执行最后的write操作 (保证两个调度得到相同的最终系统状态)</li>
 </ol>
-<p>[2] 冲突可串性化调度都是<strong>视图可串性化</strong><br>[3] 没有read的write是<strong>盲目写操作</strong>, 存在于任何非冲突可串性化的视图可串性化调度中</p>
+<p>[2] 冲突可串行化调度都是<strong>视图可串行化</strong><br>[3] 没有read的write是<strong>盲目写操作</strong>, 存在于任何非冲突可串行化的视图可串行化调度中</p>
 <h3 id="有效性检查"><a href="#有效性检查" class="headerlink" title="有效性检查"></a>有效性检查</h3><p>[1] 大部分事务为只读事务, 可以使用<strong>有效性检查协议</strong>, 是一种<strong>监控</strong>系统的机制<br>[2] 把事务T划分为两个或三个阶段执行:</p>
 <ol>
 <li>读阶段: 数据项值读入并保存在T的局部变量中, 写操作对<strong>局部临时变量</strong>进行, 不对数据库进行真正更新</li>
-<li>有效性检查阶段: 判断是否可以执行write不违反可串性行; 失败则中止这个事务</li>
+<li>有效性检查阶段: 判断是否可以执行write不违反可串行行; 失败则中止这个事务</li>
 <li>写阶段(只读事务忽略这个阶段): 把局部临时变量的值复制到数据库中</li>
 </ol>
 <p>[3] 三个时间戳:</p>
@@ -388,7 +387,7 @@
 </ul>
 <p>[5] 自动预防级联回滚<br>[6] 可能会饿死长事务——解决方案: 如果事务反复重启, 与之冲突的事务暂时阻塞</p>
 <blockquote>
-<p>乐观的并发控制: 事务乐观的执行, 假定它们能够完成执行并且最终有效<br>悲观的并发控制: 封锁和时间戳排序, 因为检测到冲突时强迫等待或回滚, 即使调度可能是冲突可串性化的</p>
+<p>乐观的并发控制: 事务乐观的执行, 假定它们能够完成执行并且最终有效<br>悲观的并发控制: 封锁和时间戳排序, 因为检测到冲突时强迫等待或回滚, 即使调度可能是冲突可串行化的</p>
 </blockquote>
 <h3 id="多版本"><a href="#多版本" class="headerlink" title="多版本"></a>多版本</h3><p>[1] 每个版本Qk包含三个数据字段:</p>
 <ul>
@@ -420,7 +419,7 @@
 <li>如果没有其他并发事务拥有该锁: 如果数据项已经被任何并发事务更新, T中止; 否则T执行操作并提交</li>
 <li>否则Ti不能执行, 等待直到这个事务Tj中止或提交<br>如果Tj中止, 锁被释放且Ti可以获得锁, 执行前面的更新检查(检查是否有与T并发执行的事务, 且对于T打算写入的数据已经更新写入数据库; 有则中止T; 否则T提交并将更新写入数据库)<br>如果Tj提交, 则Ti必须中止</li>
 </ol>
-<p>[5] 不能保证可串性化<br>[6] <strong>写偏斜</strong>: 一对事务中每一个都读取对方写的数据, 但是不存在两者同时写的数据<br>[7] 由数据库强制执行的完整性约束(例如主键和外键约束), 不能再快照上进行检查——<strong>数据库系统必须在数据库的当前状态下检查约束, 作为提交时有效性检验的一部分</strong><br>否则将有可能有两个并发事务同时插入主键相同的记录<br>或者一个事务插入一个外键值, 另一个并发事务从引用的表中删除该值</p>
+<p>[5] 不能保证可串行化<br>[6] <strong>写偏斜</strong>: 一对事务中每一个都读取对方写的数据, 但是不存在两者同时写的数据<br>[7] 由数据库强制执行的完整性约束(例如主键和外键约束), 不能再快照上进行检查——<strong>数据库系统必须在数据库的当前状态下检查约束, 作为提交时有效性检验的一部分</strong><br>否则将有可能有两个并发事务同时插入主键相同的记录<br>或者一个事务插入一个外键值, 另一个并发事务从引用的表中删除该值</p>
 <h2 id="插入、删除与谓词读"><a href="#插入、删除与谓词读" class="headerlink" title="插入、删除与谓词读"></a>插入、删除与谓词读</h2><p>[1] 删除</p>
 <ul>
 <li>两阶段封锁协议: 仅当要删除元组的事务在元组上有<strong>排他锁</strong>时, 才能执行删除操作</li>
@@ -443,14 +442,41 @@
 </ul>
 <p>让事务在真实的数据项上发生冲突而不是在幻想上发生冲突<br>[4] 使用索引来检索元组的事务必须封锁索引本身<br><strong>索引封锁技术</strong>: 对某些索引结点加锁, 避免封锁整个索引</p>
 <ul>
-<li>只有首先在关系的一个或多个索引上找到元组后, 事务T才能访问关系上的这些元组。全表扫描看作一个索引上所有叶节点的扫描</li>
-<li>进行查找的事务T必须在它要访问的所有索引叶节点上获得<strong>共享锁</strong></li>
-<li>没有更新关系上的所有索引之前, T不能插入、删除或更新关系中的元组。该事务必须获得插入、删除或更新所影响的所有索引叶结点的<strong>排他锁</strong><br>对于插入与删除, 受影响的叶节点是插入后包含或删除前包含元组搜索码值的叶节点<br>对于更新, 受影响的叶节点是修改前包含搜索码旧值的叶节点, 以及修改后包含搜索码新值的叶节点</li>
+<li>只有首先在关系的一个或多个索引上找到元组后, 事务T才能访问关系上的这些元组。全表扫描看作一个索引上所有叶结点的扫描</li>
+<li>进行查找的事务T必须在它要访问的所有索引叶结点上获得<strong>共享锁</strong></li>
+<li>没有更新关系上的所有索引之前, T不能插入、删除或更新关系中的元组。该事务必须获得插入、删除或更新所影响的所有索引叶结点的<strong>排他锁</strong><br>对于插入与删除, 受影响的叶结点是插入后包含或删除前包含元组搜索码值的叶结点<br>对于更新, 受影响的叶结点是修改前包含搜索码旧值的叶结点, 以及修改后包含搜索码新值的叶结点</li>
 <li>元组照常获得锁; 必须遵守两阶段封锁协议规则</li>
 </ul>
 <p>[5] 不关注索引内部结点的并发控制问题</p>
-<h2 id="实践中的弱一致级别"><a href="#实践中的弱一致级别" class="headerlink" title="实践中的弱一致级别"></a>实践中的弱一致级别</h2><p>查询结果的一致性不是至关重要, 使用可串性性会对事务处理起反作用<br><strong>二级一致性</strong>, 游标稳定性<br>应用程序采用元组中存储的版本号验证写操作的机制, 提供弱可串性化水平, 实现在应用层, 无需修改数据库</p>
-<h2 id="索引结构中的并发"><a href="#索引结构中的并发" class="headerlink" title="索引结构中的并发"></a>索引结构中的并发</h2><p>对B+树进行非可串性化访问, 保证B+树结构是正确的, 保证对数据库本身存取是可串性化的</p>
+<h2 id="实践中的弱一致级别"><a href="#实践中的弱一致级别" class="headerlink" title="实践中的弱一致级别"></a>实践中的弱一致级别</h2><p>查询结果的一致性不是至关重要, 使用可串行性会对事务处理起反作用</p>
+<h3 id="二级一致性和游标稳定性"><a href="#二级一致性和游标稳定性" class="headerlink" title="二级一致性和游标稳定性"></a>二级一致性和游标稳定性</h3><p>[1] <strong>二级一致性</strong> (已提交读水平), 可以防止发生级联中止<br>共享锁可以在任何时候释放, 锁可以在任何时间获得<br>排他锁只有在事务提交或中止后才能释放——没有事务可以读取未提交值<br>读不是可重复读<br>[2] <strong>游标稳定性</strong>是二级一致性的一种形式<br>利用游标对关系中的元组进行迭代的程序, 不封锁整个关系</p>
+<h3 id="跨越用户交互的并发控制"><a href="#跨越用户交互的并发控制" class="headerlink" title="跨越用户交互的并发控制"></a>跨越用户交互的并发控制</h3><p>[1] 可见的外部写: 写到用户屏幕<br>实现: 在非易失性存储设备中临时写下与外部写相关所有数据, 然后在事务进入提交状态后执行真正的写操作<br>如果事务进入提交状态而外部写未完成时系统出现故障, 可以在重启后用存储在非易失性设备中的数据执行外部写操作<br>[2] 应用程序采用<strong>元组中存储的版本号</strong>验证写操作的机制, 提供<strong>弱可串行化水平</strong>(不保证可串行化), 实现在数据库顶层应用层, 无需修改数据库<br>将涉及用户交互的事务划分成两个或更多事务, 使得没有事务跨越用户交互<br>[3] 机制</p>
+<ol>
+<li>每个关系模式中添加一个额外版本号属性/时间戳, 创建元组时初始化为0</li>
+<li>一个事务第一次读取(它试图更新的)一个元组时, 记录元组的版本号</li>
+<li>读操作时独立的数据库事务, 任何获得的锁立即释放<br>更新操作本地完成, 作为提交过程的一部分拷贝到数据库中:<br>对于每个更新的元组, 检查当前版本号是否等于第一次读取事务时的版本号<ul>
+<li>匹配则执行数据库中该元组的更新, 版本号+1</li>
+<li>不匹配则事务中止, 回滚执行的所有更新</li>
+</ul>
+</li>
+</ol>
+<p>[4] 类似快照隔离的先提交者获胜规则, 但是读操作不对应一个快照<br>与有效性检验协议相比, 读操作不进行检验——<strong>不做读有效性检查的乐观并发机制</strong></p>
+<h2 id="索引结构中的并发"><a href="#索引结构中的并发" class="headerlink" title="索引结构中的并发"></a>索引结构中的并发</h2><p>只要维护索引的准确性, 对索引进行非可串行化并发存取是可以接受的<br>对B+树进行非可串行化访问, 但保证B+树结构是正确的, 保证对数据库本身存取是可串行化的<br>[1] <strong>蟹行协议</strong></p>
+<ol>
+<li><p>查找: 首先用<strong>共享模式</strong>锁住根结点, 沿树向下遍历<br>在子结点获得一个<strong>共享锁</strong>, 释放父结点的锁, 直到叶结点</p>
+</li>
+<li><p>插入或删除: 首先找到叶结点(到此为止只获得和释放<strong>共享锁</strong>)<br>用<strong>排他锁</strong>锁住叶结点, 插入或删除码值<br>如果需要分裂或合并, 用<strong>排他锁</strong>锁住父结点, 完成操作后释放该结点和兄弟结点的锁</p>
+</li>
+</ol>
+<p>可能引起死锁——解决方法: 让搜索操作释放锁, 然后从树根重启</p>
+<p>[2] <strong>B-link树封锁协议</strong>: 要求每个结点维护一个指向右兄弟结点的指针</p>
+<ol>
+<li>查找: 每个结点访问之前加<strong>共享锁</strong>, 非叶结点上的锁应该在对B+树其他任何结点发出加锁请求前释放<br>结点分裂与查找同时发生: 搜索码值在兄弟结点代表的访问内, 系统循着指向右兄弟的指针找到该兄弟的结点<br>叶结点封锁遵循两阶段封锁协议——避免幻象现象</li>
+<li>插入与删除: 定位到要进行插入或删除的叶结点<br>该结点共享锁升级为排他锁, 然后插入或删除<br>插入与删除遵循两阶段封锁协议——避免幻象现象</li>
+<li>分裂: 创建新结点作为原结点的右兄弟, 设置原结点和新结点的右兄弟指针<br>事务释放原结点的<strong>排他锁</strong>, 然后对父结点增加<strong>排他锁</strong>, 以便插入指向新结点的指针<br>不需要对新结点加锁或解锁; 如果是叶结点要遵守两阶段封锁协议</li>
+<li>合并: 将与之合并的结点加排他锁, 合并后对父结点加排他锁, 以便删除要删除的结点<br>事务释放已合并结点的锁; 除非父结点也要合并, 不然释放其锁</li>
+</ol>
+<p>查找和插入不会引起死锁, 删除可能回归引起不一致性<br>[3] <strong>下一码封锁</strong>: 每一次索引查找不仅封锁查找范围内多个码, 而且封锁下一个码值; 每一次插入不仅封锁要插入的值, 而且包括下一个码值(一个事务试图插入一个值到另一个事务的索引查找范围内时, 在插入码值的<strong>下一个码值上冲突</strong>); 删除必须封锁删除值的下一个码值</p>
 </section>
     <!-- Tags START -->
     
@@ -477,9 +503,9 @@
       </a>
     
     
-      <a class="nav-right" href="/2020/02/01/dbsc13/">
+      <a class="nav-right" href="/2020/02/01/dbsc17/">
         
-          ⛵️帆船书#13 | 查询优化
+          ⛵️帆船书#17&amp;18 | 并行数据库
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -495,7 +521,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#原子性和持久性"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;" class="headerlink" title="&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;"></a>&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#隔离性和可串性化"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x6027;&#x5316;" class="headerlink" title="&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x6027;&#x5316;"></a>&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x6027;&#x5316;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#可恢复调度和无级联调度"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;" class="headerlink" title="&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;"></a>&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#隔离性级别及其实现"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;" class="headerlink" title="&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;"></a>&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#锁"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x9501;" class="headerlink" title="&#x9501;"></a>&#x9501;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#两阶段封锁协议"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text"><a href="#&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;&#x534F;&#x8BAE;" class="headerlink" title="&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;&#x534F;&#x8BAE;"></a>&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;&#x534F;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#基于图的协议-树形协议"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x4E8E;&#x56FE;&#x7684;&#x534F;&#x8BAE;-&#x6811;&#x5F62;&#x534F;&#x8BAE;" class="headerlink" title="&#x57FA;&#x4E8E;&#x56FE;&#x7684;&#x534F;&#x8BAE;/&#x6811;&#x5F62;&#x534F;&#x8BAE;"></a>&#x57FA;&#x4E8E;&#x56FE;&#x7684;&#x534F;&#x8BAE;/&#x6811;&#x5F62;&#x534F;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#死锁处理"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text"><a href="#&#x6B7B;&#x9501;&#x5904;&#x7406;" class="headerlink" title="&#x6B7B;&#x9501;&#x5904;&#x7406;"></a>&#x6B7B;&#x9501;&#x5904;&#x7406;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多粒度"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7C92;&#x5EA6;" class="headerlink" title="&#x591A;&#x7C92;&#x5EA6;"></a>&#x591A;&#x7C92;&#x5EA6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#时间戳"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#&#x65F6;&#x95F4;&#x6233;" class="headerlink" title="&#x65F6;&#x95F4;&#x6233;"></a>&#x65F6;&#x95F4;&#x6233;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#视图可串性化"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text"><a href="#&#x89C6;&#x56FE;&#x53EF;&#x4E32;&#x6027;&#x5316;" class="headerlink" title="&#x89C6;&#x56FE;&#x53EF;&#x4E32;&#x6027;&#x5316;"></a>&#x89C6;&#x56FE;&#x53EF;&#x4E32;&#x6027;&#x5316;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有效性检查"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;" class="headerlink" title="&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;"></a>&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多版本"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7248;&#x672C;" class="headerlink" title="&#x591A;&#x7248;&#x672C;"></a>&#x591A;&#x7248;&#x672C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#多版本两阶段封锁"><span class="toc-nav-number">3.5.1.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7248;&#x672C;&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;" class="headerlink" title="&#x591A;&#x7248;&#x672C;&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;"></a>&#x591A;&#x7248;&#x672C;&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#快照隔离"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text"><a href="#&#x5FEB;&#x7167;&#x9694;&#x79BB;" class="headerlink" title="&#x5FEB;&#x7167;&#x9694;&#x79BB;"></a>&#x5FEB;&#x7167;&#x9694;&#x79BB;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入、删除与谓词读"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;" class="headerlink" title="&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;"></a>&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实践中的弱一致级别"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;" class="headerlink" title="&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;"></a>&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引结构中的并发"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;" class="headerlink" title="&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;"></a>&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#原子性和持久性"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;" class="headerlink" title="&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;"></a>&#x539F;&#x5B50;&#x6027;&#x548C;&#x6301;&#x4E45;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#隔离性和可串行化"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x884C;&#x5316;" class="headerlink" title="&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x884C;&#x5316;"></a>&#x9694;&#x79BB;&#x6027;&#x548C;&#x53EF;&#x4E32;&#x884C;&#x5316;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#可恢复调度和无级联调度"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;" class="headerlink" title="&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;"></a>&#x53EF;&#x6062;&#x590D;&#x8C03;&#x5EA6;&#x548C;&#x65E0;&#x7EA7;&#x8054;&#x8C03;&#x5EA6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#隔离性级别及其实现"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;" class="headerlink" title="&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;"></a>&#x9694;&#x79BB;&#x6027;&#x7EA7;&#x522B;&#x53CA;&#x5176;&#x5B9E;&#x73B0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#锁"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x9501;" class="headerlink" title="&#x9501;"></a>&#x9501;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#两阶段封锁协议"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text"><a href="#&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;&#x534F;&#x8BAE;" class="headerlink" title="&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;&#x534F;&#x8BAE;"></a>&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;&#x534F;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#基于图的协议-树形协议"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x4E8E;&#x56FE;&#x7684;&#x534F;&#x8BAE;-&#x6811;&#x5F62;&#x534F;&#x8BAE;" class="headerlink" title="&#x57FA;&#x4E8E;&#x56FE;&#x7684;&#x534F;&#x8BAE;/&#x6811;&#x5F62;&#x534F;&#x8BAE;"></a>&#x57FA;&#x4E8E;&#x56FE;&#x7684;&#x534F;&#x8BAE;/&#x6811;&#x5F62;&#x534F;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#死锁处理"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text"><a href="#&#x6B7B;&#x9501;&#x5904;&#x7406;" class="headerlink" title="&#x6B7B;&#x9501;&#x5904;&#x7406;"></a>&#x6B7B;&#x9501;&#x5904;&#x7406;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多粒度"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7C92;&#x5EA6;" class="headerlink" title="&#x591A;&#x7C92;&#x5EA6;"></a>&#x591A;&#x7C92;&#x5EA6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#时间戳"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#&#x65F6;&#x95F4;&#x6233;" class="headerlink" title="&#x65F6;&#x95F4;&#x6233;"></a>&#x65F6;&#x95F4;&#x6233;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#视图可串行化"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text"><a href="#&#x89C6;&#x56FE;&#x53EF;&#x4E32;&#x884C;&#x5316;" class="headerlink" title="&#x89C6;&#x56FE;&#x53EF;&#x4E32;&#x884C;&#x5316;"></a>&#x89C6;&#x56FE;&#x53EF;&#x4E32;&#x884C;&#x5316;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有效性检查"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;" class="headerlink" title="&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;"></a>&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多版本"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7248;&#x672C;" class="headerlink" title="&#x591A;&#x7248;&#x672C;"></a>&#x591A;&#x7248;&#x672C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#多版本两阶段封锁"><span class="toc-nav-number">3.5.1.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x7248;&#x672C;&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;" class="headerlink" title="&#x591A;&#x7248;&#x672C;&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;"></a>&#x591A;&#x7248;&#x672C;&#x4E24;&#x9636;&#x6BB5;&#x5C01;&#x9501;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#快照隔离"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text"><a href="#&#x5FEB;&#x7167;&#x9694;&#x79BB;" class="headerlink" title="&#x5FEB;&#x7167;&#x9694;&#x79BB;"></a>&#x5FEB;&#x7167;&#x9694;&#x79BB;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入、删除与谓词读"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;" class="headerlink" title="&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;"></a>&#x63D2;&#x5165;&#x3001;&#x5220;&#x9664;&#x4E0E;&#x8C13;&#x8BCD;&#x8BFB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实践中的弱一致级别"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;" class="headerlink" title="&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;"></a>&#x5B9E;&#x8DF5;&#x4E2D;&#x7684;&#x5F31;&#x4E00;&#x81F4;&#x7EA7;&#x522B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二级一致性和游标稳定性"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text"><a href="#&#x4E8C;&#x7EA7;&#x4E00;&#x81F4;&#x6027;&#x548C;&#x6E38;&#x6807;&#x7A33;&#x5B9A;&#x6027;" class="headerlink" title="&#x4E8C;&#x7EA7;&#x4E00;&#x81F4;&#x6027;&#x548C;&#x6E38;&#x6807;&#x7A33;&#x5B9A;&#x6027;"></a>&#x4E8C;&#x7EA7;&#x4E00;&#x81F4;&#x6027;&#x548C;&#x6E38;&#x6807;&#x7A33;&#x5B9A;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#跨越用户交互的并发控制"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text"><a href="#&#x8DE8;&#x8D8A;&#x7528;&#x6237;&#x4EA4;&#x4E92;&#x7684;&#x5E76;&#x53D1;&#x63A7;&#x5236;" class="headerlink" title="&#x8DE8;&#x8D8A;&#x7528;&#x6237;&#x4EA4;&#x4E92;&#x7684;&#x5E76;&#x53D1;&#x63A7;&#x5236;"></a>&#x8DE8;&#x8D8A;&#x7528;&#x6237;&#x4EA4;&#x4E92;&#x7684;&#x5E76;&#x53D1;&#x63A7;&#x5236;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引结构中的并发"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;" class="headerlink" title="&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;"></a>&#x7D22;&#x5F15;&#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5E76;&#x53D1;</span></a></li></ol>
     
   </div>
 </aside>

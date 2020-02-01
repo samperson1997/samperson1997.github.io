@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ⛵️帆船书#17&amp;18 | 并行数据库 | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>⛵️帆船书#17&18 | 并行数据库</h2>
+  <p class="post-date">2020-02-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="数据库系统体系结构"><a href="#数据库系统体系结构" class="headerlink" title="数据库系统体系结构"></a>数据库系统体系结构</h2><p>[1] 集中式数据库系统完全运行在单台计算机上, 随着个人计算机和局域网的发展, 数据库前端功能不断移向客户机, 后端由服务器系统提供<br>客户-服务器接口协议推动了客户-服务器数据库系统发展<br>[2] <strong>事务服务器</strong>在提供数据库服务方面使用大大超过<strong>数据服务器</strong></p>
+<ul>
+<li><strong>事务服务器</strong>有多个进程, 可能运行在多个处理器上, 所有进程访问公共数据(数据库缓冲区), 系统将这些数据存放在共享内存中<br>处理查询的进程, 执行(锁和日志管理以及检查点等)任务的系统进程</li>
+<li><strong>数据服务器</strong>提供未加工的数据, 通过把数据和锁告诉缓存在客户端, 努力使客户端和服务器通信最小化——并行数据库使用类似的优化</li>
+</ul>
+<p>[3] 并行数据库系统由(通过高速互联网络连接在一起的)多台处理器和多张硬盘构成<br>加速比衡量通过增加并行性可以得到的对<strong>单个事务的处理速度</strong>的增长<br>扩展比衡量通过增加并行性可以得到的<strong>处理大量事务</strong>的能力<br>得到理想加速比和扩展比的障碍:</p>
+<ul>
+<li>干扰: 由于并行系统执行进程经常要访问共享资源, 新进程与原有进程竞争共享资源(系统总线、共享硬盘、锁)会发生干扰, 同时影响加速比和扩展比</li>
+<li>偏斜: 单个任务分解为多个并行步骤, 规模分配方式可能是偏斜的</li>
+<li>启动代价: 可能掩盖实际的处理时间, 降低加速比</li>
+</ul>
+<p>[4] 并行数据库体系结构包括<strong>共享内存</strong>、<strong>共享磁盘</strong>、<strong>无共享</strong>以及<strong>层次</strong>的体系结构<br>[5] 分布式数据库系统是部分独立的一组数据库系统, 共享一个公共模式, 协调地处理访问非本地数据的事务<br>系统之间通过通信网络相互通信<br>[6] 局域网连接分布在小的地理范围内的结点, 比如连接单个建筑或几个相邻的建筑<br>广域网连接分布在打的地理范围内的结点——Internet<br>[7] 存储区域网是一种特殊形式的局域网, 是为大型存储设备和多台计算机之间提供快速互联而设计的</p>
+<h2 id="I-O并行"><a href="#I-O并行" class="headerlink" title="I/O并行"></a>I/O并行</h2><p>把关系划分到多张可用磁盘中, 使检索速度更快</p>
+<ul>
+<li>轮转法划分</li>
+<li>散列划分</li>
+<li>范围划分</li>
+</ul>
+<h3 id="偏斜处理"><a href="#偏斜处理" class="headerlink" title="偏斜处理"></a>偏斜处理</h3><p>减少偏斜的技术</p>
+<ul>
+<li>平衡划分向量</li>
+<li>使用直方图</li>
+<li>虚处理器划分</li>
+</ul>
+<h2 id="查询间并行"><a href="#查询间并行" class="headerlink" title="查询间并行"></a>查询间并行</h2><p>并发的运行不同查询提高吞吐量</p>
+<h2 id="查询内并行"><a href="#查询内并行" class="headerlink" title="查询内并行"></a>查询内并行</h2><p>减少运行查询的代价</p>
+<h3 id="操作内并行"><a href="#操作内并行" class="headerlink" title="操作内并行"></a>操作内并行</h3><p>因为关系运算面向集合, 所以操作内并行对关系运算(如排序和连接)很自然<br>连接的并行化方法:</p>
+<ul>
+<li>基于划分的并行中, 两个关系分成几个部分, 而且r中元组仅与s中元组连接——适用于自然连接和等值连接</li>
+<li>分片和复制中, 两个关系都被划分并且每个划分都被复制; 非对称的分片和复制中, 一个关系被复制, 另一个关系被划分——对任何连接条件都适用</li>
+</ul>
+<h3 id="操作间并行"><a href="#操作间并行" class="headerlink" title="操作间并行"></a>操作间并行</h3><p>独立并行中: 互不依赖的多个不同操作按并行方式执行<br>流水线并行中: 处理器在计算一个操作结果同时将结果发送给另一个操作, 无需等待整个操作完成</p>
+<h2 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h2><h2 id="并行系统设计"><a href="#并行系统设计" class="headerlink" title="并行系统设计"></a>并行系统设计</h2><h2 id="多核处理器的并行性"><a href="#多核处理器的并行性" class="headerlink" title="多核处理器的并行性"></a>多核处理器的并行性</h2></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/30/dbsc14/">
+        <span class="nav-arrow">← </span>
+        
+          ⛵️帆船书#14&amp;15 | 事务和并发控制
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/02/02/dbsc13/">
+        
+          ⛵️帆船书#13 | 查询优化
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库系统体系结构"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;" class="headerlink" title="&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;"></a>&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#I-O并行"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#I-O&#x5E76;&#x884C;" class="headerlink" title="I/O&#x5E76;&#x884C;"></a>I/O&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#偏斜处理"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x504F;&#x659C;&#x5904;&#x7406;" class="headerlink" title="&#x504F;&#x659C;&#x5904;&#x7406;"></a>&#x504F;&#x659C;&#x5904;&#x7406;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询间并行"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;" class="headerlink" title="&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;"></a>&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询内并行"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;" class="headerlink" title="&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;"></a>&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#操作内并行"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;" class="headerlink" title="&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;"></a>&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#操作间并行"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;" class="headerlink" title="&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;"></a>&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询优化"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4F18;&#x5316;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4F18;&#x5316;"></a>&#x67E5;&#x8BE2;&#x4F18;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#并行系统设计"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;" class="headerlink" title="&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;"></a>&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多核处理器的并行性"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x591A;&#x6838;&#x5904;&#x7406;&#x5668;&#x7684;&#x5E76;&#x884C;&#x6027;" class="headerlink" title="&#x591A;&#x6838;&#x5904;&#x7406;&#x5668;&#x7684;&#x5E76;&#x884C;&#x6027;"></a>&#x591A;&#x6838;&#x5904;&#x7406;&#x5668;&#x7684;&#x5E76;&#x884C;&#x6027;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2020/02/01/dbsc17/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
