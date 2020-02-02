@@ -147,7 +147,8 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h2 id="数据库系统体系结构"><a href="#数据库系统体系结构" class="headerlink" title="数据库系统体系结构"></a>数据库系统体系结构</h2><p>[1] 集中式数据库系统完全运行在单台计算机上, 随着个人计算机和局域网的发展, 数据库前端功能不断移向客户机, 后端由服务器系统提供<br>客户-服务器接口协议推动了客户-服务器数据库系统发展<br>[2] <strong>事务服务器</strong>在提供数据库服务方面使用大大超过<strong>数据服务器</strong></p>
+    <section class="markdown-content"><h2 id="数据库系统体系结构"><a href="#数据库系统体系结构" class="headerlink" title="数据库系统体系结构"></a>数据库系统体系结构</h2><p>[1] 集中式数据库系统完全运行在单台计算机上, 随着个人计算机和局域网的发展, 数据库前端功能不断移向客户机, 后端由服务器系统提供<br>客户-服务器接口协议推动了客户-服务器数据库系统发展</p>
+<p>[2] <strong>事务服务器</strong>在提供数据库服务方面使用大大超过<strong>数据服务器</strong></p>
 <ul>
 <li><strong>事务服务器</strong>有多个进程, 可能运行在多个处理器上, 所有进程访问公共数据(数据库缓冲区), 系统将这些数据存放在共享内存中<br>处理查询的进程, 执行(锁和日志管理以及检查点等)任务的系统进程</li>
 <li><strong>数据服务器</strong>提供未加工的数据, 通过把数据和锁告诉缓存在客户端, 努力使客户端和服务器通信最小化——并行数据库使用类似的优化</li>
@@ -165,8 +166,11 @@
 <li>无共享: 不共享磁盘和主存</li>
 <li>层次: 不共享磁盘和主存, 但是每个结点内部共享内存或共享磁盘</li>
 </ul>
-<p>[5] 分布式数据库系统是部分独立的一组数据库系统, 共享一个公共模式, 协调地处理访问非本地数据的事务<br>系统之间通过通信网络相互通信<br>[6] 局域网连接分布在小的地理范围内的结点, 比如连接单个建筑或几个相邻的建筑<br>广域网连接分布在打的地理范围内的结点——Internet<br>[7] 存储区域网是一种特殊形式的局域网, 是为大型存储设备和多台计算机之间提供快速互联而设计的</p>
-<h2 id="I-O并行"><a href="#I-O并行" class="headerlink" title="I/O并行"></a>I/O并行</h2><p>[1] 数据访问: 扫描; 点查询; 范围查询<br>[2] 把关系划分到多张可用磁盘中, 使检索速度更快</p>
+<p>[5] 分布式数据库系统是部分独立的一组数据库系统, 共享一个公共模式, 协调地处理访问非本地数据的事务<br>系统之间通过通信网络相互通信</p>
+<p>[6] 局域网连接分布在小的地理范围内的结点, 比如连接单个建筑或几个相邻的建筑<br>广域网连接分布在打的地理范围内的结点——Internet</p>
+<p>[7] 存储区域网是一种特殊形式的局域网, 是为大型存储设备和多台计算机之间提供快速互联而设计的</p>
+<h2 id="I-O并行"><a href="#I-O并行" class="headerlink" title="I/O并行"></a>I/O并行</h2><p>[1] 数据访问: 扫描; 点查询; 范围查询</p>
+<p>[2] 把关系划分到多张可用磁盘中, 使检索速度更快</p>
 <table>
 <thead>
 <tr>
@@ -199,26 +203,52 @@
 <li>属性值偏斜: 某些值出现在许多元组的划分属性中, 划分属性上取相同值的所有元组落入统一分区</li>
 <li>划分偏斜: 即使不存在属性值偏斜, 划分也出现了负载不均衡</li>
 </ul>
-<p>[2] 随着并行度增大, 由于偏斜导致加速比的损失也增大<br>[3] 减少偏斜的技术</p>
+<p>[2] 随着并行度增大, 由于偏斜导致加速比的损失也增大</p>
+<p>[3] 减少偏斜的技术</p>
 <ul>
 <li>平衡划分向量: 首先关系按照划分属性<strong>排序</strong>, 然后用排序顺序扫描, 每读过1/n, 将下一元组的划分属性值加入划分向量——缺点: 初始排序的额外I/O开销</li>
 <li>使用直方图: 直接构造平衡的范围划分函数, 直方图可以存储在系统目录中</li>
 <li>虚处理器划分: 针对范围划分, 首先将元组和操作映射到<strong>虚处理器</strong>, 然后将虚处理器一次映射回事雞的处理器(通过轮转法划分实现)<br>思想: 即使由于偏斜使得一个范围内有比其他范围更多的元组, 这些元组也将划分到多个虚处理器范围上, 轮转法将虚处理器分配到实际的处理器, 就将额外的工作分布到多个实际的处理器中</li>
 </ul>
-<h2 id="查询间并行"><a href="#查询间并行" class="headerlink" title="查询间并行"></a>查询间并行</h2><p>[1] 用处: 扩展事务处理系统, 并发地运行不同查询, 提高吞吐量<br>单个事务的响应时间不会比事务以隔离方式运行时更快<br>[2] 共享内存: 无需修改, 类似串行机器中分时并发的事务<br>[3] 共享磁盘: 需要互相传送封锁和日志等消息<br>当一个处理器访问或更新数据时, 数据库系统必须保证该处理器在它的缓冲池中拥有该数据等最新版本——<strong>高速缓存一致性</strong></p>
+<h2 id="查询间并行"><a href="#查询间并行" class="headerlink" title="查询间并行"></a>查询间并行</h2><p>[1] 用处: 扩展事务处理系统, 并发地运行不同查询, 提高吞吐量<br>单个事务的响应时间不会比事务以隔离方式运行时更快</p>
+<p>[2] 共享内存: 无需修改, 类似串行机器中分时并发的事务</p>
+<p>[3] 共享磁盘: 需要互相传送封锁和日志等消息<br>当一个处理器访问或更新数据时, 数据库系统必须保证该处理器在它的缓冲池中拥有该数据等最新版本——<strong>高速缓存一致性</strong></p>
 <ol>
 <li>事务对一个页面读写之前, 先用相应共享或排他模式封锁页面, 获得锁后从共享磁盘读取该页面最新版本</li>
 <li>事务释放页面排他锁之前, 将页面刷新到共享磁盘<br>如果最新版本在某个处理器缓冲池, 事务可以从缓冲池获得页面, 避免对磁盘重复读写</li>
 </ol>
 <p>[4] 无共享: 每个页面有一个<strong>本地处理器</strong>, 存储在磁盘中<br>其他处理器想对页面读写时, 将请求发给该页面本地处理器, 而不是直接给页面所在磁盘</p>
-<h2 id="查询内并行"><a href="#查询内并行" class="headerlink" title="查询内并行"></a>查询内并行</h2><p>[1] 单个查询在多个处理器和磁盘并行执行, 减少运行查询的代价<br>[2] 操作内并行: 并行执行每个运算, 如排序、选择、投影和连接<br>操作间并行: 执行一个表达式的多个不同运算<br>可以互相补充, 并同时应用在一个查询中</p>
+<h2 id="查询内并行"><a href="#查询内并行" class="headerlink" title="查询内并行"></a>查询内并行</h2><p>[1] 单个查询在多个处理器和磁盘并行执行, 减少运行查询的代价</p>
+<p>[2] 操作内并行: 并行执行每个运算, 如排序、选择、投影和连接<br>操作间并行: 执行一个表达式的多个不同运算<br>可以互相补充, 并同时应用在一个查询中</p>
 <h3 id="操作内并行"><a href="#操作内并行" class="headerlink" title="操作内并行"></a>操作内并行</h3><p>因为关系运算面向集合, 所以操作内并行对关系运算(如排序和连接)很自然</p>
 <h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><p>[1] 范围划分排序</p>
+<ol>
+<li>首先对关系范围划分, 然后对每个分区进行排序</li>
+<li>采用范围划分策略对关系中元组重新分布, 使得处于第i个范围的所有元组发送给处理器Pi, 将关系临时存放在磁盘Di</li>
+<li>每个处理器在本地对关系中属于自己的分区排序</li>
+<li>合并</li>
+</ol>
+<p>必须使用好的范围划分向量, 使得每个分区中元组数目大致相同<br>使用虚处理器划分减少偏斜</p>
 <p>[2] 并行的外排归并</p>
-<h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><p>[1] 基于划分的连接<br>两个关系分成几个部分, 而且r中元组仅与s中元组连接——适用于自然连接和等值连接</p>
-<p>[2] 分片-复制连接<br>两个关系都被划分并且每个划分都被复制; 非对称的分片和复制中, 一个关系被复制, 另一个关系被划分——对任何连接条件都适用</p>
-<p>[3] 基于划分的并行散列连接</p>
-<h4 id="其他运算"><a href="#其他运算" class="headerlink" title="其他运算"></a>其他运算</h4><h4 id="并行计算代价"><a href="#并行计算代价" class="headerlink" title="并行计算代价"></a>并行计算代价</h4><h3 id="操作间并行"><a href="#操作间并行" class="headerlink" title="操作间并行"></a>操作间并行</h3><p>[1] 独立并行中: 互不依赖的多个不同操作按并行方式执行<br>在高度并行的系统中没有太大的用处<br>[2] 流水线并行中: 处理器计算一个操作结果同时将结果发送给另一个操作, 无需等待整个操作完成<br>可扩展性不好:</p>
+<ol>
+<li>每个处理器Pi在本地对磁盘Di中的数据排序</li>
+<li>归并: 将每个处理器Pi中排好序的分区使用相同划分向量范围划分到处理器P0…Pm-1中, 用顺序排序发送元组是的每个处理器接收的都是排好序的元组流</li>
+<li>每个处理器接收到元组流时归并, 得到一个排好序的归并段</li>
+<li>系统将P0…Pm-1中排好序的归并段串接起来得到最终结果</li>
+</ol>
+<p><strong>执行偏斜</strong>的解决方案: 每个处理器重复地向每个分区发送一个数据块, 即每个处理器发送每个分区第一个数据块, 然后发送每个分区第二个数据块, 让所有处理器可以并行地接受数据</p>
+<h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><p>[1] 基于划分的连接(等值连接和自然连接)<br>两个关系分成几个部分, 而且r中元组仅与s中元组连接<br>对于范围划分, 两个关系必须采用相同划分向量; 对于散列划分, 两个关系必须使用相同散列函数<br>可以通过把某些元组放在内存缓冲区, 而不是写到磁盘减少I/O<br>划分向量应该使|ri|+|si|大致相等</p>
+<p>[2] 分片-复制连接(任何连接条件)<br>两个关系都被划分并且每个划分都被复制到所有处理器<br>如果两个划分分别为n和m个分区, 那么必须保证至少有m*n个处理器<br><strong>非对称的分片和复制</strong>中, 一个关系被复制, 另一个关系被划分——适用于一个关系很小</p>
+<p>[3] 基于划分的并行散列连接<br>s比r小, 选择较小的关系作为建立散列表的关系</p>
+<ol>
+<li>选择散列函数h1, 取得r和s每个元组的连接属性的值, 将元组映射到n个处理器中的一个<br>每个处理器Pi读取s中位于Di上的元组, 基于散列函数h1将每个元组发送到适当处理器</li>
+<li>目的处理器Pi接收到si, 另一个散列函数h2做进一步划分, 用h2在本地计算散列连接</li>
+<li>然后通过h1将较大关系r在n个处理器上重新分布, 目的处理器用h2对它重新划分</li>
+<li>每个处理器Pi对r和s本地分区ri和si上执行散列连接算法的创建和探查, 产生散列连接最终结果的一个分区</li>
+</ol>
+<p>[4] 并行嵌套循环连接<br>假设r的每一个分区存在r在连接属性的索引<br>非对称的分片和复制方法中, 每个处理器Pi对关系s和r第i个分区进行<strong>索引嵌套循环连接</strong>, 与关系s的元组划分重叠起来做, 减少将s的元组写入磁盘在读出来的代价<br>s的复制必须与连接同步, 每个处理器Pi的内存缓冲区能有足够的空间存放已经接收到但是尚未用于连接的关系s的元组</p>
+<h3 id="操作间并行"><a href="#操作间并行" class="headerlink" title="操作间并行"></a>操作间并行</h3><p>[1] 独立并行中: 互不依赖的多个不同操作按并行方式执行<br>在高度并行的系统中没有太大的用处</p>
+<p>[2] 流水线并行中: 处理器计算一个操作结果同时将结果发送给另一个操作, 无需等待整个操作完成<br>可扩展性不好:</p>
 <ul>
 <li>只有少量处理器时才有用, 达不到足够的长度来提供较高的并行度</li>
 <li>对于访问访问所有输入才能输出的关系运算(如集合差运算)不能采用流水线</li>
@@ -234,7 +264,8 @@
 <li>仅考虑利用所有处理器, 对每个运算都并行化, 不采用流水线的执行计划</li>
 <li>选择最高效的串行执行计划, 然后将该执行计划中的运算并行化 (可以使用<strong>交换算子</strong>)</li>
 </ol>
-<p>[3] 处理器和磁盘发生故障的恢复性: 数据至少复制到两个处理器, 系统追踪失效的处理器, 将工作分配给多个正常运行的处理器<br>[4] <strong>联机</strong>进行: 在系统执行其他事务的同时进行这样的操作<br>联机索引创建: 进程记住创建索引活跃其间发生的更新, 将变化合并到正在建立的索引中</p>
+<p>[3] 处理器和磁盘发生故障的恢复性: 数据至少复制到两个处理器, 系统追踪失效的处理器, 将工作分配给多个正常运行的处理器</p>
+<p>[4] <strong>联机</strong>进行: 在系统执行其他事务的同时进行这样的操作<br>联机索引创建: 进程记住创建索引活跃其间发生的更新, 将变化合并到正在建立的索引中</p>
 </section>
     <!-- Tags START -->
     
@@ -279,7 +310,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库系统体系结构"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;" class="headerlink" title="&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;"></a>&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#I-O并行"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#I-O&#x5E76;&#x884C;" class="headerlink" title="I/O&#x5E76;&#x884C;"></a>I/O&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#偏斜处理"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x504F;&#x659C;&#x5904;&#x7406;" class="headerlink" title="&#x504F;&#x659C;&#x5904;&#x7406;"></a>&#x504F;&#x659C;&#x5904;&#x7406;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询间并行"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;" class="headerlink" title="&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;"></a>&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询内并行"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;" class="headerlink" title="&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;"></a>&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#操作内并行"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;" class="headerlink" title="&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;"></a>&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#排序"><span class="toc-nav-number">4.1.1.</span> <span class="toc-nav-text"><a href="#&#x6392;&#x5E8F;" class="headerlink" title="&#x6392;&#x5E8F;"></a>&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">4.1.2.</span> <span class="toc-nav-text"><a href="#&#x8FDE;&#x63A5;" class="headerlink" title="&#x8FDE;&#x63A5;"></a>&#x8FDE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#其他运算"><span class="toc-nav-number">4.1.3.</span> <span class="toc-nav-text"><a href="#&#x5176;&#x4ED6;&#x8FD0;&#x7B97;" class="headerlink" title="&#x5176;&#x4ED6;&#x8FD0;&#x7B97;"></a>&#x5176;&#x4ED6;&#x8FD0;&#x7B97;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#并行计算代价"><span class="toc-nav-number">4.1.4.</span> <span class="toc-nav-text"><a href="#&#x5E76;&#x884C;&#x8BA1;&#x7B97;&#x4EE3;&#x4EF7;" class="headerlink" title="&#x5E76;&#x884C;&#x8BA1;&#x7B97;&#x4EE3;&#x4EF7;"></a>&#x5E76;&#x884C;&#x8BA1;&#x7B97;&#x4EE3;&#x4EF7;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#操作间并行"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;" class="headerlink" title="&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;"></a>&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询优化和并行系统设计"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4F18;&#x5316;&#x548C;&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4F18;&#x5316;&#x548C;&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;"></a>&#x67E5;&#x8BE2;&#x4F18;&#x5316;&#x548C;&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库系统体系结构"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;" class="headerlink" title="&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;"></a>&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#I-O并行"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#I-O&#x5E76;&#x884C;" class="headerlink" title="I/O&#x5E76;&#x884C;"></a>I/O&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#偏斜处理"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x504F;&#x659C;&#x5904;&#x7406;" class="headerlink" title="&#x504F;&#x659C;&#x5904;&#x7406;"></a>&#x504F;&#x659C;&#x5904;&#x7406;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询间并行"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;" class="headerlink" title="&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;"></a>&#x67E5;&#x8BE2;&#x95F4;&#x5E76;&#x884C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询内并行"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;" class="headerlink" title="&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;"></a>&#x67E5;&#x8BE2;&#x5185;&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#操作内并行"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;" class="headerlink" title="&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;"></a>&#x64CD;&#x4F5C;&#x5185;&#x5E76;&#x884C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#排序"><span class="toc-nav-number">4.1.1.</span> <span class="toc-nav-text"><a href="#&#x6392;&#x5E8F;" class="headerlink" title="&#x6392;&#x5E8F;"></a>&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">4.1.2.</span> <span class="toc-nav-text"><a href="#&#x8FDE;&#x63A5;" class="headerlink" title="&#x8FDE;&#x63A5;"></a>&#x8FDE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#操作间并行"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;" class="headerlink" title="&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;"></a>&#x64CD;&#x4F5C;&#x95F4;&#x5E76;&#x884C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询优化和并行系统设计"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;&#x4F18;&#x5316;&#x548C;&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;" class="headerlink" title="&#x67E5;&#x8BE2;&#x4F18;&#x5316;&#x548C;&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;"></a>&#x67E5;&#x8BE2;&#x4F18;&#x5316;&#x548C;&#x5E76;&#x884C;&#x7CFB;&#x7EDF;&#x8BBE;&#x8BA1;</span></a></li></ol>
     
   </div>
 </aside>
