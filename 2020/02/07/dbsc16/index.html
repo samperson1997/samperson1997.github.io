@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ⛵️帆船书#16 | 恢复系统 | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>⛵️帆船书#16 | 恢复系统</h2>
+  <p class="post-date">2020-02-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="故障分类和存储器"><a href="#故障分类和存储器" class="headerlink" title="故障分类和存储器"></a>故障分类和存储器</h2><p>[1] 故障分类</p>
+<ol>
+<li>事务故障: 逻辑错误(内部条件, 非法输入、找不到数据、溢出、超出资源限制); 系统错误(死锁等导致事务无法继续执行)</li>
+<li>系统崩溃: 硬件故障或数据库软件呢、操作系统漏洞, 导致易失性存储器内容丢失, 但是非易失性存储器完好无损</li>
+<li>磁盘故障: (破坏非易失性存储器内容), 可以从三级介质的归档备份恢复</li>
+</ol>
+<p>[2] 存储结构</p>
+<ul>
+<li>易失性存储器(主存, cache): 计算机崩溃时丢失</li>
+<li>非易失性存储器(磁盘, 闪存, 光盘, 磁带): 磁盘崩溃时丢失</li>
+<li>稳定性存储器: 永不丢失, 可以复制非易失性存储器介质并采用<strong>独立故障模式</strong></li>
+</ul>
+<p>[3] 稳定存储器<br><strong>必须支持在线访问</strong>的稳定存储器与<strong>磁盘镜像</strong>或者其他形式的提供冗余数据存储的<strong>RAID</strong>接近<br>对于<strong>离线或归档</strong>的情况, 稳定性存储器可以由存储在物理安全位置的数据的<strong>多个磁盘备份</strong>构成</p>
+<h3 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h3><p>[1] 磁盘中的某些错误可以由存储在每个块中的校验和检测<br>恢复过程中比较每一对相应块开销太大——解决方案: 使用少量非易失性RAM, 跟踪正在进行的对应块的写操作; 恢复时只比较正在写的块</p>
+<p>[2] 物理块: 磁盘上的块; 缓冲快: 临时位于主存的块</p>
+<p>[3] <strong>input</strong>: 物理块B到主存<br>事务T的私有工作区用于保存T当问及更新的所有数据项X的拷贝, 在事务初始化时由系统创建, 事务提交或中止时由系统删除<br>T通过在其工作区和系统缓冲区之间传送数据, 与数据库系统交互</p>
+<ol>
+<li>read将X值赋给局部变量x, 如果X所在块B不在主存中, 需要input(B)</li>
+<li>write将局部变量x值赋给缓冲区块中数据项X, 如果X所在块B不再驻村中, 需要input(B)</li>
+</ol>
+<p>[4] <strong>output</strong>: 缓冲块B到磁盘, 替换磁盘相应物理块<br>强制输出: 缓冲区管理器需要内存空间; 数据库系统希望将B的变化反映到磁盘<br>output(B)不需要在write后立即执行, 因为B可能包含其他仍在被访问的数据项</p>
+<h2 id="恢复与原子性"><a href="#恢复与原子性" class="headerlink" title="恢复与原子性"></a>恢复与原子性</h2><p>[1] <strong>更新日志记录</strong>有如下字段: 事务标识、数据项标识(数据项在磁盘位置, 数据项驻留块的块标识和块内偏移量)、旧值、新值</p>
+<p>[2] 事务修改数据项的步骤</p>
+<ol>
+<li>事务在主存中自己私有的部分执行某些计算</li>
+<li>事务修改主存磁盘缓冲区中包含该数据项的数据块</li>
+<li>系统执行output操作后数据库块写到磁盘中</li>
+</ol>
+<p>[3] <strong>延迟修改</strong>: 事务直到提交都没有修改数据库, 事务执行的所有write延迟到事务提交时执行<br>开销: 事务需要创建(更新过的所有数据项的)本地拷贝; 如果一个事务读他更新过的数据项, 必须从本地拷贝中读<br>日志记录<strong>不需要包含已更新的数据项的旧值</strong></p>
+<p><strong>立即修改</strong>: 数据库修改在事务仍然活跃时发生</p>
+<p>[4] 事务回滚: 从后往前扫描日志<br>利用旧值字段可以<strong>撤销</strong>已经输出到数据库中的修改, 作为撤销的一部分, 要使用<strong>redo-only日志</strong>要记录执行的更新(redo-only日志不包含更新的数据项的旧值)<br><strong>undo操作之后需要写一个abort日志记录</strong></p>
+<p>[5] 系统发生崩溃之后:</p>
+<ol>
+<li>重做阶段: <strong>正向</strong>扫描日志重放<strong>所有</strong>事务的更新, 如果日志包括 [start] 以及 [commit或者abort], 需要redo (abort: 如果日志包括abort, 意味着有redo-only日志, 需要对T的修改进行撤销) redo将将T更新过的数据项的值设置成新值<ul>
+<li>如果找到redo-only或者正常日志记录, 则redo这个操作</li>
+<li>如果遇到start, 把T加入undo-list</li>
+<li>如果遇到abort或者commit, 把T从undo-list中去掉 </li>
+</ul>
+</li>
+<li>撤销阶段: <strong>反向</strong>扫描日志进行回滚<br>如果日志包括start记录, 但不包括commit或abort, 需要undo<ul>
+<li>遇到undo-list中的事务记, 则undo, 并向日志中写redo-only记录</li>
+<li>如果遇到start, 往日志中写一个abort, 并把T从undo-list中去掉</li>
+<li>undo-list变为空表, 撤销阶段结束</li>
+</ul>
+</li>
+</ol>
+<p>[5] 检查点</p>
+<ol>
+<li>当前位于主存的所有日志记录输出到<strong>稳定存储器</strong></li>
+<li>所有修改的缓冲块输出到磁盘</li>
+<li>将一个日志记录checkpoint L输出到<strong>稳定存储器</strong>, L为检查点时正活跃的事务列表</li>
+</ol>
+<h2 id="缓冲区管理"><a href="#缓冲区管理" class="headerlink" title="缓冲区管理"></a>缓冲区管理</h2><h2 id="非易失性存储器数据丢失的故障"><a href="#非易失性存储器数据丢失的故障" class="headerlink" title="非易失性存储器数据丢失的故障"></a>非易失性存储器数据丢失的故障</h2><h2 id="锁的提前释放和逻辑undo操作"><a href="#锁的提前释放和逻辑undo操作" class="headerlink" title="锁的提前释放和逻辑undo操作"></a>锁的提前释放和逻辑undo操作</h2><h2 id="ARIES"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</h2><h2 id="远程备份系统"><a href="#远程备份系统" class="headerlink" title="远程备份系统"></a>远程备份系统</h2></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/02/dbsc13/">
+        <span class="nav-arrow">← </span>
+        
+          ⛵️帆船书#13 | 查询优化
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#故障分类和存储器"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;" class="headerlink" title="&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;"></a>&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据访问"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x6570;&#x636E;&#x8BBF;&#x95EE;" class="headerlink" title="&#x6570;&#x636E;&#x8BBF;&#x95EE;"></a>&#x6570;&#x636E;&#x8BBF;&#x95EE;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#恢复与原子性"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;" class="headerlink" title="&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;"></a>&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#缓冲区管理"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;" class="headerlink" title="&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;"></a>&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#非易失性存储器数据丢失的故障"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;" class="headerlink" title="&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;"></a>&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#锁的提前释放和逻辑undo操作"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;" class="headerlink" title="&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;"></a>&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ARIES"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#远程备份系统"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;" class="headerlink" title="&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;"></a>&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2020/02/07/dbsc16/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
