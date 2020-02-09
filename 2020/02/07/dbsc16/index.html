@@ -193,13 +193,67 @@
 </ul>
 </li>
 </ol>
-<p>[5] 检查点</p>
+<h3 id="检查点"><a href="#检查点" class="headerlink" title="检查点"></a>检查点</h3><p>[1] 检查点</p>
 <ol>
 <li>当前位于主存的所有日志记录输出到<strong>稳定存储器</strong></li>
 <li>所有修改的缓冲块输出到磁盘</li>
 <li>将一个日志记录checkpoint L输出到<strong>稳定存储器</strong>, L为检查点时正活跃的事务列表</li>
 </ol>
-<h2 id="缓冲区管理"><a href="#缓冲区管理" class="headerlink" title="缓冲区管理"></a>缓冲区管理</h2><h2 id="非易失性存储器数据丢失的故障"><a href="#非易失性存储器数据丢失的故障" class="headerlink" title="非易失性存储器数据丢失的故障"></a>非易失性存储器数据丢失的故障</h2><h2 id="锁的提前释放和逻辑undo操作"><a href="#锁的提前释放和逻辑undo操作" class="headerlink" title="锁的提前释放和逻辑undo操作"></a>锁的提前释放和逻辑undo操作</h2><h2 id="ARIES"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</h2><h2 id="远程备份系统"><a href="#远程备份系统" class="headerlink" title="远程备份系统"></a>远程备份系统</h2></section>
+<p>[2] 模糊检查点: 允许检查点记录写入日志后, 修改过的缓冲块写到磁盘前开始做更新<br>如果系统在所有页面写完前崩溃, 磁盘上的检查点可能不完全——解决方案: 将最后一个完全检查点记录在<strong>磁盘上的固定位置last_checkpoint</strong>, 写入checkpoint时不更新该信息, 在写checkpoint记录前创建所有修改过的缓冲区块的列表, 只有在该列表中的所有缓冲块都输出到磁盘上以后, last_checkpoint信息才更新</p>
+<h2 id="缓冲区管理"><a href="#缓冲区管理" class="headerlink" title="缓冲区管理"></a>缓冲区管理</h2><p>[1] 日志缓冲区</p>
+<ol>
+<li>日志记录commit输出到稳定存储器后, 事务进入提交状态</li>
+<li>日志记录commit输出到稳定存储器前, 事务有关的所有日志记录必须输出到稳定存储器</li>
+<li>主存中的数据块输出到数据库前, 所有鱼数据块中数据有关日志记录必须输出到稳定存储器</li>
+</ol>
+<p>[2] 写前日志WAL: undo信息已经输出到稳定存储器中, 而redo信息允许以后再写</p>
+<p>[3] 数据库缓冲</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>强制</strong>: 事务提交时所有修改过块输出到磁盘</td>
+<td style="text-align:left"><strong>非强制</strong>(采用): 即使一个事务修改了还没写回到磁盘的块, 也允许提交</td>
+<td style="text-align:left">非强制策略可以更快提交;<br>将多个更新聚集在一起, 见效频繁更新的块输出操作的数目</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>非窃取</strong>: 仍然活跃的事务修改过的块不写出到磁盘</td>
+<td style="text-align:left"><strong>窃取</strong>(采用): 即使修改的事务还没提交, 也允许将修改过的块写到磁盘</td>
+<td style="text-align:left">非窃取策略不适合执行大量更新的事务, 因为缓冲区可能被一更新过但不能逐出到磁盘的页面占满</td>
+</tr>
+</tbody>
+</table>
+<p>[4] <strong>闩锁</strong>封锁方法(非两阶段)<br>当一个块要输出时:</p>
+<ol>
+<li>获取排他锁, 确保没有任何事物正在进行写操作</li>
+<li>日志记录输出到稳定存储器</li>
+<li>块输出到磁盘</li>
+<li>块输出完成后, 释放排他锁</li>
+</ol>
+<p>保证检查点进行过程中缓冲块不更新, 而且没有新的日志记录产生</p>
+<ol>
+<li>要求在检查点操作开始之前必须获得所有缓冲块的排他锁以及对日志的排他锁</li>
+<li>检查点操作完成后释放锁</li>
+</ol>
+<p>[5] 不断在缓冲块间循环, 将修改过的缓冲块输出到磁盘。好处:<br>缓冲区中的脏块数目减少, 检查点过程中需要输出的块数目减少<br>需要从缓冲区逐出一个块时, 不脏的块可以逐出, 输入马上可以进行, 不必等待输出完成</p>
+<p>[6] 管理数据库缓冲区</p>
+<ul>
+<li>数据库系统保留部分主存作为缓冲区, 不让操作系统管理——缺点: 限制主存使用灵活性, 所有应用都不能利用所有可用内存</li>
+<li>操作系统的虚拟内存中实现缓冲区, 让操作系统决定哪个缓冲块在什么时候强制输出到磁盘——缺点: 应该由数据库系统强制输出缓冲块, 否则会导致额外的数据到磁盘的输出</li>
+</ul>
+<p>[7] 主存储器中包括: 日志缓冲区、数据库缓冲区、系统缓冲区<br>系统缓冲区由系统目标码页面和事务的局部工作区域</p>
+<h2 id="非易失性存储器数据丢失的故障"><a href="#非易失性存储器数据丢失的故障" class="headerlink" title="非易失性存储器数据丢失的故障"></a>非易失性存储器数据丢失的故障</h2><p>[1] 归档转储: 周期性将数据库内容转储到稳定存储器, 要求不能有事务处于活跃状态<br>恢复时可以利用最近一次转储将数据库复原到磁盘, 然后根据日志, 重做最近一次转储后所做的动作, <strong>不必执行任何undo操作</strong></p>
+<p>[2] SQL转储: 将SQL的DDL和insert语句写到文件中, 可以重执行来重新创建数据库<br>用于将数据库已知道数据库另一个实例或数据库软件另一个版本, 因为物理位置或布局可能不同</p>
+<h2 id="锁的提前释放和逻辑undo操作"><a href="#锁的提前释放和逻辑undo操作" class="headerlink" title="锁的提前释放和逻辑undo操作"></a>锁的提前释放和逻辑undo操作</h2><p>恢复技术支持高并发封锁技术: 用于B+树并发控制的封锁技术, 允许提前释放通过插入或删除操作获得的<strong>低级别的锁</strong>(允许别的事务其他的这类操作可以执行)<br>低级别的锁被释放后, 不能进行物理undo, 进行逻辑undo(如: 用删除对插入做undo)<br>事务保持<strong>高级别的锁</strong>确保并发的事务不会执行这样的动作, 可能导致一个操作的逻辑undo不可能</p>
+<h2 id="ARIES"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</h2><p>提供更大并发性, 削减日志开销, 最小化恢复时间<br>基于历史, 允许逻辑undo操作<br>不断清洗页, 从而不需要在检查点清洗所有页<br>使用日志顺序号(LSN)减少恢复所花时间</p>
+<h2 id="远程备份系统"><a href="#远程备份系统" class="headerlink" title="远程备份系统"></a>远程备份系统</h2><p>主站点发生故障, 远程站点执行一定恢复动作, 然后接管事务处理</p>
+</section>
     <!-- Tags START -->
     
       <div class="tags">
@@ -225,6 +279,13 @@
       </a>
     
     
+      <a class="nav-right" href="/2020/02/09/dbsc19/">
+        
+          dbsc19
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
     <!-- NAV END -->
@@ -236,7 +297,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#故障分类和存储器"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;" class="headerlink" title="&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;"></a>&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据访问"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x6570;&#x636E;&#x8BBF;&#x95EE;" class="headerlink" title="&#x6570;&#x636E;&#x8BBF;&#x95EE;"></a>&#x6570;&#x636E;&#x8BBF;&#x95EE;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#恢复与原子性"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;" class="headerlink" title="&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;"></a>&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#缓冲区管理"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;" class="headerlink" title="&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;"></a>&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#非易失性存储器数据丢失的故障"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;" class="headerlink" title="&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;"></a>&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#锁的提前释放和逻辑undo操作"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;" class="headerlink" title="&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;"></a>&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ARIES"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#远程备份系统"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;" class="headerlink" title="&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;"></a>&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#故障分类和存储器"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;" class="headerlink" title="&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;"></a>&#x6545;&#x969C;&#x5206;&#x7C7B;&#x548C;&#x5B58;&#x50A8;&#x5668;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据访问"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x6570;&#x636E;&#x8BBF;&#x95EE;" class="headerlink" title="&#x6570;&#x636E;&#x8BBF;&#x95EE;"></a>&#x6570;&#x636E;&#x8BBF;&#x95EE;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#恢复与原子性"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;" class="headerlink" title="&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;"></a>&#x6062;&#x590D;&#x4E0E;&#x539F;&#x5B50;&#x6027;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#检查点"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x68C0;&#x67E5;&#x70B9;" class="headerlink" title="&#x68C0;&#x67E5;&#x70B9;"></a>&#x68C0;&#x67E5;&#x70B9;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#缓冲区管理"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;" class="headerlink" title="&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;"></a>&#x7F13;&#x51B2;&#x533A;&#x7BA1;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#非易失性存储器数据丢失的故障"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;" class="headerlink" title="&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;"></a>&#x975E;&#x6613;&#x5931;&#x6027;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x4E22;&#x5931;&#x7684;&#x6545;&#x969C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#锁的提前释放和逻辑undo操作"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;" class="headerlink" title="&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;"></a>&#x9501;&#x7684;&#x63D0;&#x524D;&#x91CA;&#x653E;&#x548C;&#x903B;&#x8F91;undo&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ARIES"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#远程备份系统"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><a href="#&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;" class="headerlink" title="&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;"></a>&#x8FDC;&#x7A0B;&#x5907;&#x4EFD;&#x7CFB;&#x7EDF;</span></a></li></ol>
     
   </div>
 </aside>

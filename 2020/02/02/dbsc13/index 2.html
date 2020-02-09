@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ⛵️帆船书#13 | 查询优化 | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>⛵️帆船书#13 | 查询优化</h2>
+  <p class="post-date">2020-02-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>复杂查询的执行设涉及多次存取磁盘的操作, 要选择最小化磁盘存取的方法</p>
+<h2 id="关系表达式的转换"><a href="#关系表达式的转换" class="headerlink" title="关系表达式的转换"></a>关系表达式的转换</h2><p>[1] 查询处理策略第一步: 找到一个关系代数表达式, 使它与所给表达式<a href="https://wenku.baidu.com/view/08aed86925c52cc58bd6bed1.html" target="_blank" rel="noopener">等价</a>且有更小执行代价<br>每个关系代数表达式都表示某个特定的操作序列</p>
+<p>[2] 等价表达式的枚举: </p>
+<ol>
+<li>子表达式e上使用等价规则把表达式E转化为E’, 则除了e及其转换, E与E’有相同的子表达式<br>e及其转换通常也有许多相同的 子表达式, 可以采用一些表达式表示技术, 使两个表达式指向共享的子表达式, 减少对空间的需求</li>
+<li>优化器可以避免检查用等价规则所有可以产生的表达式</li>
+</ol>
+<h2 id="表达式结果集统计大小的估计"><a href="#表达式结果集统计大小的估计" class="headerlink" title="表达式结果集统计大小的估计"></a>表达式结果集统计大小的估计</h2><p>[1] 数据库为每一个关系r存储统计信息: 元组数n, 磁盘块数b, 元组字节数l, 块因子(一个磁盘块能容纳关系中元组的个数)f, 特定属性A中出现不同取值的数目V(A, r); 索引的高度和叶节点的页数<br>V(A, r)也可以针对属性集<br>如果r的元组在物理上存储在一个文件中, 则b=n/f</p>
+<p>[2] 使用<strong>直方图</strong>存储——依赖这些信息选择合适的策略, 如查询过程有多个索引用于辅助时</p>
+<p>[3] 近似的统计数据是可以接受的<br>统计数据可以基于基础数据随机抽样的样本</p>
+<p>[4] 有些数据库是管理员定期运行一条命令更新统计数据<br>有些数据库可以在某些时间点自动更新统计数据, 如当元组数量显著变化; 或者例如一个关系扫描估计的基数和执行一个查询时真正的基数差异显著时, 启动统计数据更新</p>
+<p>[5] 选择、连接、其他运算结果集大小估计 <strong>336-339页</strong>, 不同取值个数的估计 <strong>339-340页</strong></p>
+<h2 id="执行计划的选择"><a href="#执行计划的选择" class="headerlink" title="执行计划的选择"></a>执行计划的选择</h2><h3 id="基于代价的连接顺序选择"><a href="#基于代价的连接顺序选择" class="headerlink" title="基于代价的连接顺序选择"></a>基于代价的连接顺序选择</h3><p>[1] 动态规划算法: </p>
+<ol>
+<li>尽早访问单个关系时就使用选择, 将计算出的执行计划存储在(一个以关系集做索引的关联数组)bestplan中, 每个项包含两部分: S的最佳计划的代价 + 该计划本身</li>
+<li>检查是否已经算出给定关系集S计算连接的最佳执行计划, 是则返回</li>
+<li>如果S只包含一个关系, 访问S的最佳方法记录在bestplan中, 涉及用一个<strong>索引</strong>定位元组并取出或者扫描整个关系表(<strong>索引扫描</strong>或<strong>关系表扫描</strong>)<br>如果除了通过索引扫描的选择条件, S上还有其他选择条件, 则添加一个选择运算到计划中保证S上的所有选择</li>
+<li>如果S包含多个关系, 将S分成两个不相交的子集, 对每个子集递归找出最佳执行计划</li>
+</ol>
+<p>[2] 仅仅为有n个给定关系的关系集合每个子集找出最佳连接顺序是不够的<br>要为每个子集连接结果的每个<strong>感兴趣的排序顺序</strong>找出最佳连接顺序<br>(如果某个具体的元组排序顺序对后面运算可能有用, 该特定顺序为感兴趣的排序顺序)</p>
+<h3 id="采用等价规则的基于代价的优化器"><a href="#采用等价规则的基于代价的优化器" class="headerlink" title="采用等价规则的基于代价的优化器"></a>采用等价规则的基于代价的优化器</h3><p>[1] <strong>物理等价规则</strong>: 允许将例如连接这样的逻辑操作转换成像散列连接或嵌套循环连接这样的物理操作, 添加到原来的等价规则中</p>
+<p>[2] 使等价规则优化高效的技术:</p>
+<ol>
+<li>避免应用等价规则创建相同子表达式的多个副本, 来节约空间</li>
+<li>检测相同表达式重复推导</li>
+<li>基于缓存的动态规划形式, 第一次优化子表达式时, 缓存存储最优的查询执行计划<br>后续优化相同子表达式的请求通过返回已缓存的计划进行处理</li>
+<li>维护(到任何时刻为止为任何子表达式产生的)代价最低的计划, 并且对(其他任何比当前该子表达式代价最低计划)代价高的计划<strong>剪枝</strong>, 避免产生所有可能的执行计划</li>
+</ol>
+<h3 id="启发式优化"><a href="#启发式优化" class="headerlink" title="启发式优化"></a>启发式优化</h3><p>[1] 尽早执行选择操作, 尽早执行投影操作, 避免笛卡尔积操作<br><strong>选择运算优先于投影运算</strong></p>
+<p>[2] <strong>左深连接顺序</strong>: 只对特殊类型的连接次序进行搜索<br>用于流水线计算特别方便, 右操作对象是一个已存储的关系, 每个连接只有一个输入来自流水线</p>
+<p>[3] <strong>优化成本预算</strong>: 超过预算时停止搜索最有计划, 返回当前找到的最优计划<br>预算本身可能动态设置: 找到低开销计划则降低预算; 找到的最优计划比较昂贵, 则需要更多时间优化, 带来执行时间明显减少</p>
+<p>[4] <strong>计划缓存</strong>: 同样的查询常数值不同, 可以使用缓存的查询执行计划</p>
+<h2 id="物化视图和其他查询优化"><a href="#物化视图和其他查询优化" class="headerlink" title="物化视图和其他查询优化"></a>物化视图和其他查询优化</h2><blockquote>
+<p>[1] 物化视图用来加速查询处理, 原关系发生修改时, 需要用增量的视图维护来高效的更新物化视图<br>利用包含一个操作的输入的变化量的代数表达式, 能够完成对该操作的变化量的计算<br>如何借助物化视图进行查询优化, 如何选择需要待物化的视图</p>
+<p>[2] top-K优化, 连接极小化, 更新优化, 多查询优化, 参数化查询优化</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/01/dbsc17/">
+        <span class="nav-arrow">← </span>
+        
+          ⛵️帆船书#17&amp;18 | 并行数据库
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#关系表达式的转换"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5173;&#x7CFB;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x8F6C;&#x6362;" class="headerlink" title="&#x5173;&#x7CFB;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x8F6C;&#x6362;"></a>&#x5173;&#x7CFB;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x8F6C;&#x6362;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达式结果集统计大小的估计"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x8868;&#x8FBE;&#x5F0F;&#x7ED3;&#x679C;&#x96C6;&#x7EDF;&#x8BA1;&#x5927;&#x5C0F;&#x7684;&#x4F30;&#x8BA1;" class="headerlink" title="&#x8868;&#x8FBE;&#x5F0F;&#x7ED3;&#x679C;&#x96C6;&#x7EDF;&#x8BA1;&#x5927;&#x5C0F;&#x7684;&#x4F30;&#x8BA1;"></a>&#x8868;&#x8FBE;&#x5F0F;&#x7ED3;&#x679C;&#x96C6;&#x7EDF;&#x8BA1;&#x5927;&#x5C0F;&#x7684;&#x4F30;&#x8BA1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#执行计划的选择"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x6267;&#x884C;&#x8BA1;&#x5212;&#x7684;&#x9009;&#x62E9;" class="headerlink" title="&#x6267;&#x884C;&#x8BA1;&#x5212;&#x7684;&#x9009;&#x62E9;"></a>&#x6267;&#x884C;&#x8BA1;&#x5212;&#x7684;&#x9009;&#x62E9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基于代价的连接顺序选择"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x4E8E;&#x4EE3;&#x4EF7;&#x7684;&#x8FDE;&#x63A5;&#x987A;&#x5E8F;&#x9009;&#x62E9;" class="headerlink" title="&#x57FA;&#x4E8E;&#x4EE3;&#x4EF7;&#x7684;&#x8FDE;&#x63A5;&#x987A;&#x5E8F;&#x9009;&#x62E9;"></a>&#x57FA;&#x4E8E;&#x4EE3;&#x4EF7;&#x7684;&#x8FDE;&#x63A5;&#x987A;&#x5E8F;&#x9009;&#x62E9;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#采用等价规则的基于代价的优化器"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x91C7;&#x7528;&#x7B49;&#x4EF7;&#x89C4;&#x5219;&#x7684;&#x57FA;&#x4E8E;&#x4EE3;&#x4EF7;&#x7684;&#x4F18;&#x5316;&#x5668;" class="headerlink" title="&#x91C7;&#x7528;&#x7B49;&#x4EF7;&#x89C4;&#x5219;&#x7684;&#x57FA;&#x4E8E;&#x4EE3;&#x4EF7;&#x7684;&#x4F18;&#x5316;&#x5668;"></a>&#x91C7;&#x7528;&#x7B49;&#x4EF7;&#x89C4;&#x5219;&#x7684;&#x57FA;&#x4E8E;&#x4EE3;&#x4EF7;&#x7684;&#x4F18;&#x5316;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#启发式优化"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#&#x542F;&#x53D1;&#x5F0F;&#x4F18;&#x5316;" class="headerlink" title="&#x542F;&#x53D1;&#x5F0F;&#x4F18;&#x5316;"></a>&#x542F;&#x53D1;&#x5F0F;&#x4F18;&#x5316;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#物化视图和其他查询优化"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x7269;&#x5316;&#x89C6;&#x56FE;&#x548C;&#x5176;&#x4ED6;&#x67E5;&#x8BE2;&#x4F18;&#x5316;" class="headerlink" title="&#x7269;&#x5316;&#x89C6;&#x56FE;&#x548C;&#x5176;&#x4ED6;&#x67E5;&#x8BE2;&#x4F18;&#x5316;"></a>&#x7269;&#x5316;&#x89C6;&#x56FE;&#x548C;&#x5176;&#x4ED6;&#x67E5;&#x8BE2;&#x4F18;&#x5316;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2020/02/02/dbsc13/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

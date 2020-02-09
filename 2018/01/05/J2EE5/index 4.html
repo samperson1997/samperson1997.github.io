@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      J2EE第5次作业的坑，我帮你踩过了 | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>J2EE第5次作业的坑，我帮你踩过了</h2>
+  <p class="post-date">2018-01-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>在写J2EE第5次作业时，遇到了很多坑，无论是老师上课的PPT、给的示例代码还是网上的教程都有很多不完善的地方。因此想在这篇博客里对我遇到的这些坑做一个总结，供同学们参考，也欢迎大家在评论区批评指正，或者提出一些新的问题。<br><strong>在这里要对<a href="https://github.com/SilverNarcissus" title="薛老师" target="_blank" rel="noopener">薛老师</a>表示感谢，因为他花费一个半小时陪我一起解决了这些问题。</strong></p>
+<p>👉可以继续参考：<a href="https://samperson1997.github.io/2018/01/08/J2EE6/" title="J2EE第6次作业的坑 (JPA技术)" target="_blank" rel="noopener">J2EE第6次作业的坑 (JPA技术)</a></p>
+<h1 id="项目要求"><a href="#项目要求" class="headerlink" title="项目要求"></a>项目要求</h1><h2 id="整体要求"><a href="#整体要求" class="headerlink" title="整体要求"></a>整体要求</h2><p>[1] 客户登录, 跟据客户的ID／PW, 查询订单情况, 并根据具体情况, 返回不同结果：有缺货的订单项，警示页面；正常结果: 标准页面, 每一项订单包括多项属性(时间、名称、数量、价格), 分页显示；未知的客户ID: 错误页面<br>[2] 使用过滤器解决表单中的中文请求后的乱码问题<br>[3] 统计在线人数：总人数、已登录人数、游客人数<br>[4] 用户通过URL直接访问XXXServlet或XXX.JSP时，已登录用户可访问，未登录用户转向登录页面</p>
+<h2 id="第4次作业要求"><a href="#第4次作业要求" class="headerlink" title="第4次作业要求"></a>第4次作业要求</h2><p>基于MVC、DAO、Service等设计<br>[1] Model: JavaBean(ServiceFactory, XXXService; DAOFactory，XXXDAO)<br>[2] View: JSP<br>[3] Controller: Servlet</p>
+<h2 id="第5次作业要求"><a href="#第5次作业要求" class="headerlink" title="第5次作业要求"></a>第5次作业要求</h2><p>[1] Service层使用EJB技术<br>[2] DAO层使用EJB技术</p>
+<h1 id="项目构成"><a href="#项目构成" class="headerlink" title="项目构成"></a>项目构成</h1><h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>[1] 首先到<a href="http://www.wildfly.org/downloads/" title="WildFly官网" target="_blank" rel="noopener">WildFly官网</a>上下载最新版本。</p>
+<p>[2] 我完成作业用IDE的是intellij idea，因此这篇博客不适用于eclipse等其他IDE。<br>[3] 因为之后的作业还要基于第4次作业进行修改，所以这次我新建了两个项目，分别是client和server。其中client是Web Application，应用Tomcat；server是EJB，应用Wildfly。<br>创建项目时，client和之前的项目类似；server则在创建时左侧栏选择 Java Enterprise, 右侧找到 EJB: Enterprise Java Beans, 同时设置好 JDK 版本，应用服务器 WildFly 注意下方勾选 Create ejb-jar.xml 并且 Libraries 选择 Download ，这样 IDEA 会自动下载所需的 javax.ejb-api.jar 并且设置好 classpath。</p>
+<blockquote>
+<p>osx系统升级到10.13之后，idea新建EJB项目下面没有Download选项，这样不能按照接下来的步骤进行。按照其他网上攻略的办法，周围的同学屡经尝试均无果，欢迎其他同学踊跃尝试。<br>如果多勾选了Web Application，可能会导致在configuration中提示：Error: Artifact has invalid extension。</p>
+</blockquote>
+<h2 id="“转移”代码"><a href="#“转移”代码" class="headerlink" title="“转移”代码"></a>“转移”代码</h2><p>[1] client中包含之前作业中的servlets, tag, service, model, listener, filter等包；server中包含之前作业中的service, serviceImpl, dao, daoImpl, model和factory。</p>
+<blockquote>
+<p>model需要implements Serializable，否则后期可能会报错javax.ejb.EJBException: Failed to read response。</p>
+</blockquote>
+<p>[2] 对于server的serviceImpl包中每一个Service，需要使用 @Stateless 标注，表明这是一个无状态的会话 Bean。 这个实现类对客户端是透明的，客户端仅需要拥有刚刚建立的接口即可，不需要关心具体实现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> serviceImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> dao.UserDao;</span><br><span class="line"><span class="keyword">import</span> factory.DaoFactory;</span><br><span class="line"><span class="keyword">import</span> service.UserService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.ejb.Stateless;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Stateless</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceBean</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UserDao userDao = DaoFactory.getUserDao();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">(String id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userDao.getPassword(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>[3] 之后就可以点击工程右上角的Run按钮部署工程</p>
+<h1 id="开始踩坑"><a href="#开始踩坑" class="headerlink" title="开始踩坑"></a>开始踩坑</h1><h2 id="继续写client"><a href="#继续写client" class="headerlink" title="继续写client"></a>继续写client</h2><p>[1] 首先把下载的wildfly目录下bin/client/jboss-client.jar 拷贝进client的web/WEB-INF/lib 文件夹中，并打开 Project Structure 设置依赖添加这个 lib 文件夹。</p>
+<blockquote>
+<p>注意一定是在项目内部依赖，而不是外部依赖到External Libraries中。这个问题的解决话费了大约1小时😭😭😭<br>如果这边配置出现问题，一般会报错javax.naming.NameNotFoundException: Name [ejb:…] is not bound in this Context. Unable to find [ejb:].</p>
+</blockquote>
+<p>[2] 对于client和server的service包中的每一个Service，需要使用 @Remote 标注，表明这是一个远程接口。如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.ejb.Remote;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Remote</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">getPassword</span><span class="params">(String id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一定要保持client和server的service包完全一致。</p>
+<p>[3] 在 src 下新建一个 jboss-ejb-client.properties 文件，内容如下。注意端口不要冲突：我这里设置server端口是8080，因此配置文件中port=8080；client端口为8000。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">endpoint.name=client-endpoint</span><br><span class="line">remote.connectionprovider.create.options.org.xnio.Options.SSL_ENABLED=false</span><br><span class="line">remote.connections=default</span><br><span class="line">remote.connection.default.host=localhost</span><br><span class="line">remote.connection.default.port=8080</span><br><span class="line">remote.connection.default.connect.options.org.xnio.Options.SASL_POLICY_NOANONYMOUS=false</span><br></pre></td></tr></table></figure></p>
+<p>[4] client中新建factory包，按照PPT创建EJBFactory。但是PPT的代码只有JBoss6和7，对于WildFly11，可以使用如下代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> factory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.Context;</span><br><span class="line"><span class="keyword">import</span> javax.naming.InitialContext;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> java.util.Hashtable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EJBFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getEJB</span><span class="params">(String beanName, String interfaceName)</span> </span>&#123;</span><br><span class="line">        Hashtable&lt;String, String&gt; jndiProperties = <span class="keyword">new</span> Hashtable&lt;&gt;();</span><br><span class="line">        jndiProperties.put(Context.URL_PKG_PREFIXES, <span class="string">"org.jboss.ejb.client.naming"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Context context = <span class="keyword">new</span> InitialContext(jndiProperties);</span><br><span class="line">            <span class="keyword">final</span> String fullName = <span class="string">"ejb://J2EE_server_ejb exploded//"</span> + beanName + <span class="string">"!"</span> + interfaceName;</span><br><span class="line">            <span class="keyword">return</span> context.lookup(fullName);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NamingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中stateless beans的路径ejb:/&lt;app-name&gt;/&lt;module-name&gt;/&lt;distinct-name&gt;/&lt;bean-name&gt;!&lt;fully-qualified-classname-of-the-remote-interface&gt;：<br>module-name为server build得到的.jar文件名字（不包含”.jar”）；<br>app-name和distinct-name均为空；<br>bean-name为bean名字，只有名字；<br>fully-qualified-classname-of-the-remote-interface为interface路径+名称。</p>
+<p>[5] 在Servlet中，对于EJBFactory的调用是这样的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserService userService = (UserService) EJBFactory.getEJB(<span class="string">"UserServiceBean"</span>, <span class="string">"service.UserService"</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置数据源"><a href="#配置数据源" class="headerlink" title="配置数据源"></a>配置数据源</h2><blockquote>
+<p>注意除非使用JBoss6或者7（老师不推荐），否则PPT上的内容和WildFly版本一定是不兼容的，不要按照PPT做！这些坑是薛老师踩过的。</p>
+</blockquote>
+<p>[1] 在WildFly安装目录/modules/com/或/modules/system/layers/base/com下新建mysql/main<br>[2] 下载驱动程序mysql-connector-java-5.1.45.zip，解压，将其中的mysql-connector-java-5.1.45-bin.jar驱动文件复制到main下面<br>[3] 在main下建立module.xml如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;  </span><br><span class="line">&lt;module xmlns=&quot;urn:jboss:module:1.5&quot; name=&quot;com.mysql&quot;&gt;  </span><br><span class="line">    &lt;resources&gt;  </span><br><span class="line">        &lt;resource-root path=&quot;mysql-connector-java-5.1.45-bin.jar&quot;/&gt;  </span><br><span class="line">    &lt;/resources&gt;  </span><br><span class="line">    &lt;dependencies&gt;  </span><br><span class="line">        &lt;module name=&quot;javax.api&quot;/&gt;  </span><br><span class="line">        &lt;module name=&quot;javax.transaction.api&quot;/&gt;  </span><br><span class="line">    &lt;/dependencies&gt;  </span><br><span class="line">&lt;/module&gt;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>一定要注意path的名字和jar名字完全一样，这边我当时少写了“-bin”，然后debug大约1个小时😊</p>
+</blockquote>
+<p>[4] 修改standalone.xml：<br>修改WildFly安装目录/standalone/configuration/standalone.xml，在datasources节点增加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;datasource jndi-name=&quot;java:jboss/datasources/mysqlDS&quot; pool-name=&quot;mysqlDSPool&quot;&gt;</span><br><span class="line">    &lt;connection-url&gt;jdbc:mysql://localhost:3306/数据库名&lt;/connection-url&gt;</span><br><span class="line">        &lt;driver&gt;mysql&lt;/driver&gt;</span><br><span class="line">        &lt;security&gt;</span><br><span class="line">            &lt;user-name&gt;用户名&lt;/user-name&gt;</span><br><span class="line">            &lt;password&gt;密码&lt;/password&gt;</span><br><span class="line">        &lt;/security&gt;</span><br><span class="line">&lt;/datasource&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在drivers节点增加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;driver name=&quot;mysql&quot; module=&quot;com.mysql&quot;&gt;</span><br><span class="line">    &lt;xa-datasource-class&gt;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&lt;/xa-datasource-class&gt;</span><br><span class="line">&lt;/driver&gt;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>修改配置文件之前，需要先停止运行、关闭项目（或者直接关闭IDE），修改保存后再打开项目、运行。否则配置文件会自动恢复。</p>
+</blockquote>
+<p>[5] 注意修改server连接数据库部分的代码，其余不变：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    InitialContext jndiContext = <span class="keyword">new</span> InitialContext();</span><br><span class="line">    datasource = (DataSource) jndiContext.lookup(<span class="string">"java:jboss/datasources/mysqlDS"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (NamingException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="其他注意点"><a href="#其他注意点" class="headerlink" title="其他注意点"></a>其他注意点</h2><p>[1] 昨晚成功之后，今早打开项目发现又一次失败，运行client报错找不到EJB。这种情况的解决方案有两种：一是关闭IDE重新打开(……)，二是新建一个项目，把之前的配置和代码复制过来，亲测有效。<br>[2] 运行的时候要先开server，然后开client，否则会找不到destination。<br>[3] 👉可以继续参考：<a href="https://samperson1997.github.io/2018/01/08/J2EE6/" title="J2EE第6次作业的坑 (JPA技术)" target="_blank" rel="noopener">J2EE第6次作业的坑 (JPA技术)</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://youthlin.com/20161265.html" target="_blank" rel="noopener">https://youthlin.com/20161265.html</a><br>[2] <a href="http://blog.csdn.net/kylinsoong/article/details/17042245" target="_blank" rel="noopener">http://blog.csdn.net/kylinsoong/article/details/17042245</a><br>[3] <a href="https://stackoverflow.com/questions/45053857/name-ejb-is-not-bound-in-this-context-unable-to-find-ejb-with-root-c" target="_blank" rel="noopener">https://stackoverflow.com/questions/45053857/name-ejb-is-not-bound-in-this-context-unable-to-find-ejb-with-root-c</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#J2EE与中间件" >
+    <span class="tag-code">J2EE与中间件</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/21/SECII-6/">
+        <span class="nav-arrow">← </span>
+        
+          软件工程与计算II重点整理(第20-23章)
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/08/J2EE6/">
+        
+          J2EE第6次作业的坑 (JPA技术)
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#项目要求"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x9879;&#x76EE;&#x8981;&#x6C42;" class="headerlink" title="&#x9879;&#x76EE;&#x8981;&#x6C42;"></a>&#x9879;&#x76EE;&#x8981;&#x6C42;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#整体要求"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x6574;&#x4F53;&#x8981;&#x6C42;" class="headerlink" title="&#x6574;&#x4F53;&#x8981;&#x6C42;"></a>&#x6574;&#x4F53;&#x8981;&#x6C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#第4次作业要求"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;4&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;" class="headerlink" title="&#x7B2C;4&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;"></a>&#x7B2C;4&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#第5次作业要求"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#&#x7B2C;5&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;" class="headerlink" title="&#x7B2C;5&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;"></a>&#x7B2C;5&#x6B21;&#x4F5C;&#x4E1A;&#x8981;&#x6C42;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#项目构成"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x9879;&#x76EE;&#x6784;&#x6210;" class="headerlink" title="&#x9879;&#x76EE;&#x6784;&#x6210;"></a>&#x9879;&#x76EE;&#x6784;&#x6210;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#新建项目"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x65B0;&#x5EFA;&#x9879;&#x76EE;" class="headerlink" title="&#x65B0;&#x5EFA;&#x9879;&#x76EE;"></a>&#x65B0;&#x5EFA;&#x9879;&#x76EE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#“转移”代码"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x201C;&#x8F6C;&#x79FB;&#x201D;&#x4EE3;&#x7801;" class="headerlink" title="&#x201C;&#x8F6C;&#x79FB;&#x201D;&#x4EE3;&#x7801;"></a>&#x201C;&#x8F6C;&#x79FB;&#x201D;&#x4EE3;&#x7801;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#开始踩坑"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x5F00;&#x59CB;&#x8E29;&#x5751;" class="headerlink" title="&#x5F00;&#x59CB;&#x8E29;&#x5751;"></a>&#x5F00;&#x59CB;&#x8E29;&#x5751;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#继续写client"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x7EE7;&#x7EED;&#x5199;client" class="headerlink" title="&#x7EE7;&#x7EED;&#x5199;client"></a>&#x7EE7;&#x7EED;&#x5199;client</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#配置数据源"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x914D;&#x7F6E;&#x6570;&#x636E;&#x6E90;" class="headerlink" title="&#x914D;&#x7F6E;&#x6570;&#x636E;&#x6E90;"></a>&#x914D;&#x7F6E;&#x6570;&#x636E;&#x6E90;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他注意点"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#&#x5176;&#x4ED6;&#x6CE8;&#x610F;&#x70B9;" class="headerlink" title="&#x5176;&#x4ED6;&#x6CE8;&#x610F;&#x70B9;"></a>&#x5176;&#x4ED6;&#x6CE8;&#x610F;&#x70B9;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2018/01/05/J2EE5/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

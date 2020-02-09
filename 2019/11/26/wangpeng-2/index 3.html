@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      论文#1 | KV-Match - A Subsequence Matching Approach Supporting Normalization and Time Warping | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>论文#1 | KV-Match - A Subsequence Matching Approach Supporting Normalization and Time Warping</h2>
+  <p class="post-date">2019-11-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>以下是论文<a href="https://ieeexplore.ieee.org/abstract/document/8731498/" target="_blank" rel="noopener">KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping</a>的笔记。</p>
+<p><br></p>
+<h2 id="已有方法及改进"><a href="#已有方法及改进" class="headerlink" title="已有方法及改进"></a>已有方法及改进</h2><p>[1] 原有方法：只考虑<strong>原始子序列匹配RSM</strong> (raw subsequence matching)，不支持子序列归一化(subsequence normalization)；<br>UCR套件可以处理<strong>归一化子序列匹配NSM</strong> (normalized subsequence matching)，但是：需要对全时间序列扫描；而且由于完全忽略了偏移位移(offset shifting)和振幅标度(amplitude scaling)，可能会筛选出不符合用户期望的结果。</p>
+<blockquote>
+<ul>
+<li>RSM：对于时间序列X、查询序列Q（|X| &gt;= |Q|）和距离阈值ε，找到X中所有长度为|Q|的子序列S，满足<strong>D(S, Q) &lt;= ε</strong>。称为S和Q满足ε-match。</li>
+<li>NSM：对于时间序列X、查询序列Q（|X| &gt;= |Q|）和距离阈值ε，找到X中所有长度为|Q|的子序列S，满足<strong>D(SN, QN) &lt;= ε</strong>。SN和QN经过归一化（即对每一项s，变为(s - μ) / σ）。</li>
+</ul>
+</blockquote>
+<p>[2] <strong>约束归一化子序列匹配cNSM</strong> (constrained normalized subsequence matching)：提供旋钮，可以灵活地控制偏移位移和振幅标度的程度，使用户可以建立索引来处理查询。<br>偏移位移和振幅标度的范围可以表示某种特定的物理机制或状态，用户通常只希望找到与查询状态相似的子序列。</p>
+<blockquote>
+<p>引入两个限制条件，阈值α (α &gt;= 1) 和 β (β &gt;= 0)：</p>
+<ul>
+<li>cNSM：对于时间序列X、查询序列Q（|X| &gt;= |Q|）和距离阈值ε，找到X中所有长度为|Q|的子序列S，满足D(SN, QN) &lt;= ε，<strong>1 / α &lt;= σS / σQ &lt;= α，-β &lt;= μS - μQ &lt;= β</strong>。称为S和Q满足(ε, α, β)-match。</li>
+</ul>
+<p>α和β分别用来约束偏移位移（与平均数μ有关）和振幅标度（与标准差σ有关）。<br>α和β值越大，约束条件越松。</p>
+</blockquote>
+<p>[3]<strong>KV-index</strong>：使用<strong>KV-match算法</strong>，可以同时支持ED和DTW距离下的支持RSM和cNSM问题（RSM-ED, RSM-DTW, cNSM-ED and cNSM-DTW）。KV-match只需要对索引的一些顺序扫描，而不是像经典R-树索引中随机访问树节点，从而可以提高效率。<br><strong>KV-matchDP</strong>：通过使用不同窗口长度的多个索引，支持任意长度的查询。</p>
+<p><br></p>
+<h2 id="KV索引"><a href="#KV索引" class="headerlink" title="KV索引"></a>KV索引</h2><h3 id="KV索引结构"><a href="#KV索引结构" class="headerlink" title="KV索引结构"></a>KV索引结构</h3><p>[1] KV索引是更紧凑的索引结构，利用数据局部性，即相邻时间点的值接近，因此相邻滑动窗口的平均值也接近。</p>
+<p><br></p>
+<p>[2] Ki是滑动窗口平均值的范围 Ki = [lowi, upi)；Vi是落在Ki中的滑动窗口集合，Vi中的位置升序排列，连续的窗口位置会合并到一个窗口区间WI (window interval)。因此Vi中包含一个或多个已排序不相交的窗口区间。</p>
+<p><br></p>
+<p>nI(Vi)：Vi中窗口区间的总数，nI(Vi) = {WI |WI ∈ Vi}<br>nP(Vi)：Vi中窗口位置数。</p>
+<p><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61770720-811f2800-ae20-11e9-9600-e8131deb81dd.png"></p>
+<blockquote>
+<p>第一行：三个滑动窗口X(1000, 50), X(1001, 50), X(1002, 50)，平均值落在[1.5, 2.0)；<br>第二行：三个滑动窗口被划分为两个区间[49, 50], [500, 500]，因此nI(V2) = 2, nP(V2) = 3。<br>[500, 500]是一个特殊的区间，只包含一个窗口位置。</p>
+</blockquote>
+<p>[4] meta table维护四元组⟨Ki, posi, nI(Vi), nP(Vi)⟩，其中posi是第i行在索引文件中的offset。<br>meta table很小，可以在执行查询之前加载到内存。<br>利用meta table，可以利用二分查找快速查到offset和扫描操作的长度。</p>
+<h3 id="KV索引建立算法"><a href="#KV索引建立算法" class="headerlink" title="KV索引建立算法"></a>KV索引建立算法</h3><p>[1] 首先建立一个索引，所有的行都使用平均值的等宽范围</p>
+<ul>
+<li>预定义参数d：平均值的范围宽度</li>
+<li>范围：[k * d, (k + 1) * d)</li>
+<li>顺序读取X，如果μ(i − 1)在范围Kj中，μi也在范围Kj中 ，则可以把当前的WI右界从i - 1改为i。否则一个新的区间WI = [i, i]会根据μi添加到当前行中。</li>
+<li>对于曲折的类型如Vi = {[5, 5], [7, 7]}, V(i + 1) = {[6, 6],  [8, 8]}，可以合并为Vi = [5, 8]。</li>
+</ul>
+<p><br></p>
+<p>[2] 由于数据分布不是每行之间均匀分布，合并相邻的行来优化索引。</p>
+<ul>
+<li>算法：贪婪算法，归并排序算法</li>
+<li>预定义参数γ</li>
+<li>逻辑依据：需要合并的行中有大量的区间是相邻的</li>
+<li>结果：如果 ⟨Ki, Vi⟩ 和 ⟨Ki+1, Vi+1⟩ 被合并，新的K为 [lowi,up(i+1))，新的V为Vi ∪Vi+1，从Vi到Vi+1的所有相邻窗口区间被合并为一个区间。</li>
+<li>复杂度：O(nI(Vi) + nI(Vi+1))，所有的窗口区间都会被检查一次</li>
+</ul>
+<p>[3] 如果索引大小超过存储能力：</p>
+<ul>
+<li>第一步把把时间序列划分成为片段，轮流为每一个片段建立固定长度范围的索引。当所有的片段都处理完毕，把不同的片段行合并。</li>
+<li>第二步顺序访问索引行，也可以划分为子任务。</li>
+</ul>
+<p>因为每一步都可以划分为子任务，整个索引建立的算法可以容易地应用到分布式环境，如MapReduce。</p>
+<p><br></p>
+<p>[4] 索引建立算法整体复杂度：O(n)</p>
+<p><br></p>
+<h2 id="KV-match"><a href="#KV-match" class="headerlink" title="KV-match"></a>KV-match</h2><ul>
+<li>把给定查询序列Q分割为长度为w的窗口Qi，计算平均值μi。假设|Q|是w的整数倍，否则保留w的最长前缀序列。</li>
+<li>主过程：<ol>
+<li>对于每一个Qi，从KV-index中获取连续行的列表，生成候选子序列SC(subsequence candidates)</li>
+<li>后处理：对CS中的每一个子序列计算实际距离，加以验证</li>
+</ol>
+</li>
+<li>四种类型的查询只有主过程的第一步不同，对于每一个窗口，不同的类型有着不同的行范围。</li>
+</ul>
+<h3 id="生成窗口区间"><a href="#生成窗口区间" class="headerlink" title="生成窗口区间"></a>生成窗口区间</h3><ul>
+<li>对于每一个窗口Qi，首先根据查询类型计算μi的范围[LRi, URi]</li>
+<li><p>使用单个扫描操作访问KV-index，获得连续行的列表<strong>RListi</strong> = {⟨Ksi , Vsi⟩ , ⟨Ksi+1, Vsi+1⟩ , … , ⟨Kei , Vei⟩}，满足LRi ∈ [lowsi , upsi) and URi ∈ [lowei , upei)。</p>
+<blockquote>
+<p>注意：第si行或者第ei行可能包含范围之外的平均值，但是只会带来阴性候选结果，不会漏掉任何阳性候选结果。</p>
+</blockquote>
+</li>
+<li><p>ISi = {WI |WI ∈ Vk,k ∈ [si,ei]}，把区间升序排序，即ISi[k].r &lt; ISi[k + 1].l，其中ISi[k]是ISi中第k个窗口区间。</p>
+</li>
+</ul>
+<h3 id="匹配算法-相交-intersection-操作"><a href="#匹配算法-相交-intersection-操作" class="headerlink" title="匹配算法 - 相交(intersection)操作"></a>匹配算法 - 相交(intersection)操作</h3><ul>
+<li>对于窗口Q1，IS1的所有的窗口位置j都map到候选子序列X(j,|Q|)，这样Q1的候选集合CS1就由IS1中的所有位置组成。CS1和IS1一样，由一系列一排序的无相交的窗口区间组成。</li>
+<li>对于窗口Q2，IS2的所有窗口位置也有相应的CS，但是IS2中的位置j对应的CS中的X(j − w, |Q|)，因为X(j, w)是其第二个窗口。所以Q2点候选集合CS2可以通过把IS2的每一个窗口位置向左移动w获得。</li>
+<li>类似地，CS3可以通过把IS3的每一个窗口位置向左移动2 * w获得。<br>对于窗口Qi，候选集合CSi = {j−(i−1)·w|j ∈ ISi}，所有候选集合都由一系列一排序的无相交的窗口区间组成。<br>nI (CSi ) = nI (ISi )， nP (CSi) = nP (ISi)。<ul>
+<li>如果X(j,|Q|)不包含在CSi中，那么X(j,|Q|)和Q不匹配；</li>
+<li>如果X(j,|Q|)和Q匹配，位置j ∈ CSi。</li>
+</ul>
+</li>
+</ul>
+<p><img style="width:100%; max-width:600px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61863028-6bcdfa80-af01-11e9-8f2e-35acf1c5b94e.png"></p>
+<blockquote>
+<p>RList1包含WI1、WI2、WI3，RList2包含WI4、WI5、WI6。<br>IS1包含RList1覆盖的所有区间，IS2包含RList2覆盖的所有区间。<br>CS1就是IS1，CS2是IS2向左移动w。<br>将CS1和CS2相交，得到是CS3，包含WI7和WI8。</p>
+</blockquote>
+<ul>
+<li>对于CS中每一个WI，取子序列X(WI.l, WI.r − WI.l + |Q|)，这个子序列包含|WI|个子序列。对于每一个长度为|Q|的子序列，计算它与Q的距离，选择合适的子序列返回。<br>如果是cNSM查询，每一个子序列都需要在计算ED或者DTW之前归一化。</li>
+</ul>
+<h2 id="KV-matchDP"><a href="#KV-matchDP" class="headerlink" title="KV-matchDP"></a>KV-matchDP</h2><p>[1] 基本KV-match使用固定窗口长度w处理查询，不考虑查询的长度。<br>两个限制：</p>
+<ul>
+<li>支持的查询长度有限</li>
+<li>很少有机会利用查询和时间序列数据的特性来加快处理速度</li>
+</ul>
+<p>[2] KV-matchDP：基于可变窗口长度的多个索引<br>wu：最小窗口长度，L：索引个数，窗口长度集合：{wu ∗ 2 ^ (i − 1)|1 ≤ i ≤ L}</p>
+<blockquote>
+<p>如果wu = 25，L = 5，建立索引长度分别为：25, 50, 100, 200, 400</p>
+</blockquote>
+<h3 id="动态查询分割"><a href="#动态查询分割" class="headerlink" title="动态查询分割"></a>动态查询分割</h3><p>[1] 同时处理多个索引，将Q分割成不同长度的不相交窗口序列{Q1 , Q2 , … , Qp }，用KV-index|Qi|处理每一个Qi。这样可以更加灵活的使用数据特性。</p>
+<p><br></p>
+<p>[2] 分割方法：SG = {r1, r2, … , rp}, 意味着Q1 = Q(1, r1), Q2 = Q(r1 + 1, r2 − r1 )…</p>
+<p><br></p>
+<p>[3] Q被分割后，剩余步骤和KV-match相同。</p>
+<p><br></p>
+<h3 id="质量度量客观方法"><a href="#质量度量客观方法" class="headerlink" title="质量度量客观方法"></a>质量度量客观方法</h3><p>[1] 最大影响因素：获取数据</p>
+<p><br></p>
+<p>[2] 估计nI(CS)的方法的值的方法：把每一个窗口区间作为X中的一个点，这些位置都是均匀分布的。<br>CS1中包含区间的概率近似表示为nI(IS1) / n，其中n为X的长度<br>CS1 ∩ CS2中包含区间的概率表示为nI(IS1) /n * nI(IS2) / n<br>以此类推，使用几何平均数得到F。F越小，质量越好。</p>
+<p><img style="width:100%; max-width:300px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61873942-b0659000-af19-11e9-9e34-7ed21b93f435.png"></p>
+<h3 id="二维动态规划方法"><a href="#二维动态规划方法" class="headerlink" title="二维动态规划方法"></a>二维动态规划方法</h3><p>[1] 对于序列Q = (q1, q2, · · · , qm)，<br>定义搜索空间search space Z = (1,2,··· ,m′)，m′ = ⌊ m / wu ⌋<br>Z中的值不会影响SG的生成，只会约束SG的搜索空间。<br>通过寻找Z的SG，然后通过乘wu映射到Q的SG。</p>
+<blockquote>
+<p>如果|Q| = 200, wu = 25, L = 3，即有三个索引KV-index25, KV-index50 和 KV-index100。<br>SGZ ={2,6,7,8}，SG = {50,150,175,200}，Q 被划分为4个窗口：Q(1,50), Q(51,100), Q(151,25) 和 Q(176, 25)。</p>
+</blockquote>
+<p>[2] 在Z从左到右顺序使用二维动态规划获得优化的SZ。<br>第一个维度：表示分割的界限<br>第二个维度：表示一个分割中的窗口数目</p>
+<p><br></p>
+<p>[3] 使用vi,j表示计算过程的子状态，与最佳分割Z的前序状态Z(1, i)相关，有j个窗口。<br>对于任何j(1 &lt;= j &lt;= m’)，最佳分割就是有最小的vm′,j。</p>
+<p><img style="width:100%; max-width:500px; margin-left:auto; margin-right:auto; display:block;" src="https://user-images.githubusercontent.com/19167280/61876147-cb86ce80-af1e-11e9-8772-651fe2c33741.png"></p>
+<p>φ代表SGZ中在i结束的窗口可能长度，最多有L种可能性。</p>
+<p><br></p>
+<p>[4] KV-index中特定行会有很大的nI，导致获取RList有较大的I/O消耗，和每一轮合并CSi的计算消耗。<br>KV-indexDP可以在某种程度上减轻这种现象，因为客观方法F会选出具有更小的nI的查询窗口。</p>
+<p><br></p>
+<p>[5] 更多改进：</p>
+<ul>
+<li>为了减少访问重复的索引，可以将已经获取的行存在cache中。对每一个RList，如果它的一部分已经在cache中，只需要从KV-index中拿到它的剩下一部分。</li>
+<li>可以根据RListi的长度重新排序要处理的Qi。RListi的长度可以从meta data中获得。也就是首先处理有较小的RListi的Qi，这样就可以既减小I/O消耗，又减小合并计算消耗。</li>
+<li>因为每一个CSi都是正确结果的超集，所以可以仅仅处理每一个查询窗口的一部分而不是全部，从而获得最终的CS，且不失去正确率。<br>结合第二点和第三点，就可以通过把一些有很大nI的行排序在最下面，从而跳过它们。</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据库索引" >
+    <span class="tag-code">数据库索引</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/11/01/Hadoop-HA/">
+        <span class="nav-arrow">← </span>
+        
+          Hadoop HA相关部署和配置
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/01/27/dbsc11/">
+        
+          ⛵️帆船书#11-1 | 顺序索引
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#已有方法及改进"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;" class="headerlink" title="&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;"></a>&#x5DF2;&#x6709;&#x65B9;&#x6CD5;&#x53CA;&#x6539;&#x8FDB;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;" class="headerlink" title="KV&#x7D22;&#x5F15;"></a>KV&#x7D22;&#x5F15;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KV索引结构"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;" class="headerlink" title="KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;"></a>KV&#x7D22;&#x5F15;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KV索引建立算法"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;" class="headerlink" title="KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;"></a>KV&#x7D22;&#x5F15;&#x5EFA;&#x7ACB;&#x7B97;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV-match"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#KV-match" class="headerlink" title="KV-match"></a>KV-match</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#生成窗口区间"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;" class="headerlink" title="&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;"></a>&#x751F;&#x6210;&#x7A97;&#x53E3;&#x533A;&#x95F4;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#匹配算法-相交-intersection-操作"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#&#x5339;&#x914D;&#x7B97;&#x6CD5;-&#x76F8;&#x4EA4;-intersection-&#x64CD;&#x4F5C;" class="headerlink" title="&#x5339;&#x914D;&#x7B97;&#x6CD5; - &#x76F8;&#x4EA4;(intersection)&#x64CD;&#x4F5C;"></a>&#x5339;&#x914D;&#x7B97;&#x6CD5; - &#x76F8;&#x4EA4;(intersection)&#x64CD;&#x4F5C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KV-matchDP"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#KV-matchDP" class="headerlink" title="KV-matchDP"></a>KV-matchDP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态查询分割"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#&#x52A8;&#x6001;&#x67E5;&#x8BE2;&#x5206;&#x5272;" class="headerlink" title="&#x52A8;&#x6001;&#x67E5;&#x8BE2;&#x5206;&#x5272;"></a>&#x52A8;&#x6001;&#x67E5;&#x8BE2;&#x5206;&#x5272;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#质量度量客观方法"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#&#x8D28;&#x91CF;&#x5EA6;&#x91CF;&#x5BA2;&#x89C2;&#x65B9;&#x6CD5;" class="headerlink" title="&#x8D28;&#x91CF;&#x5EA6;&#x91CF;&#x5BA2;&#x89C2;&#x65B9;&#x6CD5;"></a>&#x8D28;&#x91CF;&#x5EA6;&#x91CF;&#x5BA2;&#x89C2;&#x65B9;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二维动态规划方法"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text"><a href="#&#x4E8C;&#x7EF4;&#x52A8;&#x6001;&#x89C4;&#x5212;&#x65B9;&#x6CD5;" class="headerlink" title="&#x4E8C;&#x7EF4;&#x52A8;&#x6001;&#x89C4;&#x5212;&#x65B9;&#x6CD5;"></a>&#x4E8C;&#x7EF4;&#x52A8;&#x6001;&#x89C4;&#x5212;&#x65B9;&#x6CD5;</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2019/11/26/wangpeng-2/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

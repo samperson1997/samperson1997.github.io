@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Blog of Samperson">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      软件工程与计算II重点整理(第12-15章) | Blog of Samperson
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Blog of Samperson</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>软件工程与计算II重点整理(第12-15章)</h2>
+  <p class="post-date">2017-12-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="第12章-详细设计概述"><a href="#第12章-详细设计概述" class="headerlink" title="第12章 详细设计概述"></a>第12章 详细设计概述</h1><p>中层设计＋低层设计：实现所有功能性＋非功能性需求</p>
+<h2 id="1-详细设计的出发点"><a href="#1-详细设计的出发点" class="headerlink" title="1.详细设计的出发点"></a>1.详细设计的出发点</h2><p>需求开发的结果（需求规格说明和需求分析模型）和软件体系结构的结果（软件体系结构设计方案与原型）</p>
+<blockquote>
+<p>明确职责建立静态模型（设计类图），明确协作建立动态模型（详细顺序图）<br>GRASP（General Responsibility Assignment Software Patterns）</p>
+<h3 id="（1）信息专家模式"><a href="#（1）信息专家模式" class="headerlink" title="（1）信息专家模式"></a>（1）信息专家模式</h3><p>基本的职责分配原则之一，把职责分配给具有完成该职责所需信息的那个类<br>例如：总价（委托）——数目——单价——促销策略：耦合没有增加<br>总价（得到）——数目、单价、促销策略：增加了耦合（总价知道太多）<br>优点：促进低耦合、高内聚、维护封装</p>
+<h3 id="（2）控制器"><a href="#（2）控制器" class="headerlink" title="（2）控制器"></a>（2）控制器</h3><p>处理外部事件（用户和系统时钟发生的外部交互）<br>核心思想：解耦<br>不要界面直接调用代码，也不要代码直接调用界面，把系统／人／用例作为controller</p>
+<h3 id="（3）创建者模式"><a href="#（3）创建者模式" class="headerlink" title="（3）创建者模式"></a>（3）创建者模式</h3><p>根据潜在创建者类和被示例话类之间的关系决定哪个类创建实例<br>当满足以下的条件时，B创建A：B“包含”A，或者B组合A；B直接使用A；B拥有A的初始化数据；B记录A</p>
+<h3 id="（4）纯虚构"><a href="#（4）纯虚构" class="headerlink" title="（4）纯虚构"></a>（4）纯虚构</h3><p>软件特有的ui、DAO、RMI、文件读写、复杂行为、设计模式、复杂数据结构、界面与逻辑层的model，不属于现实世界<br>作用：保持代码可复用性，高内聚、低耦合</p>
+</blockquote>
+<h2 id="2-职责分配"><a href="#2-职责分配" class="headerlink" title="2.职责分配"></a>2.职责分配</h2><p>通过职责建立静态模型：面向对象分解中，系统是由很多对象组成的。对象各自完成相应的职责，从而协作完成一个大的职责。类的职责主要有两部分构成：属性职责和方法职责。类与类之间也不是孤立存在的，它们之间存在一定的关系。关系表达了相应职责的划分和组合。它们的强弱顺序为：依赖&lt;关联&lt;聚合&lt;组合&lt;继承。</p>
+<h2 id="3-协作"><a href="#3-协作" class="headerlink" title="3.协作"></a>3.协作</h2><p>根据协作建立动态模型：（1）从小到大，将对象的小职责聚合形成大职责；<br>（2）大到小，将大职责分配给各个小对象。通过这两种方法，共同完成对协作的抽象。</p>
+<h2 id="4-控制风格"><a href="#4-控制风格" class="headerlink" title="4.控制风格"></a>4.控制风格</h2><p>为了完成某一个大的职责，需要对职责的分配做很多决策。控制风格决定了决策由谁来做和怎么做决策<br>分散式：所有系统行为在对象网络中广泛传播<br>集中式：少数控制器记录所有系统行为的逻辑<br>委托式（授权式）：决策分布在对象网络中，一些控制器作主要决策</p>
+<h2 id="5-建立设计类图或详细顺序图"><a href="#5-建立设计类图或详细顺序图" class="headerlink" title="5.建立设计类图或详细顺序图"></a>5.建立设计类图或详细顺序图</h2><p>抽象类的职责-&gt;抽象类之间的关系-&gt;添加辅助类<br>辅助类：接口类、记录类（数据类）、 启动类、控制器类、实现数据类型的类、容器类</p>
+<h2 id="6-协作的测试"><a href="#6-协作的测试" class="headerlink" title="6.协作的测试"></a>6.协作的测试</h2><p>MockObject</p>
+<h1 id="第13章-详细设计中的模块化与信息隐藏"><a href="#第13章-详细设计中的模块化与信息隐藏" class="headerlink" title="第13章 详细设计中的模块化与信息隐藏"></a>第13章 详细设计中的模块化与信息隐藏</h1><h2 id="1-耦合与内聚（名词解释）"><a href="#1-耦合与内聚（名词解释）" class="headerlink" title="1.耦合与内聚（名词解释）"></a>1.耦合与内聚（名词解释）</h2><h3 id="（1）耦合"><a href="#（1）耦合" class="headerlink" title="（1）耦合"></a>（1）耦合</h3><p>描述的是两个模块之间的关系的复杂程度。<br>耦合根据其耦合性由高到低分为几个级别：模块耦合性越高，模块的划分越差，越不利于软件的变更和重用。1、2、3不可接受，4、5可以被接受，6最理想<br>（1）内容耦合（一个模块直接修改另一个模块的内容，如GOTO语句；某些语言机制支持直接更改另一个模块的代码；改变另一个模块的内部数据）<br>（2）公共耦合（全局变量，模块间共享全局数据，例子：全局变量）<br>（3）重复耦合（模块间有重复代码）<br>（4）控制耦合（一个模块给另一个模块传递控制信息，如“显式星期天”）<br>（5）印记耦合（共享数据结构却只是用了一个部分）<br>（6）数据耦合（模块间传参只传需要的数据，最理想）</p>
+<h3 id="（2）内聚"><a href="#（2）内聚" class="headerlink" title="（2）内聚"></a>（2）内聚</h3><p>表达的是一个模块内部的联系的紧密性。<br>内聚性由高到低分为：内聚性越高越好，越低越不易实现变更和重用，3、4、5等价，1、2最好，6、7不能接受。<br>（1）信息内聚（模块进行许多操作，各自有各自的入口点，每个操作代码相对独立，而且所有操作都在相同的数据结构上进行：如栈）<br>（2）功能内聚（只执行一个操作或达到一个目的）<br>（3）通信内聚（对相同数据执行不同的操作：查书名、查书作者、查书出版商）<br>（4）过程内聚（与步骤有关：守门员传球给后卫、后卫传给中场球员、中场球员传给前锋）<br>（5）时间内聚（与时间有关：起床、刷牙、洗脸、吃早餐）<br>（6）逻辑内聚（一系列可替换的操作：如坐车、坐飞机）<br>（7）偶然内聚（多个不相关的操作：修车、烤面包、遛狗、看电影）</p>
+<blockquote>
+<p>【题型】对实例，说明它们之间的耦合程度与内聚，给出理由。书上P226习题</p>
+</blockquote>
+<h2 id="2-信息隐藏基本思想"><a href="#2-信息隐藏基本思想" class="headerlink" title="2.信息隐藏基本思想"></a>2.信息隐藏基本思想</h2><p>每个模块都隐藏一个重要的设计决策——职责。职责体现为模块对外的一份契约，并且在这份契约之下隐藏的只有这个模块知道的决策或者说秘密，决策实现的细节仅自己知道。<br>模块的信息隐藏：模块的秘密（容易变更的地方）：根据需求分配的职责、内部实现机制。</p>
+<blockquote>
+<p>【题型】对实例，说明其信息隐藏程度好坏。教材222页</p>
+<p>【项目实践】耦合的处理？<br>分层风格：仅程序调用与简单数据传递<br>包设计：消除重复<br>分包：接口最小化<br>创建者模式：不增加新的耦合<br>控制者模式：解除View与Logical的直接耦合</p>
+<p>内聚的处理？<br>分层：层间职责分配高内聚，层内分包高内聚<br>信息专家模式<br>控制器与委托式控制风格</p>
+<p>信息隐藏处理？<br>分层与分包：消除职责重复、最小化接口：View独立？数据库连接独立？<br>模块信息隐藏：模块需求分配与接口定义<br>类信息隐藏：协作设计，接口定义<br>变化设计？分层风格、RMI</p>
+</blockquote>
+<h1 id="第14章-详细设计中面向对象方法下的模块化"><a href="#第14章-详细设计中面向对象方法下的模块化" class="headerlink" title="第14章 详细设计中面向对象方法下的模块化"></a>第14章 详细设计中面向对象方法下的模块化</h1><h2 id="模块化的原则，教材229页"><a href="#模块化的原则，教材229页" class="headerlink" title="模块化的原则，教材229页"></a>模块化的原则，教材229页</h2><p>1)全局变量是有害的<br>2)显式（代码清晰，不进行不必要的隐藏，但可能与可修改性冲突）<br>3)不要有代码重复<br>4)针对接口编程<br>5)迪米特法则（不要跟陌生人说话）<br>6)接口分离原则（ISP）<br>7)Liskov替换原则(LSP:子类型可替换掉基类型，一棵满足lSP的继承树耦合度是1)<br>8)使用组合代替继承（适用于不符合LSP但想要进行代码复用）<br>9)单一职责原则<br>其中1、2、3针对降低隐式耦合，4、5、6针对降低访问耦合，7、8针对降低继承耦合，9和信息专家原则用于提高继承内聚，亦可以看作是降低继承耦合之用。<br>注1：级联调用的问题在：难以应对变更＋代码难理解。应对的方法：采用委托式调用。<br>注2：何时接口分离：出现于有一个负责各种交互的公共接口与各个具体类直接存在使用关系，使得权限混乱，可能造成不必要的麻烦。解决方案：保留大接口并提取出几个小借口，通过具体类使用小接口，再用大接口实现小接口即可。</p>
+<blockquote>
+<p>【题型】对给定的示例，发现其所违反的原则，并进行修正。<br>练习题／教材243页习题／教材258页习题</p>
+</blockquote>
+<h1 id="第15章-详细设计中面向对象方法下的信息隐藏"><a href="#第15章-详细设计中面向对象方法下的信息隐藏" class="headerlink" title="第15章 详细设计中面向对象方法下的信息隐藏"></a>第15章 详细设计中面向对象方法下的信息隐藏</h1><h2 id="1-信息隐藏的含义"><a href="#1-信息隐藏的含义" class="headerlink" title="1.信息隐藏的含义"></a>1.信息隐藏的含义</h2><p>需要隐藏的两种常见设计决策<br>需求（模块说明的主要秘密）与实现——暴露外部表现，封装内部结构<br>实现机制变更（模块说明的次要秘密）——暴露稳定抽象接口，封装具体实现细节<br>面向对象机制<br>封装：封装类的职责，隐藏职责的实现＋预计将要发生的变更<br>抽象类（接口）/继承（实现）：抽象它的接口，并隐藏其内部实现</p>
+<h2 id="2-封装"><a href="#2-封装" class="headerlink" title="2.封装"></a>2.封装</h2><p>（1）含义1：数据与行为集中在一起<br>含义2：接口与实现相分离：一个类可以分成两个部分，接口和实现<br>接口是类的外部表现，对外公开；实现是类的内部结构，内部隐藏<br>（2）封装的初始观点：把数据（内部结构）隐藏在抽象数据类型内<br>新观点（信息隐藏）：隐藏任何东西：数据与行为、复杂内部结构、其他对象、子类型信息、潜在变更<br>（3）封装数据与行为：除非（直接或间接）为满足需求（类型需要），不要将操作设置为public。类型需要的操作：为了满足用户任务而需要对象在对外协作中公开的方法，例如下图的4个操作（属于后一个对象，为满足计算商品总价的任务）<br>除非（直接或间接）为满足需求（类型需要），不要为属性定义getX方法和setX方法，更不要将其定义为public。例如上一示例中的getPrice()<br>（4）封装结构：不要暴露内部的复杂数据结构，经验表明复杂数据结构是易于发生修改的。例如暴露了内部使用List数据结构。<br>改进：Iterator模式（所有涉及到集合类型的操作都可能会出现此问题）<br>（5）封装其他对象：委托而不是提供自己拥有的其他对象的引用<br>除非Client对象已经拥有了该其他对象的引用，这时返回其引用不会增加总体设计的复杂度<br>可以保证Sales只需要关联SalesList，不需要关联SalesLineItem和Commodity；从整个设计来讲，Sales不需要知道SalesList里面存储的是SalesLineItem的集合，更不需要知道SalesLineItem使用了Commodity类型<br>（6）封装子类（LSP：子类必须能够替换他们的基类）<br>（7）封装潜在变更：识别应用中可能发生变化的部分，将其与不变的内容分离开来<br>封装独立出来的潜在变化部分，这样就可以在不影响不变部分的情况下进行修改或扩展（ DIP 和OCP）</p>
+<h2 id="3-开闭原则OCP"><a href="#3-开闭原则OCP" class="headerlink" title="3.开闭原则OCP"></a>3.开闭原则OCP</h2><p>对扩展开放，对修改封闭<br>违反了OCP原则的典型标志：出现了switch或者if-else<br>分支让程序增加复杂度，修改时容易产生新错误（特例：创建）</p>
+<h2 id="4-依赖倒置原则DIP"><a href="#4-依赖倒置原则DIP" class="headerlink" title="4.依赖倒置原则DIP"></a>4.依赖倒置原则DIP</h2><p>（与工厂结合紧密，解决new的创建问题）<br>I.  高层模块不应依赖底层模块，两者都应依赖抽象<br>II. 抽象不应依赖细节，细节应依赖抽象<br>使用抽象类（继承）机制倒置依赖</p>
+<blockquote>
+<p>示例：A依赖于B：B不是抽象类，所以A依赖于具体，而不是抽象，如果需要变更B的行为，就会影响到A<br>添加抽象类BI，让 B实现（继承）BI：A依赖于BI，B依赖于BI，BI是抽象类，所以是依赖于抽象，BI比较稳定，如果B发生变更，可以通过为BI扩展新的实现（子类型）来满足</p>
+</blockquote>
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>👉<a href="https://samperson1997.github.io/2017/12/20/SECII-1/" title="软件工程与计算II重点整理(第1-5章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第1-5章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-2/" title="软件工程与计算II重点整理(第6-7章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第6-7章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-3/" title="软件工程与计算II重点整理(第8-11章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第8-11章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-5/" title="软件工程与计算II重点整理(第16-19章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第16-19章)</a><br>👉<a href="https://samperson1997.github.io/2017/12/21/SECII-6/" title="软件工程与计算II重点整理(第20-23章)" target="_blank" rel="noopener">软件工程与计算II重点整理(第20-23章)</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#软件工程与计算II" >
+    <span class="tag-code">软件工程与计算II</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/21/SECII-3/">
+        <span class="nav-arrow">← </span>
+        
+          软件工程与计算II重点整理(第8-11章)
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/12/21/SECII-5/">
+        
+          软件工程与计算II重点整理(第16-19章)
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第12章-详细设计概述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7B2C;12&#x7AE0;-&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x6982;&#x8FF0;" class="headerlink" title="&#x7B2C;12&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x6982;&#x8FF0;"></a>&#x7B2C;12&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x6982;&#x8FF0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-详细设计的出发点"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#1-&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x7684;&#x51FA;&#x53D1;&#x70B9;" class="headerlink" title="1.&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x7684;&#x51FA;&#x53D1;&#x70B9;"></a>1.&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x7684;&#x51FA;&#x53D1;&#x70B9;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（1）信息专家模式"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text"><a href="#&#xFF08;1&#xFF09;&#x4FE1;&#x606F;&#x4E13;&#x5BB6;&#x6A21;&#x5F0F;" class="headerlink" title="&#xFF08;1&#xFF09;&#x4FE1;&#x606F;&#x4E13;&#x5BB6;&#x6A21;&#x5F0F;"></a>&#xFF08;1&#xFF09;&#x4FE1;&#x606F;&#x4E13;&#x5BB6;&#x6A21;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（2）控制器"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text"><a href="#&#xFF08;2&#xFF09;&#x63A7;&#x5236;&#x5668;" class="headerlink" title="&#xFF08;2&#xFF09;&#x63A7;&#x5236;&#x5668;"></a>&#xFF08;2&#xFF09;&#x63A7;&#x5236;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（3）创建者模式"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text"><a href="#&#xFF08;3&#xFF09;&#x521B;&#x5EFA;&#x8005;&#x6A21;&#x5F0F;" class="headerlink" title="&#xFF08;3&#xFF09;&#x521B;&#x5EFA;&#x8005;&#x6A21;&#x5F0F;"></a>&#xFF08;3&#xFF09;&#x521B;&#x5EFA;&#x8005;&#x6A21;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（4）纯虚构"><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text"><a href="#&#xFF08;4&#xFF09;&#x7EAF;&#x865A;&#x6784;" class="headerlink" title="&#xFF08;4&#xFF09;&#x7EAF;&#x865A;&#x6784;"></a>&#xFF08;4&#xFF09;&#x7EAF;&#x865A;&#x6784;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-职责分配"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#2-&#x804C;&#x8D23;&#x5206;&#x914D;" class="headerlink" title="2.&#x804C;&#x8D23;&#x5206;&#x914D;"></a>2.&#x804C;&#x8D23;&#x5206;&#x914D;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-协作"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><a href="#3-&#x534F;&#x4F5C;" class="headerlink" title="3.&#x534F;&#x4F5C;"></a>3.&#x534F;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-控制风格"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><a href="#4-&#x63A7;&#x5236;&#x98CE;&#x683C;" class="headerlink" title="4.&#x63A7;&#x5236;&#x98CE;&#x683C;"></a>4.&#x63A7;&#x5236;&#x98CE;&#x683C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-建立设计类图或详细顺序图"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text"><a href="#5-&#x5EFA;&#x7ACB;&#x8BBE;&#x8BA1;&#x7C7B;&#x56FE;&#x6216;&#x8BE6;&#x7EC6;&#x987A;&#x5E8F;&#x56FE;" class="headerlink" title="5.&#x5EFA;&#x7ACB;&#x8BBE;&#x8BA1;&#x7C7B;&#x56FE;&#x6216;&#x8BE6;&#x7EC6;&#x987A;&#x5E8F;&#x56FE;"></a>5.&#x5EFA;&#x7ACB;&#x8BBE;&#x8BA1;&#x7C7B;&#x56FE;&#x6216;&#x8BE6;&#x7EC6;&#x987A;&#x5E8F;&#x56FE;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-协作的测试"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text"><a href="#6-&#x534F;&#x4F5C;&#x7684;&#x6D4B;&#x8BD5;" class="headerlink" title="6.&#x534F;&#x4F5C;&#x7684;&#x6D4B;&#x8BD5;"></a>6.&#x534F;&#x4F5C;&#x7684;&#x6D4B;&#x8BD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第13章-详细设计中的模块化与信息隐藏"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7B2C;13&#x7AE0;-&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x7684;&#x6A21;&#x5757;&#x5316;&#x4E0E;&#x4FE1;&#x606F;&#x9690;&#x85CF;" class="headerlink" title="&#x7B2C;13&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x7684;&#x6A21;&#x5757;&#x5316;&#x4E0E;&#x4FE1;&#x606F;&#x9690;&#x85CF;"></a>&#x7B2C;13&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x7684;&#x6A21;&#x5757;&#x5316;&#x4E0E;&#x4FE1;&#x606F;&#x9690;&#x85CF;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-耦合与内聚（名词解释）"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#1-&#x8026;&#x5408;&#x4E0E;&#x5185;&#x805A;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;" class="headerlink" title="1.&#x8026;&#x5408;&#x4E0E;&#x5185;&#x805A;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;"></a>1.&#x8026;&#x5408;&#x4E0E;&#x5185;&#x805A;&#xFF08;&#x540D;&#x8BCD;&#x89E3;&#x91CA;&#xFF09;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（1）耦合"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text"><a href="#&#xFF08;1&#xFF09;&#x8026;&#x5408;" class="headerlink" title="&#xFF08;1&#xFF09;&#x8026;&#x5408;"></a>&#xFF08;1&#xFF09;&#x8026;&#x5408;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#（2）内聚"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text"><a href="#&#xFF08;2&#xFF09;&#x5185;&#x805A;" class="headerlink" title="&#xFF08;2&#xFF09;&#x5185;&#x805A;"></a>&#xFF08;2&#xFF09;&#x5185;&#x805A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-信息隐藏基本思想"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#2-&#x4FE1;&#x606F;&#x9690;&#x85CF;&#x57FA;&#x672C;&#x601D;&#x60F3;" class="headerlink" title="2.&#x4FE1;&#x606F;&#x9690;&#x85CF;&#x57FA;&#x672C;&#x601D;&#x60F3;"></a>2.&#x4FE1;&#x606F;&#x9690;&#x85CF;&#x57FA;&#x672C;&#x601D;&#x60F3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第14章-详细设计中面向对象方法下的模块化"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7B2C;14&#x7AE0;-&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x65B9;&#x6CD5;&#x4E0B;&#x7684;&#x6A21;&#x5757;&#x5316;" class="headerlink" title="&#x7B2C;14&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x65B9;&#x6CD5;&#x4E0B;&#x7684;&#x6A21;&#x5757;&#x5316;"></a>&#x7B2C;14&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x65B9;&#x6CD5;&#x4E0B;&#x7684;&#x6A21;&#x5757;&#x5316;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#模块化的原则，教材229页"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#&#x6A21;&#x5757;&#x5316;&#x7684;&#x539F;&#x5219;&#xFF0C;&#x6559;&#x6750;229&#x9875;" class="headerlink" title="&#x6A21;&#x5757;&#x5316;&#x7684;&#x539F;&#x5219;&#xFF0C;&#x6559;&#x6750;229&#x9875;"></a>&#x6A21;&#x5757;&#x5316;&#x7684;&#x539F;&#x5219;&#xFF0C;&#x6559;&#x6750;229&#x9875;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第15章-详细设计中面向对象方法下的信息隐藏"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x7B2C;15&#x7AE0;-&#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x65B9;&#x6CD5;&#x4E0B;&#x7684;&#x4FE1;&#x606F;&#x9690;&#x85CF;" class="headerlink" title="&#x7B2C;15&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x65B9;&#x6CD5;&#x4E0B;&#x7684;&#x4FE1;&#x606F;&#x9690;&#x85CF;"></a>&#x7B2C;15&#x7AE0; &#x8BE6;&#x7EC6;&#x8BBE;&#x8BA1;&#x4E2D;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x65B9;&#x6CD5;&#x4E0B;&#x7684;&#x4FE1;&#x606F;&#x9690;&#x85CF;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-信息隐藏的含义"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text"><a href="#1-&#x4FE1;&#x606F;&#x9690;&#x85CF;&#x7684;&#x542B;&#x4E49;" class="headerlink" title="1.&#x4FE1;&#x606F;&#x9690;&#x85CF;&#x7684;&#x542B;&#x4E49;"></a>1.&#x4FE1;&#x606F;&#x9690;&#x85CF;&#x7684;&#x542B;&#x4E49;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-封装"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text"><a href="#2-&#x5C01;&#x88C5;" class="headerlink" title="2.&#x5C01;&#x88C5;"></a>2.&#x5C01;&#x88C5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-开闭原则OCP"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text"><a href="#3-&#x5F00;&#x95ED;&#x539F;&#x5219;OCP" class="headerlink" title="3.&#x5F00;&#x95ED;&#x539F;&#x5219;OCP"></a>3.&#x5F00;&#x95ED;&#x539F;&#x5219;OCP</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-依赖倒置原则DIP"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text"><a href="#4-&#x4F9D;&#x8D56;&#x5012;&#x7F6E;&#x539F;&#x5219;DIP" class="headerlink" title="4.&#x4F9D;&#x8D56;&#x5012;&#x7F6E;&#x539F;&#x5219;DIP"></a>4.&#x4F9D;&#x8D56;&#x5012;&#x7F6E;&#x539F;&#x5219;DIP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#链接"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+    (function() {
+        var url = 'http://yoursite.com/2017/12/21/SECII-4/';
+        var banner = 'https://images.pexels.com/photos/2470678/pexels-photo-2470678.jpeg?h=1280&w=1921'
+        if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+            $('#article-banner').css({
+                'background-image': 'url(' + banner + ')'
+            })
+        } else {
+            $('#article-banner').geopattern(url)
+        }
+        $('.header').removeClass('fixed-header')
+
+        // error image
+        $(".markdown-content img").on('error', function() {
+            $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+            $(this).css({
+                'cursor': 'default'
+            })
+        })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2017-2020 | Content by <a href="https://samperson1997.github.io/about/">Samperson</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    | Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
