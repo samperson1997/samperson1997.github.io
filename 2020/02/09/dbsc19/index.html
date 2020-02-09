@@ -10,7 +10,7 @@
   
   <title>
     
-      dbsc19 | Blog of Samperson
+      ⛵️帆船书#19 | 分布式数据库 | Blog of Samperson
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -138,7 +138,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>dbsc19</h2>
+  <h2>⛵️帆船书#19 | 分布式数据库</h2>
   <p class="post-date">2020-02-09</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -147,8 +147,33 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"></section>
+    <section class="markdown-content"><h2 id="分布式数据存储与分布式事务"><a href="#分布式数据存储与分布式事务" class="headerlink" title="分布式数据存储与分布式事务"></a>分布式数据存储与分布式事务</h2><p>[1] 并行系统: 处理器紧密耦合, 组成单个数据库系统<br>分布式数据库系统: 松散耦合的站点, 不共享物理部件<br>每个站点处理局部事务, 事务访问的数据仅位于单个站点; 站点可以参与全局事务的执行, 全局事务访问多个站点的数据, 需要站点之间进行通信</p>
+<p>[2] <strong>同构数据库</strong>: 所有站点拥有共同的模式和数据库系统代码<br><strong>异构数据库</strong>: 模式和系统代码可能不同</p>
+<p>[3] <strong>复制</strong>: 可用性, 增加并行读, 增加更新开销<br>复制提高读性能, 增加了对只读事务的可用性, 但是更新开销会增大<br>系统应该决定读请求引用哪个副本, 写请求更新所有副本</p>
+<p>[4] <strong>分片</strong>: 垂直分片和水平分片<br>元组的物理地址或逻辑地址可以用作tuple-id, 因为每个元组有唯一的地址</p>
+<p>[5] <strong>数据透明性</strong>: 分片透明性, 复制透明性, 位置透明性<br>系统应尽量减小用户需要了解关系如何存储的程度</p>
+<p>[6] 保证名字唯一的方法</p>
+<ul>
+<li>所有名字在中央名字服务器中注册——缺点: 使用名字定位时, 名字服务器会成为性能瓶颈; 名字服务器崩溃, 系统中所有站点不能继续运行</li>
+<li>站点自身标识符作为前缀, 但无法实现位置透明性——解决: 为数据项创建别名, 别名和真实名字的映射可以存储在每个站点上, 用户无需了解数据项的物理位置</li>
+</ul>
+<p>[7] 系统结构——每个站点包括两个子系统</p>
+<ul>
+<li><strong>事务管理器</strong>: 维护用于恢复的日志; 参与并发控制方案, 协调站点上执行的事务并发执行</li>
+<li><strong>事务协调器</strong>: 启动事务执行; 将事务分成子事务, 分派给合适的站点执行; 协调事务的中止, 可能导致事务在所有站点都提交或者都中止</li>
+</ul>
+<p>[8] 故障: 与集中式系统相同类型的故障, 站点故障, 链路故障, 消息丢失, 网络划分</p>
+<h2 id="提交协议"><a href="#提交协议" class="headerlink" title="提交协议"></a>提交协议</h2></section>
     <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据库系统概念" >
+    <span class="tag-code">数据库系统概念</span>
+  </a>
+
+      </div>
     
     <!-- Tags END -->
     <!-- NAV START -->
@@ -175,7 +200,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分布式数据存储与分布式事务"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x5206;&#x5E03;&#x5F0F;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x4E0E;&#x5206;&#x5E03;&#x5F0F;&#x4E8B;&#x52A1;" class="headerlink" title="&#x5206;&#x5E03;&#x5F0F;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x4E0E;&#x5206;&#x5E03;&#x5F0F;&#x4E8B;&#x52A1;"></a>&#x5206;&#x5E03;&#x5F0F;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x4E0E;&#x5206;&#x5E03;&#x5F0F;&#x4E8B;&#x52A1;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#提交协议"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x63D0;&#x4EA4;&#x534F;&#x8BAE;" class="headerlink" title="&#x63D0;&#x4EA4;&#x534F;&#x8BAE;"></a>&#x63D0;&#x4EA4;&#x534F;&#x8BAE;</span></a></li></ol>
     
   </div>
 </aside>
