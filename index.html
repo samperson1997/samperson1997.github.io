@@ -141,6 +141,43 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2020/02/27/prometheus/">Prometheus 调研</a>
+      </h2>
+      <p class="article-date">February 27, 2020</p>
+      
+      <div class="article-summary">
+        
+          pre和record记录: media
+
+特点
+
+多维时间序列数据模型——用度量名metric name和键值对识别
+查询语言: PromQL
+不依赖分布式存储; 单服务器节点是自治的
+通过HTTP上的pull: 收集时间序列
+通过中间网关: 支持push时间序列
+通过service dis ...
+        
+      </div>
+      <a class="more" href="/2020/02/27/prometheus/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/02/20/storyboard/">论文#7 | Storyboard - Optimizing Precomputed Summaries for Aggregation</a>
+      </h2>
+      <p class="article-date">February 20, 2020</p>
+      
+      <div class="article-summary">
+        
+          解决问题AggPre将数据进行分区, 并为每个数据段预先计算近似摘要, 从而可以在不扫描原始数据的情况下聚合和组合段摘要以估计结果——由于存储空间有限, 每个摘要都会引入影响查询精度的近似错误Storyboard: 通过优化项目频率(item frequency)和分位数摘要(quantil ...
+        
+      </div>
+      <a class="more" href="/2020/02/20/storyboard/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2020/02/09/dbsc19/">⛵️帆船书#19 | 分布式数据库</a>
       </h2>
       <p class="article-date">February 9, 2020</p>
@@ -333,63 +370,6 @@
         
       </div>
       <a class="more" href="/2020/01/27/dbsc11/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/11/26/wangpeng-2/">论文#1 | KV-Match - A Subsequence Matching Approach Supporting Normalization and Time Warping</a>
-      </h2>
-      <p class="article-date">November 26, 2019</p>
-      
-        
-  <a href="/tags#数据库索引" >
-    <span class="tag-code">数据库索引</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          以下是论文KV-Match: A Subsequence Matching Approach Supporting Normalization and Time Warping的笔记。
-
-已有方法及改进[1] 原有方法：只考虑原始子序列匹配RSM (raw subsequence match ...
-        
-      </div>
-      <a class="more" href="/2019/11/26/wangpeng-2/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/11/01/Hadoop-HA/">Hadoop HA相关部署和配置</a>
-      </h2>
-      <p class="article-date">November 1, 2019</p>
-      
-        
-  <a href="/tags#分布式" >
-    <span class="tag-code">分布式</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          集群的规划[1] 集群规划
-
-
-
-IP
-角色
-
-
-
-
-192.168.130.3
-NameNode1主节点, ResourceManager1主节点, Journalnode
-
-
-192.168.130.4
-NameNode2备用主节点, ResourceManager2备用主节点, Jou ...
-        
-      </div>
-      <a class="more" href="/2019/11/01/Hadoop-HA/">Read more</a>
     </article>
   
 
