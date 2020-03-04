@@ -156,28 +156,27 @@
 <li>不依赖分布式存储; 单服务器节点是自治的</li>
 <li>通过HTTP上的pull: 收集时间序列</li>
 <li>通过中间网关: 支持push时间序列</li>
-<li>通过service discovery(服务发现)或 static configuration(静态配置)发现目标</li>
+<li>通过service discovery(服务发现)或 static configuration(静态配置)发现目标<br>配置方式包含多种，可以直接在写在yaml文件中，但如果配置较长也可以写入其他文件并启用文件发现(file_sd)功能让其自行侦听配置文件变化，甚至可以使用consul或者kubernetes这样的服务发现来动态更新配置以适应频繁的节点变更</li>
 <li>支持多种图形和仪表板</li>
 </ul>
 </blockquote>
 <h2 id="系统组件"><a href="#系统组件" class="headerlink" title="系统组件"></a>系统组件</h2><ul>
 <li>server: 收集和存储时间序列数据</li>
 <li>client libraries: 检测应用程序代码</li>
-<li>push gateway:批量, 短期的监控数据的汇总节点, 主要用于业务数据汇报</li>
+<li>push gateway:批量, <strong>短期</strong>的监控数据的汇总节点, 主要用于业务数据汇报</li>
 <li>exporters: 例如汇报机器数据的 node_exporter, 汇报 MongoDB 信息的 MongoDB exporter </li>
 <li>alertmanager: 处理警报</li>
 </ul>
 <h3 id="基础架构"><a href="#基础架构" class="headerlink" title="基础架构"></a>基础架构</h3><p><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://prometheus.io/assets/architecture.png"></p>
-<p>[1] server<strong>直接</strong>或<strong>通过短生命作业的push gateway</strong>, 从检测作业中获取度量</p>
-<p>[2] 逻辑</p>
+<p>[1] 逻辑</p>
 <ol>
-<li>Prometheus server 定期从静态配置的 targets 或者服务发现的 targets 拉取数据</li>
+<li>Prometheus server 定期从静态配置的 targets 或者服务发现的 targets 拉取数据, <strong>直接</strong>或<strong>通过短生命作业的push gateway</strong>, 从检测作业中获取度量</li>
 <li>当新拉取的数据大于配置内存缓存区的时候, Prometheus 会将数据持久化到磁盘 / 云端</li>
 <li>Prometheus 可以配置规则, 然后定时查询数据, 当条件触发的时候, 会将 alert 推送到配置的 Alertmanager</li>
 <li>Alertmanager 收到警告的时候, 可以根据配置, 聚合、去重、降噪, 最后发送警告</li>
 <li>可以使用 API, Prometheus Console 或者 Grafana 查询和聚合数据</li>
 </ol>
-<p>[3] 适用于记录纯数字时间序列(<strong>float64数据类型</strong>), 可以对多维数据收集和查询的支持<br>收集的数据可能不够详细和完整, 不能保证100%准确度, 原因: 数据是按一定时间采集的, 关注的更多是系统的运行瞬时状态以及趋势, 即使有少量数据没有采集也能容忍</p>
+<p>[2] 适用: 记录纯数字时间序列(<strong>float64数据类型</strong>), 可以对多维数据收集和查询的支持<br>收集的数据可能不够详细和完整, 不能保证100%准确度, 原因: 数据是按一定时间采集的, 关注的更多是系统的运行瞬时状态以及趋势, 即使有少量数据没有采集也能容忍</p>
 <h3 id="Prometheus与InfluxDB"><a href="#Prometheus与InfluxDB" class="headerlink" title="Prometheus与InfluxDB"></a>Prometheus与InfluxDB</h3><p><strong>区别</strong></p>
 <table>
 <thead>
@@ -188,7 +187,7 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">事件记录: 使用LSM结构存储按时间分段的预写日志</td>
+<td style="text-align:left">事件记录: 使用LSM结构存储按时间分段的WAL</td>
 <td style="text-align:left">每条时间序列只追加文件</td>
 </tr>
 <tr>
@@ -198,15 +197,19 @@
 </tbody>
 </table>
 <p><strong>联系</strong><br>数据模型将键值对作为标签, (InfluxDB中一级标签tag, 二级标签fields) 支持多维度量<br>使用基本相同的数据压缩算法<br>两者都有钩子, 允许进一步扩展 (如在统计工具中分析数据或执行自动化操作)</p>
-<p><strong>Prometheus集群</strong> (Federation)<br>[1] 分层集群允许扩展到拥有数千万个数据中心和数百万个节点的环境中, 集群类似于一棵树, 更高级别的服务器从更多的从属服务器收集聚合的时间序列数据</p>
-<p>[2] 在跨服务集群中, 一个服务的服务器被配置为从另一个服务的服务器中收集选定的数据, 以启用对单个服务器中的两个数据集的警报和查询</p>
-<h2 id="系统功能"><a href="#系统功能" class="headerlink" title="系统功能"></a>系统功能</h2><p>[1] <strong>数据模型</strong><br>metric_name{label_name=label_value, …}<br>api_http_requests_total{method=”POST”, handler=”/messages”}</p>
+<p><strong>Prometheus联邦</strong> (Federation)<br>[1] 分层联邦允许扩展到拥有数千万个数据中心和数百万个节点的环境中, 集群类似于一棵树, 更高级别的服务器从更多的从属服务器收集聚合的时间序列数据</p>
+<p>[2] 在跨服务联邦中, 一个服务的服务器被配置为从另一个服务的服务器中收集选定的数据, 以启用对单个服务器中的两个数据集的警报和查询</p>
+<h2 id="系统功能"><a href="#系统功能" class="headerlink" title="系统功能"></a>系统功能</h2><p>[1] <strong>数据模型</strong><br>metric_name{label_name=label_value, …}</p>
+<p><strong>例1</strong><br>container_cpu_usage_seconds_total{container_name=”abc”,cpu=”total”,id=”123”,name=”def”} 4751.708280444<br>以上述指标为例, Promethues指标由如下基本部分组成:<br>指标名字 - metric name - container_cpu_usage_seconds_total<br>值 - sampling value(float64) - 4751.708280444<br>标签 - label name, value - container_name=”abc”…<br>时间戳 - timestamp (Prometheus维护)</p>
+<p><strong>例2</strong><br>以 # HELP 开头表示 metric 帮助说明<br>以 # TYPE 开头表示定义 metric 类型, 包含 counter, gauge, histogram, summary 和 untyped </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># HELP go_gc_duration_seconds A summary of the GC invocation durations.</span><br><span class="line"># TYPE go_gc_duration_seconds summary</span><br><span class="line">go_gc_duration_seconds&#123;quantile=&quot;0&quot;&#125; 0</span><br><span class="line">go_gc_duration_seconds&#123;quantile=&quot;0.25&quot;&#125; 0</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>[2] <strong>度量类型</strong><br>Counter: 单调递增计数器的累积度量, 其值只能在重新启动时递增或重置为零<br>Gauge: 可以任意上下移动的数值<br>Histogram: 直方图对观察结果(通常是请求持续时间或响应大小)进行采样, 并在可配置的存储桶中计数, 同时提供所有观测值的总和<br>Summary: 总结样本观察, 还提供观测值的总数和所有观测值的总和, 同时计算滑动时间窗口上的可配置分位数</p>
 <blockquote>
-<p>Histogram 和 Summary: 都包含 basename_sum, basename_count, Histogram 需要通过 basename_bucket 计算 quantile, 而 Summary 直接存储了 quantile 的值</p>
+<p>Histogram 和 Summary: 都包含 basename_sum, basename_count, Histogram 需要通过 basename_bucket 计算 quantile, 而 Summary 直接存储了 quantile 的值<br><a href="https://prometheus.io/docs/practices/histograms/" target="_blank" rel="noopener">Best Practice</a></p>
 </blockquote>
-<p>[3] <strong>作业和实例</strong><br>实例(instance): 可以收集的端点, 通常对应一个进程<br>作业(job): 具有相同目的的实例集合 (如为了可伸缩性或可靠性而复制的进程)<br>如下是一个含有四个重复实例的作业:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">job: api-server</span><br><span class="line">    instance 1: 1.2.3.4:5670</span><br><span class="line">    instance 2: 1.2.3.4:5671</span><br><span class="line">    instance 3: 5.6.7.8:5670</span><br></pre></td></tr></table></figure></p>
-<p>[4] Prometheus 在采集数据的同时, 会自动在时序的基础上添加标, 作为数据源(target)的标识, 以便区分<br>如果其中任一标签已经在此前采集的数据中存在, 那么将会根据 <code>honor_labels</code> 设置选项来决定新标签</p>
+<p>[3] <strong>作业和实例</strong><br>实例(instance): 可以收集的端点, 通常对应一个进程<br>作业(job): 具有相同目的的实例集合 (如为了可伸缩性或可靠性而复制的进程)<br>如下是一个含有四个重复实例的作业:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">job: api-server</span><br><span class="line">    instance 1: 1.2.3.4:5670</span><br><span class="line">    instance 2: 1.2.3.4:5671</span><br><span class="line">    instance 3: 5.6.7.8:5670</span><br><span class="line">    instance 4: 5.6.7.8:5671</span><br></pre></td></tr></table></figure></p>
+<p>Prometheus 在采集数据的同时, 会自动在时序的基础上添加标签, 作为数据源(target)的标识, 以便区分<br>如果其中任一标签已经在此前采集的数据中存在, 那么将会根据 <code>honor_labels</code> 设置选项来决定新标签</p>
+<p>[4] 对于每个实例抓取, server将<strong>样本</strong>(sample)存储在以下时间序列中:<br>样本是时间序列中某个时间点的单个值, 每个样本由float64值和毫秒精度时间戳组成</p>
 <table>
 <thead>
 <tr>
@@ -238,8 +241,8 @@
 </tbody>
 </table>
 <h3 id="配置项"><a href="#配置项" class="headerlink" title="配置项"></a>配置项</h3><p>[1] <a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/" target="_blank" rel="noopener">配置项</a><br>scrape_interval: 拉取 targets 的默认时间间隔<br>scrape_timeout: 拉取一个 target 的超时时间<br>evaluation_interval: 执行 rules 的时间间隔<br>external_labels: 额外的属性, 会添加到拉取的数据并存到数据库中</p>
-<p>[2] 录制规则 Recording Rules: 允许预计算经常需要或计算开销较大的表达式，并将其结果保存为一组新的时间序列 (适用于仪表板, 每次刷新时都需要重复查询同一表达式)</p>
-<p>[3] 警告规则 Alerting Rules: 定义警报条件, 并向外部服务发送有关触发警报的通知。每当警报表达式在给定的时间点产生一个或多个向量元素时, 对于这些元素的标签集, 警报计为活跃<br>规则文件可以在运行时通过向Prometheus进程发送<code>SIGHUP</code>来重新加载</p>
+<p>[2] <strong>录制规则</strong> Recording Rules: 允许预计算经常需要或计算开销较大的表达式，并将其结果保存为一组新的时间序列 (适用于仪表板, 每次刷新时都需要重复查询同一表达式)</p>
+<p>[3] <strong>警告规则</strong> Alerting Rules: 定义警报条件, 并向外部服务发送有关触发警报的通知。每当警报表达式在给定的时间点产生一个或多个向量元素时, 对于这些元素的标签集, 警报计为活跃<br>规则文件可以在运行时通过向Prometheus进程发送<code>SIGHUP</code>来重新加载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">groups:</span><br><span class="line">- name: example</span><br><span class="line">  rules:</span><br><span class="line">  - alert: HighRequestLatency</span><br><span class="line">    expr: job:request_latency_seconds:mean5m&#123;job=&quot;myjob&quot;&#125; &gt; 0.5</span><br><span class="line">    for: 10m </span><br><span class="line">    // 使Prometheus在[第一次遇到新的表达式输出向量元素]和[将警报计为该元素的触发]之间等待一定的时间</span><br><span class="line">    // 在每次评估期间检查警报是否持续激活10分钟，然后再触发警报</span><br><span class="line">    labels:</span><br><span class="line">    // 允许指定要附加到警报的一组附加标签, 任何现有的冲突标签都将被覆盖</span><br><span class="line">      severity: page </span><br><span class="line">    annotations:</span><br><span class="line">    // 指定一组信息标签用于存储更长的附加信息, 如警报说明或runbook链接</span><br><span class="line">      summary: High request latency</span><br></pre></td></tr></table></figure>
 <p>[4] 运行时检查警报: 对于挂起和触发警报, 普罗米修斯还存储形式为alerts{alert name=”alert name”，alertstate=”pending | firning”, additional alert labels}的合成时间序列<br>Alertmanager: 在简单警报定义的基础上添加摘要、通知速率限制、静音和警报依赖项, 负责发送正确的通知</p>
 <p>[5] <a href="https://prometheus.io/docs/prometheus/latest/configuration/unit_testing_rules/" target="_blank" rel="noopener">警报规则的测试</a></p>
@@ -247,24 +250,39 @@
 <p>[2] <a href="https://prometheus.io/docs/prometheus/latest/querying/functions/" target="_blank" rel="noopener">支持的函数</a><br><strong>absent() / absent_over_time()</strong>: 如果传递给它的向量有任何元素, 则返回空向量; 如果传递给它的向量没有元素. 则返回1元素向量。当给定度量名称和标签组合不存在时间序列时, 用于发出警报</p>
 <p><strong>delta()</strong>计算范围向量中每个时间序列元素的第一个值和最后一个值之间的差。delta被<strong>外推</strong>(?extrapolated)以覆盖范围向量选择器中指定的整个时间范围, 因此即使样本值都是整数, 也可能得到非整数结果</p>
 <p><strong>holt_winters()</strong>: 根据范围为时间序列生成平滑值</p>
-<p>[3] <a href="https://songjiayang.gitbooks.io/prometheus/content/promql/sql.html" target="_blank" rel="noopener">PromQL与 SQL 对比</a></p>
-<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>[1] 摄取的样本被分成两个小时的区块, 每个块包含一个目录, 其中包含一个或多个块文件, 这些文件包含该时间窗口的所有时间序列sample, 元数据文件和索引文件(这些文件将度量名称和标签索引到块文件中的时间序列)<br>通过API删除序列时, 删除记录存储在单独的”墓碑文件”中<br>WAL文件以128MB段存储在WAL目录中, 文件包含尚未压缩的原始数据</p>
+<p>[3] <a href="https://songjiayang.gitbooks.io/prometheus/content/promql/sql.html" target="_blank" rel="noopener">PromQL与 SQL 对比</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http_requests_total&#123;code=&quot;200&quot;, handler=&quot;query&quot;&#125;</span><br><span class="line">http_requests_total&#123;code~=&quot;2xx&quot;&#125;</span><br><span class="line">http_requests_total &gt; 100</span><br><span class="line"></span><br><span class="line">count(http_requests_total)</span><br><span class="line">irate(http_requests_total[5m]) // 过去 5 分钟平均每秒数值</span><br></pre></td></tr></table></figure></p>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>[1] 摄取的样本被分成两个小时的区块, 每个块包含一个目录, 其中包含一个或多个块文件, 这些文件包含该时间窗口的所有<strong>时间序列sample</strong>, <strong>元数据文件</strong>和<strong>索引文件</strong>(这些文件将度量名称和标签索引到块文件中的时间序列)<br>通过API删除序列时, 删除记录存储在单独的<strong>墓碑文件</strong>中<br>WAL文件以128MB段存储在WAL目录中, 文件包含尚未压缩的原始数据</p>
 <p>[2] 最初两个小时的块最终被压缩成背景中较长的块, 压实将产生更大的块体, 保留时间可达min{10%或31天}<br>过期块清理按后台计划进行, 删除过期的块可能需要两个小时。过期的块必须完全过期, 然后才能清除它们</p>
-<p>[3] remote write 和 remote read 功能允许透明地发送和接收样本, 主要用于长期储存<br>读写协议都使用基于HTTP的snappy压缩协议缓冲区编码<br><a href="https://songjiayang.gitbooks.io/prometheus/content/ha/prometheus.html" target="_blank" rel="noopener">使用remote read实现HA</a></p>
+<p>[3] <strong>remote write</strong> 和 <strong>remote read</strong> 功能允许透明地发送和接收样本, 主要用于长期储存<br>读写协议都使用基于HTTP的snappy压缩协议缓冲区编码<br>Remote Write: Prometheus发送规定格式的数据给Adapter, Adapter转义后发送给数据库<br>Remote Read: Prometheus规定Adapter需要解析四种运算符 “=”,”!=”,”=~”,”!~”, 用户在界面上查询时, Prometheus发送查询命令给Adapter, Adapter转义后发送给数据库<br><a href="https://songjiayang.gitbooks.io/prometheus/content/ha/prometheus.html" target="_blank" rel="noopener">使用remote read实现HA</a></p>
 <h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p><a href="https://songjiayang.gitbooks.io/prometheus/content/visualiztion/grafana.html" target="_blank" rel="noopener">Grafana</a> 或 <a href="https://prometheus.io/docs/visualization/consoles/" target="_blank" rel="noopener">控制台模板</a></p>
-<h2 id="系统生态集成"><a href="#系统生态集成" class="headerlink" title="系统生态集成"></a>系统生态集成</h2><p><a href="https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage" target="_blank" rel="noopener">集成工作</a></p>
-<h3 id="Exporter"><a href="#Exporter" class="headerlink" title="Exporter"></a>Exporter</h3><p>[1] 在 Prometheus 中负责数据汇报的程序统一叫做 Exporter, 不同的 Exporter 负责不同的业务, 如负责主机信息收集的 node_exporter<br>Exporter 本质: 将收集的数据转化为对应的文本格式, 并提供 http 请求</p>
-<p>[2] 以 # HELP 开头表示 metric 帮助说明<br>以 # TYPE 开头表示定义 metric 类型, 包含 counter, gauge, histogram, summary 和 untyped </p>
-<p>[3] <a href="https://prometheus.io/docs/instrumenting/exporters/" target="_blank" rel="noopener">exporter集成</a></p>
-<h3 id="Pushgateway"><a href="#Pushgateway" class="headerlink" title="Pushgateway"></a>Pushgateway</h3><p>[1] 使用Pushgateway的原因:<br>Prometheus 采用 pull 模式，可能由于不在一个子网或者防火墙原因，导致 Prometheus 无法直接拉取各个 target 数据。<br>在监控业务数据的时候，需要将不同数据汇总, 由 Prometheus 统一收集。</p>
-<p>[2] 弊端<br>将多个节点数据汇总到 pushgateway, pushgateway 成为单一故障点和潜在的瓶颈<br>Prometheus 拉取状态 up 只针对 pushgateway, 无法做到对每个节点有效 (失去通过up的自动实例健康监测)<br>Pushgateway 可以持久化推送给它的所有监控数据, 即使监控已经下线, prometheus 还会拉取到旧的监控数据, 需要手动清理 pushgateway 不要的数据<br>原因: Pushgateway作为度量缓存的生命周期从根本上与向其推送度量的流程的生命周期分离</p>
+<p><img style="width:100%; max-width:800px; margin-left:auto; margin-right:auto; display:block;" src="https://upload-images.jianshu.io/upload_images/2790040-bbd767354b055dd1.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp"></p>
+<h2 id="系统生态集成"><a href="#系统生态集成" class="headerlink" title="系统生态集成"></a>系统生态集成</h2><p>文件服务发现, 远程端点和存储, Alertmanager Webhook接收器, 管理: <a href="https://prometheus.io/docs/operating/integrations/" target="_blank" rel="noopener">集成工作</a></p>
+<h3 id="Client-libraries"><a href="#Client-libraries" class="headerlink" title="Client libraries"></a>Client libraries</h3><p>[1] <a href="https://github.com/prometheus/client_java" target="_blank" rel="noopener">JVM Client</a> 注册度量:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> Counter requests = Counter.build()</span><br><span class="line">   .name(<span class="string">"my_library_requests_total"</span>).help(<span class="string">"Total requests."</span>).labelNames(<span class="string">"path"</span>).register();</span><br></pre></td></tr></table></figure></p>
+<p>[2] Java client包括垃圾收集、内存池、类加载和线程计数的收集器, 可以单独添加, 也可以使用DefaultExports注册:<code>DefaultExports.initialize();</code></p>
+<p>[3] 度量通常通过HTTP公开, 由Prometheus服务器读取。客户端库中包含HTTPServer、Servlet、SpringBoot和Vert.x集成</p>
+<h3 id="Exporters"><a href="#Exporters" class="headerlink" title="Exporters"></a>Exporters</h3><p>[1] 有许多库和服务器可帮助将第三方系统中的现有度量导出为 Prometheus 度量<br>在 Prometheus 中负责数据汇报的程序统一叫做 Exporter, 不同的 Exporter 负责不同的业务, 如负责主机信息收集的 node_exporter<br>Exporter 本质: 将收集的数据转化为对应的文本格式, 并提供 http 请求</p>
+<p>[2] <a href="https://prometheus.io/docs/instrumenting/exporters/" target="_blank" rel="noopener">exporter集成</a></p>
+<h3 id="Pushgateway"><a href="#Pushgateway" class="headerlink" title="Pushgateway"></a>Pushgateway</h3><p>[1] 使用Pushgateway的原因:</p>
+<ul>
+<li>Prometheus 采用 pull 模式，可能由于不在一个子网或者防火墙原因，导致 Prometheus 无法直接拉取各个 target 数据。</li>
+<li>在监控业务数据的时候，需要将不同数据汇总, 由 Prometheus 统一收集。</li>
+</ul>
+<p>[2] 弊端</p>
+<ul>
+<li>将多个节点数据汇总到 pushgateway, pushgateway 成为单一故障点和潜在的瓶颈</li>
+<li>Prometheus 拉取状态 up 只针对 pushgateway, 无法做到对每个节点有效 (失去通过up的自动实例健康监测)</li>
+<li>Pushgateway 可以持久化推送给它的所有监控数据, 即使监控已经下线, prometheus 还会拉取到旧的监控数据, 需要手动清理 pushgateway 不要的数据<br>原因: Pushgateway作为度量缓存的生命周期从根本上与向其推送度量的流程的生命周期分离</li>
+</ul>
 <p>[3] 使用场景: 捕获<strong>服务级别</strong>批处理作业的结果——此类作业的度量不应包含机器或实例标签, 以将特定机器或实例的生命周期与推送度量分离</p>
 <h3 id="AlertManager"><a href="#AlertManager" class="headerlink" title="AlertManager"></a>AlertManager</h3><p>[1] 在 Prometheus 中告警分为两部分:</p>
 <ol>
 <li>Prometheus 服务根据所设置的告警规则将告警信息发送给 Alertmanager</li>
-<li>Alertmanager 对收到的告警信息进行处理, 策略路由告警通知:<br>(1) Grouping分组: 将类似性质的警报分类为单个通知, 警报分组、分组通知的计时以及这些通知的接收者由配置文件中的路由树配置<br>(2) Inhibition抑制: 当某些其他警报已经触发时, 抑制某些警报的通知<br>(3) Silence静音: 在给定时间内将警报静音, 将检查传入警报是否与活动静默的所有相等或正则表达式匹配项匹配<br>(4) 客户行为: 对其客户端的行为有特殊要求。这些只与Prometheus不用于发送警报的高级用例相关。<br>(5) 高可用性: Alertmanager 支持配置以创建高可用性群集, 不要在Prometheus和它的Alertmanagers之间进行负载平衡, 而是将Prometheus指向一个所有Alertmanagers列表</li>
+<li>Alertmanager 对收到的告警信息进行处理, 策略路由告警通知:</li>
 </ol>
+<p><strong>Grouping分组</strong>: 将类似性质的警报分类为单个通知, 警报分组、分组通知的计时以及这些通知的接收者由配置文件中的路由树配置<br><strong>Inhibition抑制</strong>: 当某些其他警报已经触发时, 抑制某些警报的通知<br><strong>Silence静音</strong>: 在给定时间内将警报静音, 将检查传入警报是否与活动静默的所有相等或正则表达式匹配项匹配<br><strong>客户行为</strong>: 对其客户端的行为有特殊要求。这些只与Prometheus不用于发送警报的高级用例相关。<br><strong>高可用性</strong>: Alertmanager 支持配置以创建高可用性群集, 不要在Prometheus和它的Alertmanagers之间进行负载平衡, 而是将Prometheus指向一个所有Alertmanagers列表</p>
 <p>[2] <a href="https://prometheus.io/docs/alerting/configuration/" target="_blank" rel="noopener">配置项</a></p>
+<p>[3] 架构<br><img style="width:100%; max-width:700px; margin-left:auto; margin-right:auto; display:block;" src="https://github.com/prometheus/alertmanager/raw/master/doc/arch.svg?sanitize=true"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="https://prometheus.io/docs/introduction/overview/" target="_blank" rel="noopener">https://prometheus.io/docs/introduction/overview/</a><br>[2] <a href="https://www.jianshu.com/p/5df4d23db8de" target="_blank" rel="noopener">https://www.jianshu.com/p/5df4d23db8de</a><br>[3] <a href="https://songjiayang.gitbooks.io/prometheus/content/" target="_blank" rel="noopener">https://songjiayang.gitbooks.io/prometheus/content/</a><br>[4] <a href="https://github.com/prometheus/client_java" target="_blank" rel="noopener">https://github.com/prometheus/client_java</a><br>[5] <a href="https://www.jianshu.com/p/413fd42ae660s" target="_blank" rel="noopener">https://www.jianshu.com/p/413fd42ae660s</a></p>
 </section>
     <!-- Tags START -->
     
@@ -293,7 +311,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#系统组件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;"></a>&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基础架构"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x7840;&#x67B6;&#x6784;" class="headerlink" title="&#x57FA;&#x7840;&#x67B6;&#x6784;"></a>&#x57FA;&#x7840;&#x67B6;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Prometheus与InfluxDB"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#Prometheus&#x4E0E;InfluxDB" class="headerlink" title="Prometheus&#x4E0E;InfluxDB"></a>Prometheus&#x4E0E;InfluxDB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#系统功能"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x529F;&#x80FD;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x529F;&#x80FD;"></a>&#x7CFB;&#x7EDF;&#x529F;&#x80FD;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置项"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x914D;&#x7F6E;&#x9879;" class="headerlink" title="&#x914D;&#x7F6E;&#x9879;"></a>&#x914D;&#x7F6E;&#x9879;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#查询"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#&#x5B58;&#x50A8;" class="headerlink" title="&#x5B58;&#x50A8;"></a>&#x5B58;&#x50A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#可视化"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#&#x53EF;&#x89C6;&#x5316;" class="headerlink" title="&#x53EF;&#x89C6;&#x5316;"></a>&#x53EF;&#x89C6;&#x5316;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#系统生态集成"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x751F;&#x6001;&#x96C6;&#x6210;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x751F;&#x6001;&#x96C6;&#x6210;"></a>&#x7CFB;&#x7EDF;&#x751F;&#x6001;&#x96C6;&#x6210;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Exporter"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#Exporter" class="headerlink" title="Exporter"></a>Exporter</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Pushgateway"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#Pushgateway" class="headerlink" title="Pushgateway"></a>Pushgateway</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AlertManager"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#AlertManager" class="headerlink" title="AlertManager"></a>AlertManager</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#系统组件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;"></a>&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基础架构"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><a href="#&#x57FA;&#x7840;&#x67B6;&#x6784;" class="headerlink" title="&#x57FA;&#x7840;&#x67B6;&#x6784;"></a>&#x57FA;&#x7840;&#x67B6;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Prometheus与InfluxDB"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><a href="#Prometheus&#x4E0E;InfluxDB" class="headerlink" title="Prometheus&#x4E0E;InfluxDB"></a>Prometheus&#x4E0E;InfluxDB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#系统功能"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x529F;&#x80FD;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x529F;&#x80FD;"></a>&#x7CFB;&#x7EDF;&#x529F;&#x80FD;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置项"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><a href="#&#x914D;&#x7F6E;&#x9879;" class="headerlink" title="&#x914D;&#x7F6E;&#x9879;"></a>&#x914D;&#x7F6E;&#x9879;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#查询"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><a href="#&#x5B58;&#x50A8;" class="headerlink" title="&#x5B58;&#x50A8;"></a>&#x5B58;&#x50A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#可视化"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><a href="#&#x53EF;&#x89C6;&#x5316;" class="headerlink" title="&#x53EF;&#x89C6;&#x5316;"></a>&#x53EF;&#x89C6;&#x5316;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#系统生态集成"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x751F;&#x6001;&#x96C6;&#x6210;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x751F;&#x6001;&#x96C6;&#x6210;"></a>&#x7CFB;&#x7EDF;&#x751F;&#x6001;&#x96C6;&#x6210;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Client-libraries"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><a href="#Client-libraries" class="headerlink" title="Client libraries"></a>Client libraries</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Exporters"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><a href="#Exporters" class="headerlink" title="Exporters"></a>Exporters</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Pushgateway"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><a href="#Pushgateway" class="headerlink" title="Pushgateway"></a>Pushgateway</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AlertManager"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><a href="#AlertManager" class="headerlink" title="AlertManager"></a>AlertManager</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><a href="#&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol>
     
   </div>
 </aside>
